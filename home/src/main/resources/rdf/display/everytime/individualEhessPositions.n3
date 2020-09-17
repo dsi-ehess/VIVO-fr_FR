@@ -1,0 +1,49 @@
+# $This file is distributed under the terms of the license in /doc/license.txt$
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix core: <http://vivoweb.org/ontology/core#> .
+@prefix vivoweb: <http://vivoweb.org/ontology#> .
+@prefix afn:  <http://jena.hpl.hp.com/ARQ/function#> .
+
+
+#### Check to see if the person being viewed has a first and last name. ####
+#### If so, the page will display the QR code icon link.                ####
+
+## associate the classes with the datagetter (COUNT(?vIndividual) AS ?theCount)##
+
+<http://xmlns.com/foaf/0.1/Person> display:hasDataGetter display:getIndividualEhessPositionsDataGetter .
+
+
+## define the datagetter ##
+
+
+display:getIndividualEhessPositionsDataGetter
+    a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.SparqlQueryDataGetter>;
+    display:saveToVar "individualEhessPositionsResults";
+    display:query
+        """
+        PREFIX vivo: <http://vivoweb.org/ontology/core#>
+        PREFIX  display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#>
+        PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs:	<http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX ehess: <http://data.ehess.fr/ontology/vivo#>
+
+        SELECT  (str(?labelAppStatutaire) AS ?appStatutaireLabel)  ?appStatutaire (str(?abrAppStatutaire) AS ?abreviationAppStatutaire) (str(?labelAppartenance) AS ?appartenanceLabel) ?appartenanceEquipe WHERE {
+             ?individualURI vivo:relatedBy  ?f .
+             ?f  vivo:relates ?appStatutaire .
+             ?f rdf:type ehess:AppartenanceStatutaire .
+             ?appStatutaire rdf:type ehess:UniteDeRecherche  .
+             ?appStatutaire  rdfs:label ?labelAppStatutaire .
+             ?appStatutaire  vivo:abbreviation ?abrAppStatutaire .
+             OPTIONAL {
+                 ?individualURI vivo:relatedBy  ?f2 .
+                 ?f2 vivo:relates ?appartenanceEquipe .
+                 ?f2 rdf:type ehess:AppartenanceStatutaire .
+                 ?appartenanceEquipe rdf:type ehess:ComposanteDUnite .
+                 ?appartenanceEquipe  rdfs:label ?labelAppartenance .
+             }
+          }
+        """ .
