@@ -11,6 +11,7 @@
 @prefix vivo: <http://vivoweb.org/ontology/core#> . 
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix ehess: <http://data.ehess.fr/ontology/vivo#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @base <http://vitro.mannlib.cornell.edu/ns/vitro/ApplicationConfiguration> .
 
 # warning: don't use blank nodes; the display model doesn't currently support them.
@@ -25,7 +26,7 @@ local:personInAssociateMemberContext a :ConfigContext ;
 
 local:personInAssociateMemberConfig a :ObjectPropertyDisplayConfig ;
     rdfs:label "personInAssociateMember"@en-US;
-    :displayName "Associate Member Of"@en-US, "Membre associé.e de"@fr-FR;
+    :displayName "Associate Member Of"@en-US, "Membre associé"@fr-FR;
     :listViewConfigFile "listViewConfig-personInStatutoryMember.xml"^^xsd:string ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
     vitro:displayRankAnnot 40;
@@ -42,7 +43,7 @@ local:personInStatutoryMemberContext a :ConfigContext ;
 
 local:personInStatutoryMemberConfig a :ObjectPropertyDisplayConfig ;
     rdfs:label "personInStatutoryMember"@en-US;
-    :displayName "Statutory Member Of"@en-US, "Membre statutaire de"@fr-FR;
+    :displayName "Statutory Member Of"@en-US, "Appartenance Statutaire"@fr-FR;
     :listViewConfigFile "listViewConfig-personInStatutoryMember.xml"^^xsd:string ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
     vitro:displayRankAnnot 40;
