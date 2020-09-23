@@ -2,7 +2,6 @@
 <!-- $This file is distributed under the terms of the license in /doc/license.txt$ -->
 
 <!-- See guidelines at https://wiki.duraspace.org/x/eYXVAw -->
- # TODO supprimer fichier
 <list-view-config>
     <query-select>
         PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
