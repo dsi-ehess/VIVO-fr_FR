@@ -98,7 +98,7 @@ local:organizationForPositionConfig a :ObjectPropertyDisplayConfig ;
     :listViewConfigFile "listViewConfig-organizationForPosition.xml"^^xsd:string ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
     vitro:collateBySubclassAnnot
-              "true"^^xsd:boolean;
+              "false"^^xsd:boolean;
     vitro:displayRankAnnot 10;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
@@ -117,10 +117,10 @@ local:organizationForAssociateMemberConfig a :ObjectPropertyDisplayConfig ;
     :listViewConfigFile "listViewConfig-organizationForStatutoryMember.xml"^^xsd:string ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
     vitro:collateBySubclassAnnot
-              "true"^^xsd:boolean;
+              "false"^^xsd:boolean;
     vitro:displayRankAnnot 10;
-    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
-    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:selfEditor ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:editor ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasAssociateMemberHistoryGenerator"^^xsd:string .
 
@@ -132,14 +132,14 @@ local:organizationForStatutoryMemberContext a :ConfigContext ;
 
 local:organizationForStatutoryMemberConfig a :ObjectPropertyDisplayConfig ;
     rdfs:label "organizationForStatutoryMember"@en-US;
-    :displayName "statutory member" ;
+    :displayName "membre statutaire"@fr-FR, "statutory member"@en-US ;
     :listViewConfigFile "listViewConfig-organizationForStatutoryMember.xml"^^xsd:string ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
     vitro:collateBySubclassAnnot
-              "true"^^xsd:boolean;
+              "false"^^xsd:boolean;
     vitro:displayRankAnnot 10;
-    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
-    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:selfEditor ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:editor ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasStatutoryMemberHistoryGenerator"^^xsd:string .
 
@@ -155,10 +155,10 @@ local:organizationForMemberConfig a :ObjectPropertyDisplayConfig ;
     :listViewConfigFile "listViewConfig-organizationForMember.xml"^^xsd:string ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
     vitro:collateBySubclassAnnot
-              "true"^^xsd:boolean;
+              "false"^^xsd:boolean;
     vitro:displayRankAnnot 10;
-    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
-    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:selfEditor ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:editor ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasMemberHistoryGenerator"^^xsd:string .
 
