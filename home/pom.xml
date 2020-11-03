@@ -61,4 +61,11 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.vivoweb</groupId>
+            <artifactId>vivo-home</artifactId>
+            <type>tar.gz</type>
+        </dependency>
+    </dependencies>
 </project>
