@@ -40,7 +40,7 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
 
-    public static final String[] ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS = {"http://data.ehess.fr/ontology/vivo#Universite"};
+    public static final String[] ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS = {"http://data.ehess.fr/ontology/vivo#ResearchOrganization"};
 
     public PersonHasPositionHistoryGenerator() {
     }
@@ -312,7 +312,10 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
         List<VClass> types = new ArrayList<VClass>();
         WebappDaoFactory ctxDaoFact = vreq.getLanguageNeutralWebappDaoFactory();
         for (String rangeUri : ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS) {
-            types.add(ctxDaoFact.getVClassDao().getVClassByURI(rangeUri));
+        	VClass vClass = ctxDaoFact.getVClassDao().getVClassByURI(rangeUri);
+        	if (vClass != null) {
+        		types.add(vClass);
+        	}
         }
         return types;
     }

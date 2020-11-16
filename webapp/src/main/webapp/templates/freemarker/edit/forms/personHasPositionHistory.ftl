@@ -135,8 +135,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </div>
 
     <!-- HACK EHESS disable input -->
-    <#--<label for="positionTitle">${i18n().position_title} ${requiredHint}</label>-->
-    <#--<input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />-->
+    <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabel?? >checked</#if> />${i18n().func_keepLabel}</p>
+    <p></p>
+    <label for="positionTitle">${i18n().position_title} ${requiredHint}</label>
+    <input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />
 
       <label for="positionType">${i18n().position_type} ${requiredHint}</label>
       <#assign posnTypeOpts = editConfiguration.pageData.positionType />
@@ -203,3 +205,5 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/
              '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/jquery_plugins/jquery.bgiframe.pack.js"></script>',
              '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>')}
+
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/position/functionKeepLabelFlag.js"></script>')}
