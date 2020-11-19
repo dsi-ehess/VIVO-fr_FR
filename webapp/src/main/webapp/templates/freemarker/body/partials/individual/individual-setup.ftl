@@ -10,4 +10,5 @@
 <#assign propertyGroups = individual.propertyList>
 
 <#assign core = "http://vivoweb.org/ontology/core#">
+<#assign vivofr = "http://data.ehess.fr/ontology/vivo-fr#">
 <#assign ehess = "http://data.ehess.fr/ontology/vivo#">
