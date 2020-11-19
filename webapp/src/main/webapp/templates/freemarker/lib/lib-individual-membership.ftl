@@ -40,12 +40,12 @@
 	<#list membershipLabels as membershipLabel>
 	    <li role="listitem">
 	        <span>${membershipLabel}</span>
-	        <#assign filteresStatements = filterStatement(statements, membershipLabel) />
-	        <#list filteresStatements as statement>
+	        <#assign filteredStatements = filterStatement(statements, membershipLabel) />
+	        <#list filteredStatements as statement>
 	           <#assign localLabel = statement.positionTitle!i18n().unknown_position />
 	           <#if localLabel == membershipLabel>
 	               <@propertyListItemMembership property statement editable><#include "${template}"></@propertyListItemMembership>
-	               <#if (statements?seq_index_of(statement) < ((statements?size) -1)) >
+	               <#if (statements?seq_index_of(statement) < ((filteredStatements?size) -1)) >
                         <span>, </span>
                     </#if>
 	            </#if>
