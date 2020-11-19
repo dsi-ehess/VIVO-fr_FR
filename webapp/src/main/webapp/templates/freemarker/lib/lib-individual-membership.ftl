@@ -45,7 +45,6 @@
 	           <#assign localLabel = statement.positionTitle!i18n().unknown_position />
 	           <#if localLabel == membershipLabel>
 	               <@propertyListItemMembership property statement editable><#include "${template}"></@propertyListItemMembership>
-	               ${filteresStatements?seq_index_of(statement)} -- ${((statements?size) -1)}
 	               <#if (statements?seq_index_of(statement) < ((statements?size) -1)) >
                         <span>, </span>
                     </#if>
