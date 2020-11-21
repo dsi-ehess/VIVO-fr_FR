@@ -97,9 +97,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <form class="customForm" action ="${submitUrl}" class="customForm noIE67" role="${formAction} position entry">
   <p class="inline">    
     <label for="orgType">${i18n().org_type_capitalized}<#if editMode != "edit"> ${requiredHint}<#else>:</#if></label>
-      <#--HACK EHESS limit allowed org types-->
-    <#assign orgTypeOpts = editConfiguration.pageData.ehessOrgTypes />
-    <#--assign orgTypeOpts = editConfiguration.pageData.orgType /-->
+    <#assign orgTypeOpts = editConfiguration.pageData.orgType />
 <#--
     <#if editMode == "edit">
       <#list orgTypeOpts?keys as key>             
@@ -178,7 +176,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <script type="text/javascript">
 var customFormData  = {
     acUrl: '${urls.base}/autocomplete?tokenize=true',
-    acTypes: {organization: 'http://xmlns.com/foaf/0.1/Organization'},
+    acTypes: {organization: 'http://data.ehess.fr/ontology/vivo#ResearchOrganization'},
     editMode: '${editMode}',
     defaultTypeName: 'organization', // used in repair mode, to generate button text and org name field label
     baseHref: '${urls.base}/individual?uri=',

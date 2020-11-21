@@ -29,7 +29,7 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
         EditConfigurationGenerator {
 
     final static String positionClass = vivoCore + "Position";
-    final static String orgClass = "http://xmlns.com/foaf/0.1/Organization";
+    final static String orgClass = "http://data.ehess.fr/ontology/vivo#ResearchOrganization";
     final static String positionInOrgPred = vivoCore + "relates";
     final static String orgForPositionPred = vivoCore + "relatedBy";
     final static String positionToInterval = vivoCore + "dateTimeInterval";
@@ -39,8 +39,6 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
     final static String dateTimeValueType = vivoCore + "DateTimeValue";
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
-
-    public static final String[] ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS = {"http://data.ehess.fr/ontology/vivo#Universite"};
 
     public PersonHasPositionHistoryGenerator() {
     }
@@ -289,7 +287,6 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
     //Adding form specific data such as edit mode
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         editConfiguration.addFormSpecificData("editMode", getEditMode(vreq).name().toLowerCase());
-        editConfiguration.addFormSpecificData("ehessOrgTypes", getAllowedOrgTypeOptions(vreq));
     }
 
     public EditMode getEditMode(VitroRequest vreq) {
@@ -297,24 +294,4 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
         predicates.add(positionInOrgPred);
         return EditModeUtils.getEditMode(vreq, predicates);
     }
-
-    // HACK EHESS  Limit Allowed org types
-    private HashMap<String, String> getAllowedOrgTypeOptions(VitroRequest vreq) {
-        HashMap<String, String> options = new HashMap<String, String>();
-        List<VClass> orgTypes = getAllowedOrgTypes(vreq);
-        for (VClass v : orgTypes) {
-            options.put(v.getURI(), v.getName());
-        }
-        return options;
-    }
-
-    private List<VClass> getAllowedOrgTypes(VitroRequest vreq) {
-        List<VClass> types = new ArrayList<VClass>();
-        WebappDaoFactory ctxDaoFact = vreq.getLanguageNeutralWebappDaoFactory();
-        for (String rangeUri : ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS) {
-            types.add(ctxDaoFact.getVClassDao().getVClassByURI(rangeUri));
-        }
-        return types;
-    }
-
 }

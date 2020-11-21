@@ -97,9 +97,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <form class="customForm" action ="${submitUrl}" class="customForm noIE67" role="${formAction} position entry">
   <p class="inline">
     <label for="orgType">${i18n().org_type_capitalized}<#if editMode != "edit"> ${requiredHint}<#else>:</#if></label>
-      <#--HACK EHESS limit allowed org types-->
-    <#assign orgTypeOpts = editConfiguration.pageData.ehessOrgTypes />
-    <#--assign orgTypeOpts = editConfiguration.pageData.orgType /-->
+    <#assign orgTypeOpts = editConfiguration.pageData.orgType />
 <#--
     <#if editMode == "edit">
       <#list orgTypeOpts?keys as key>

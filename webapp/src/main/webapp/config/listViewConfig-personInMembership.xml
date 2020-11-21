@@ -15,6 +15,7 @@
         SELECT DISTINCT <collated>?subclass</collated>
             ?position
             ?positionTitle
+            ?positionLabel
             ?hrJobTitle
             ?rank
             ?org ?orgName
@@ -25,6 +26,11 @@
         {
             ?subject ?property ?position .
             ?position a vivofr:MMB_0000001 .
+            OPTIONAL {
+                <precise-subquery>?subject ?property ?position .
+                ?position a vivofr:MMB_0000001 .</precise-subquery>
+                ?position rdfs:label ?positionLabel .
+            }
             OPTIONAL {
                 <precise-subquery>?subject ?property ?position .
                 ?position a vivofr:MMB_0000001 .</precise-subquery>

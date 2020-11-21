@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import edu.cornell.mannlib.vitro.webapp.beans.VClass;
 import edu.cornell.mannlib.vitro.webapp.dao.WebappDaoFactory;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.vocabulary.XSD;
 
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
@@ -21,6 +23,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeWithPrecisio
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.ChildVClassesWithParent;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.RdfTypeOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
 import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
@@ -29,6 +32,9 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
         EditConfigurationGenerator {
 
     final static String positionClass = vivofr + "MMB_0000001";
+    final static String researchOrganizationClass = vivofr + "ORG_0000002";
+    final static String administrativeEntityClass = vivofr + "ORG_0000014";
+    
     final static String orgClass = "http://xmlns.com/foaf/0.1/Organization";
     final static String positionInOrgPred = vivoCore + "relates";
     final static String orgForPositionPred = vivoCore + "relatedBy";
@@ -40,7 +46,8 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
 
-    public static final String[] ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS = {"http://data.ehess.fr/ontology/vivo#ResearchOrganization"};
+    public static final String[] ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS = {researchOrganizationClass, administrativeEntityClass};
+    
 
     public PersonHasMembershipHistoryGenerator() {
     }
@@ -75,8 +82,9 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
         conf.setVarNameForSubject("person");
         conf.setVarNameForPredicate("predicate");
         conf.setVarNameForObject("position");
-        //HACK EHESS positionTitleAssertion removed Redmine 1193
+
         conf.setN3Required(Arrays.asList(n3ForNewPosition,
+                                           positionTitleAssertion,
                 positionTypeAssertion));
         conf.setN3Optional(Arrays.asList(n3ForNewOrg, n3ForExistingOrg, n3ForStart, n3ForEnd));
 
@@ -113,7 +121,8 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
         //HACK EHESS validator non-empty removed Redmine 1193
         conf.addField(new FieldVTwo().
                 setName("positionTitle")
-                .setRangeDatatypeUri(XSD.xstring.toString()));
+                .setRangeDatatypeUri( XSD.xstring.toString() ).
+                setValidators( list("nonempty") ) );
 
         conf.addField(new FieldVTwo().
                 setName("positionType").
@@ -134,10 +143,12 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
                 setName("orgLabelDisplay").
                 setRangeDatatypeUri(XSD.xstring.toString()));
 
+        
+        
         conf.addField(new FieldVTwo().
                 setName("orgType").
                 setOptions(
-                        new ChildVClassesWithParent(orgClass)));
+                        new RdfTypeOptions(researchOrganizationClass, administrativeEntityClass)));
 
         conf.addField(new FieldVTwo().setName("startField").
                 setEditElement(
@@ -289,7 +300,7 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
     //Adding form specific data such as edit mode
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         editConfiguration.addFormSpecificData("editMode", getEditMode(vreq).name().toLowerCase());
-        editConfiguration.addFormSpecificData("ehessOrgTypes", getAllowedOrgTypeOptions(vreq));
+        editConfiguration.addFormSpecificData("orgTypes", StringUtils.join(ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS, ","));
     }
 
     public EditMode getEditMode(VitroRequest vreq) {
@@ -297,27 +308,4 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
         predicates.add(positionInOrgPred);
         return EditModeUtils.getEditMode(vreq, predicates);
     }
-
-    // HACK EHESS  Limit Allowed org types
-    private HashMap<String, String> getAllowedOrgTypeOptions(VitroRequest vreq) {
-        HashMap<String, String> options = new HashMap<String, String>();
-        List<VClass> orgTypes = getAllowedOrgTypes(vreq);
-        for (VClass v : orgTypes) {
-            options.put(v.getURI(), v.getName());
-        }
-        return options;
-    }
-
-    private List<VClass> getAllowedOrgTypes(VitroRequest vreq) {
-        List<VClass> types = new ArrayList<VClass>();
-        WebappDaoFactory ctxDaoFact = vreq.getLanguageNeutralWebappDaoFactory();
-        for (String rangeUri : ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS) {
-        	VClass vClass = ctxDaoFact.getVClassDao().getVClassByURI(rangeUri);
-        	if (vClass != null) {
-        		types.add(vClass);
-        	}
-        }
-        return types;
-    }
-
 }
