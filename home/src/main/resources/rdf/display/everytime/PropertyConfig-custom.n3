@@ -12,10 +12,30 @@
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix ehess: <http://data.ehess.fr/ontology/vivo#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix vivofr: <http://data.ehess.fr/ontology/vivo-fr#> .
 @base <http://vitro.mannlib.cornell.edu/ns/vitro/ApplicationConfiguration> .
 
 # warning: don't use blank nodes; the display model doesn't currently support them.
 
+
+
+local:personInFunctionContext a :ConfigContext ;
+    :hasConfiguration local:personInFunctionConfig ;
+    :configContextFor vivo:relatedBy ;
+    :qualifiedByDomain <http://xmlns.com/foaf/0.1/Person> ;
+    :qualifiedBy vivo:Position .
+
+local:personInFunctionConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "Person in function"@en-US;
+    rdfs:label "Personne dans une fonction"@fr-FR;
+    :displayName "Function"@en-US, "Fonction"@fr-FR;
+    :listViewConfigFile "listViewConfig-personInPosition.xml"^^xsd:string ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
+    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.PersonHasPositionHistoryGenerator"^^xsd:string .
 
 
 local:personInAssociateMemberContext a :ConfigContext ;
@@ -85,6 +105,7 @@ local:personInPhdStudentMemberConfig a :ObjectPropertyDisplayConfig ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.PersonHasPhdStudentMemberHistoryGenerator"^^xsd:string .
+
 
 local:organizationForPositionContext a :ConfigContext ;
     :hasConfiguration local:organizationForPositionConfig ;

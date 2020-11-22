@@ -44,7 +44,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign requiredHint="<span class='requiredHint'> *</span>"/> 
 <#assign yearHint     = "<span class='hint'>(${i18n().year_hint_format})</span>" />
 
-<h2>${formAction} ${i18n().posn_entry_for} ${editConfiguration.subjectName}</h2>
+<h2>${formAction} ${i18n().func_entry_for} ${editConfiguration.subjectName}</h2>
 
 <#--Display error messages if any-->
 <#if submissionErrors?has_content>
@@ -95,29 +95,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <@lvf.unsupportedBrowser urls.base /> 
 
 <form class="customForm" action ="${submitUrl}" class="customForm noIE67" role="${formAction} position entry">
-  <p class="inline">    
-    <label for="orgType">${i18n().org_type_capitalized}<#if editMode != "edit"> ${requiredHint}<#else>:</#if></label>
-      <#--HACK EHESS limit allowed org types-->
-    <#assign orgTypeOpts = editConfiguration.pageData.ehessOrgTypes />
-    <#--assign orgTypeOpts = editConfiguration.pageData.orgType /-->
-<#--
-    <#if editMode == "edit">
-      <#list orgTypeOpts?keys as key>             
-          <#if orgTypeValue = key >
-            <span class="readOnly" id="typeSelectorSpan">${orgTypeOpts[key]}</span> 
-            <input type="hidden" id="typeSelectorInput" name="orgType" acGroupName="organization" value="${orgTypeValue}" >
-          </#if>           
-      </#list>
-    <#else>
-    </#if>
--->
-<select id="typeSelector" name="orgType" acGroupName="organization">
-    <option value="" selected="selected">${i18n().select_one}</option>                
-    <#list orgTypeOpts?keys as key>             
-        <option value="${key}"  <#if orgTypeValue = key>selected</#if>>${orgTypeOpts[key]}</option>            
-    </#list>
-</select>
-  </p>
+  
 
   <p>
     <label for="relatedIndLabel">${i18n().organization_capitalized} ${i18n().name_capitalized} ${requiredHint}</label>
@@ -135,11 +113,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </div>
 
     <!-- HACK EHESS disable input -->
-    <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabel?? >checked</#if> />${i18n().func_keepLabel}</p>
-    <p></p>
+    <section id="designationContainer" role="region">
     <label for="positionTitle">${i18n().position_title} ${requiredHint}</label>
     <input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />
-
+    </section>
       <label for="positionType">${i18n().position_type} ${requiredHint}</label>
       <#assign posnTypeOpts = editConfiguration.pageData.positionType />
       <select name="positionType" style="margin-top:-2px" >
@@ -148,7 +125,13 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
               <option value="${key}"  <#if positionTypeValue == key>selected</#if>>${posnTypeOpts[key]}</option>         
           </#list>
       </select>
+      <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabel?? >checked</#if> />${i18n().func_keepLabel}</p>
       <p></p>
+      <section id="designationContainer" role="region">
+	      <#--<label for="positionTitle">${i18().position_title}<span class="requiredHint"> *</span></label>-->
+	       <#--<input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />>-->
+
+      </section>
       <#--Need to draw edit elements for dates here-->
        <#if htmlForElements?keys?seq_contains("startField")>
   			<label class="dateTime" for="startField">${i18n().start_capitalized}</label>
@@ -206,4 +189,4 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/
              '<script type="text/javascript" src="${urls.base}/js/jquery_plugins/jquery.bgiframe.pack.js"></script>',
              '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>')}
 
-${scripts.add('<script type="text/javascript" src="${urls.base}/js/position/functionKeepLabelFlag.js"></script>')}
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/function/functionKeepLabelFlag.js"></script>')}

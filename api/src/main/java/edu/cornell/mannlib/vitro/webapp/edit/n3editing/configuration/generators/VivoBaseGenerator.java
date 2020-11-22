@@ -39,4 +39,5 @@ public abstract class VivoBaseGenerator extends BaseEditConfigurationGenerator i
     final static String personClass = foaf + "Person";
     
     final static String ehess ="http://data.ehess.fr/ontology/vivo#" ;
+    final static String vivofr ="http://data.ehess.fr/ontology/vivo-fr#" ;
 }

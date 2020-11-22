@@ -1,0 +1,47 @@
+# baseURI: http://vivoweb.org/ontology/core_fr_FR
+# prefix: core_fr_FR
+
+@prefix : <http://vivoweb.org/ontology/core_fr_FR#> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix core: <http://vivoweb.org/ontology/core#> .
+@prefix core_fr_FR: <http://vivoweb.org/ontology/core_fr_FR#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo: <http://aims.fao.org/aos/geopolitical.owl#> .
+@prefix ns: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix skos2: <http://www.w3.org/2008/05/skos#> .
+@prefix statistics: <http://purl.org/net/OCRe/statistics.owl#> .
+@prefix study_protocol: <http://purl.org/net/OCRe/study_protocol.owl#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix vivo-rech: <http://vivoweb.org/ontology/scientific-research#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+core:Position
+  obo:IAO_0000115 "Une fonction, un emploi dans une organisation"@fr-FR ;
+  rdfs:label "fonction"@fr-FR ;
+.
+core:Relationship
+  obo:IAO_0000115 "Relation réifiée entre deux entités"@fr-FR ;
+  rdfs:label "relation"@fr-FR ;
+.
+core:ResearchOrganization
+  rdfs:label "structure de recherche"@fr-FR ;
+.
+core:Postdoc
+  obo:IAO_0000115 "https://fr.wikipedia.org/wiki/Chercheur_postdoctoral"@fr-FR ;
+  rdfs:label "postdoctorant.e"@fr-FR ;
+.
+core:FacultyMember
+  obo:IAO_0000115 "Une personne chargée de produire et de diffuser des savoirs au sein d'un établissement d'enseignement supérieur."@fr-FR ;
+  rdfs:label "personnel Académique"@fr-FR ;
+.
+core:University
+  obo:IAO_0000115 "https://fr.wikipedia.org/wiki/Universit%C3%A9"@fr-FR ;
+  rdfs:label "université"@fr-FR ;
+.

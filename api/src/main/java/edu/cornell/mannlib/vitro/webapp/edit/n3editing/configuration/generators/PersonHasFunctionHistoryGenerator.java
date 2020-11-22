@@ -25,10 +25,11 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
 import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
 
-public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator implements
+public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator implements
         EditConfigurationGenerator {
 
-    final static String positionClass = vivoCore + "Position";
+    //final static String positionClass = vivoCore + "Position";
+    final static String functionClass = vivofr + "FNC_0000001";
     final static String orgClass = "http://xmlns.com/foaf/0.1/Organization";
     final static String positionInOrgPred = vivoCore + "relates";
     final static String orgForPositionPred = vivoCore + "relatedBy";
@@ -40,9 +41,9 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
 
-    public static final String[] ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS = {"http://data.ehess.fr/ontology/vivo#ResearchOrganization"};
+    public static final String[] ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS = {"http://data.ehess.fr/ontology/vivo-fr#ORG_0000010"};
 
-    public PersonHasPositionHistoryGenerator() {
+    public PersonHasFunctionHistoryGenerator() {
     }
 
     // There are 4 modes that this form can be in: 
@@ -70,7 +71,7 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
         initPropertyParameters(vreq, session, conf);
         initObjectPropForm(conf, vreq);
 
-        conf.setTemplate("personHasPositionHistory.ftl");
+        conf.setTemplate("personHasFunctionHistory.ftl");
 
         conf.setVarNameForSubject("person");
         conf.setVarNameForPredicate("predicate");
@@ -82,6 +83,7 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
 
         conf.addNewResource("position", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("newOrg", DEFAULT_NS_FOR_NEW_RESOURCE);
+        conf.addNewResource("designation", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("intervalNode", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("startNode", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("endNode", DEFAULT_NS_FOR_NEW_RESOURCE);
@@ -90,7 +92,7 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
         //literals in scope: none
 
         conf.setUrisOnform(Arrays.asList("existingOrg", "orgType", "positionType"));
-        conf.setLiteralsOnForm(Arrays.asList("positionTitle", "orgLabel", "orgLabelDisplay"));
+        conf.setLiteralsOnForm(Arrays.asList("positionTitle", "orgLabel", "orgLabelDisplay", "designationLabel"));
 
         conf.addSparqlForExistingLiteral("orgLabel", orgLabelQuery);
         conf.addSparqlForExistingLiteral("positionTitle", positionTitleQuery);
@@ -104,6 +106,7 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
         conf.addSparqlForExistingUris("positionType", positionTypeQuery);
         conf.addSparqlForExistingUris(
                 "intervalNode", existingIntervalNodeQuery);
+        conf.addSparqlForExistingUris("designationLabel", existingDesignationQuery);
         conf.addSparqlForExistingUris("startNode", existingStartNodeQuery);
         conf.addSparqlForExistingUris("endNode", existingEndNodeQuery);
         conf.addSparqlForExistingUris("startField-precision",
@@ -114,12 +117,12 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
         conf.addField(new FieldVTwo().
                 setName("positionTitle")
                 .setRangeDatatypeUri(XSD.xstring.toString()));
-
+        
         conf.addField(new FieldVTwo().
                 setName("positionType").
                 setValidators(list("nonempty")).
                 setOptions(
-                        new ChildVClassesWithParent(positionClass)));
+                        new ChildVClassesWithParent(functionClass)));
 
 
         conf.addField(new FieldVTwo().
@@ -139,6 +142,15 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
                 setOptions(
                         new ChildVClassesWithParent(orgClass)));
 
+        conf.addField(new FieldVTwo().
+                setName("designationLabel").
+                setRangeDatatypeUri(XSD.xstring.toString()).
+                setValidators(list("datatype:" + XSD.xstring.toString())));
+
+        conf.addField(new FieldVTwo().
+                setName("designationLabelDisplay").
+                setRangeDatatypeUri(XSD.xstring.toString()));
+        
         conf.addField(new FieldVTwo().setName("startField").
                 setEditElement(
                         new DateTimeWithPrecisionVTwo(null,
@@ -237,6 +249,11 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
                     "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
                     "  ?existingOrg a <" + orgClass + ">  }";
 
+    final static String existingDesignationQuery =
+            "SELECT ?existingOrg WHERE { \n" +
+                    "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
+                    "  ?existingOrg a <" + orgClass + ">  }";
+    
     final static String orgTypeQuery =
             "PREFIX rdfs: <" + rdfs + "> \n" +
                     "SELECT ?existingOrgType WHERE { \n" +
@@ -251,6 +268,11 @@ public class PersonHasPositionHistoryGenerator extends VivoBaseGenerator impleme
                     "SELECT ?existingPositionType WHERE { \n" +
                     "  ?position vitro:mostSpecificType ?existingPositionType . }";
 
+    final static String designationQuery =
+            "PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" +
+                    "SELECT ?existingPositionType WHERE { \n" +
+                    "  ?position vitro:mostSpecificType ?existingPositionType . }";
+    
     final static String existingIntervalNodeQuery =
             "SELECT ?existingIntervalNode WHERE { \n" +
                     "  ?position <" + positionToInterval + "> ?existingIntervalNode . \n" +

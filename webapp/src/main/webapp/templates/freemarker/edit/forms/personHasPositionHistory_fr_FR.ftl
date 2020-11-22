@@ -135,9 +135,12 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </div>
 
     <!-- HACK EHESS disable input -->
-    <#--<label for="positionTitle">${i18n().position_title} ${requiredHint}</label>-->
-    <#--<input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />-->
-
+    <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel"/>${i18n().func_keepLabel}</p>
+    <p></p>
+    <section id="positionTitleContainer" role="region">
+        <label for="positionTitle">${i18n().position_title} ${requiredHint}</label>
+        <input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />
+     </section>
       <label for="positionType">${i18n().position_type} ${requiredHint}</label>
       <#assign posnTypeOpts = editConfiguration.pageData.positionType />
       <select name="positionType" style="margin-top:-2px" >
@@ -203,3 +206,5 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/
              '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/jquery_plugins/jquery.bgiframe.pack.js"></script>',
              '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>')}
+
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/position/positionKeepLabelFlag.js"></script>')}
