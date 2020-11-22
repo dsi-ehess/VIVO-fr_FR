@@ -19,6 +19,25 @@
 
 
 
+local:personInFunctionContext a :ConfigContext ;
+    :hasConfiguration local:personInFunctionConfig ;
+    :configContextFor vivo:relatedBy ;
+    :qualifiedByDomain <http://xmlns.com/foaf/0.1/Person> ;
+    :qualifiedBy vivo:Position .
+
+local:personInFunctionConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "Person in function"@en-US;
+    rdfs:label "Personne dans une fonction"@fr-FR;
+    :displayName "Function"@en-US, "Fonction"@fr-FR;
+    :listViewConfigFile "listViewConfig-personInPosition.xml"^^xsd:string ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
+    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.PersonHasPositionHistoryGenerator"^^xsd:string .
+
+
 local:personInAssociateMemberContext a :ConfigContext ;
     :hasConfiguration local:personInAssociateMemberConfig ;
     :configContextFor vivo:relatedBy ;
