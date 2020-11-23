@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
-import edu.cornell.mannlib.vitro.webapp.beans.VClass;
-import edu.cornell.mannlib.vitro.webapp.dao.WebappDaoFactory;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.jena.vocabulary.XSD;
 
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
@@ -19,8 +17,9 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.AutocompleteRequiredInput
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeIntervalValidationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeWithPrecisionVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.ChildVClassesWithParent;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.RdfTypeOptions;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.BooleanValuesPreprocessor;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
 import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
@@ -28,8 +27,7 @@ import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
 public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator implements
         EditConfigurationGenerator {
 
-    //final static String positionClass = vivoCore + "Position";
-    final static String functionClass = vivofr + "FNC_0000001";
+    final static String positionClass = vivoCore + "Position";
     final static String orgClass = "http://xmlns.com/foaf/0.1/Organization";
     final static String positionInOrgPred = vivoCore + "relates";
     final static String orgForPositionPred = vivoCore + "relatedBy";
@@ -40,30 +38,35 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
     final static String dateTimeValueType = vivoCore + "DateTimeValue";
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
+	final static String[] institutionClasses = { vivoCore + "University" };
+	final static String[] genericPositionClasses = { vivofr + "FNC_0000002", vivofr + "FNC_0000004",
+			vivofr + "FNC_0000005", vivofr + "FNC_0000006", vivofr + "FNC_0000007" };
+	final static String[] precisePositionClasses = { vivofr + "FNC_0000008",
+			vivofr + "FNC_0000009", vivofr + "FNC_0000010", vivofr + "FNC_0000011", vivofr + "FNC_0000012",
+			vivofr + "FNC_0000013", vivofr + "FNC_0000014", vivofr + "FNC_0000015", vivofr + "FNC_0000016",
+			vivofr + "FNC_0000017", vivofr + "FNC_0000018", vivofr + "FNC_0000019", vivofr + "FNC_0000020",
+			vivofr + "FNC_0000021" };
 
-    public static final String[] ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS = {"http://data.ehess.fr/ontology/vivo-fr#ORG_0000010"};
+    public PersonHasFunctionHistoryGenerator() {}
 
-    public PersonHasFunctionHistoryGenerator() {
-    }
-
-    // There are 4 modes that this form can be in: 
-    //  1. Add. There is a subject and a predicate but no position and 
-    //     nothing else. 
-    //        
-    //  2. Normal edit where everything should already be filled out.  
+    // There are 4 modes that this form can be in:
+    //  1. Add. There is a subject and a predicate but no position and
+    //     nothing else.
+    //
+    //  2. Normal edit where everything should already be filled out.
     //     There is a subject, a object and an individual on
-    //     the other end of the object's core:personInOrganization stmt. 
-    //  
-    //  3. Repair a bad role node.  There is a subject, predicate and object 
-    //     but there is no individual on the other end of the object's 
-    //     core:personInOrganization stmt.  This should be similar to an add 
+    //     the other end of the object's core:personInOrganization stmt.
+    //
+    //  3. Repair a bad role node.  There is a subject, predicate and object
+    //     but there is no individual on the other end of the object's
+    //     core:personInOrganization stmt.  This should be similar to an add
     //     but the form should be expanded.
-    //     
-    //  4. Really bad node. multiple core:personInOrganization statements.   
+    //
+    //  4. Really bad node. multiple core:personInOrganization statements.
 
     @Override
     public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq,
-                                                      HttpSession session) throws Exception {
+            HttpSession session) throws Exception {
 
         EditConfigurationVTwo conf = new EditConfigurationVTwo();
 
@@ -76,26 +79,27 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         conf.setVarNameForSubject("person");
         conf.setVarNameForPredicate("predicate");
         conf.setVarNameForObject("position");
-        //HACK EHESS positionTitleAssertion removed Redmine 1193
-        conf.setN3Required(Arrays.asList(n3ForNewPosition,
-                positionTypeAssertion));
-        conf.setN3Optional(Arrays.asList(n3ForNewOrg, n3ForExistingOrg, n3ForStart, n3ForEnd));
+
+        conf.setN3Required( Arrays.asList( n3ForNewPosition,                                           
+                                           positionTypeAssertion,
+                                           keepLabelAssertion) );
+        conf.setN3Optional( Arrays.asList( positionTitleAssertion, n3ForNewOrg, n3ForExistingOrg, n3ForStart, n3ForEnd ) );
 
         conf.addNewResource("position", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("newOrg", DEFAULT_NS_FOR_NEW_RESOURCE);
-        conf.addNewResource("designation", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("intervalNode", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("startNode", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("endNode", DEFAULT_NS_FOR_NEW_RESOURCE);
 
-        //uris in scope: none   
+        //uris in scope: none
         //literals in scope: none
 
         conf.setUrisOnform(Arrays.asList("existingOrg", "orgType", "positionType"));
-        conf.setLiteralsOnForm(Arrays.asList("positionTitle", "orgLabel", "orgLabelDisplay", "designationLabel"));
+        conf.setLiteralsOnForm(Arrays.asList("positionTitle", "orgLabel", "orgLabelDisplay", "keepLabel"));
 
         conf.addSparqlForExistingLiteral("orgLabel", orgLabelQuery);
         conf.addSparqlForExistingLiteral("positionTitle", positionTitleQuery);
+        conf.addSparqlForExistingLiteral("keepLabel", existingKeepLabelQuery);
         conf.addSparqlForExistingLiteral(
                 "startField-value", existingStartDateQuery);
         conf.addSparqlForExistingLiteral(
@@ -113,35 +117,39 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
                 existingStartPrecisionQuery);
         conf.addSparqlForExistingUris("endField-precision",
                 existingEndPrecisionQuery);
-        //HACK EHESS validator non-empty removed Redmine 1193
-        conf.addField(new FieldVTwo().
+
+        conf.addField( new FieldVTwo().
                 setName("positionTitle")
-                .setRangeDatatypeUri(XSD.xstring.toString()));
-        
-        conf.addField(new FieldVTwo().
+                .setRangeDatatypeUri( XSD.xstring.toString() ) );
+
+        conf.addField( new FieldVTwo().
                 setName("positionType").
-                setValidators(list("nonempty")).
+                setValidators( list("nonempty") ).
                 setOptions(
-                        new ChildVClassesWithParent(functionClass)));
+                		new RdfTypeOptions(ArrayUtils.addAll(genericPositionClasses , precisePositionClasses))));
 
 
-        conf.addField(new FieldVTwo().
+        conf.addField( new FieldVTwo().
                 setName("existingOrg")); //options set in browser by auto complete JS
 
-        conf.addField(new FieldVTwo().
+        conf.addField( new FieldVTwo().
                 setName("orgLabel").
-                setRangeDatatypeUri(XSD.xstring.toString()).
-                setValidators(list("datatype:" + XSD.xstring.toString())));
+                setRangeDatatypeUri(XSD.xstring.toString() ).
+                setValidators( list("datatype:" + XSD.xstring.toString()) ) );
 
-        conf.addField(new FieldVTwo().
+        conf.addField( new FieldVTwo().
                 setName("orgLabelDisplay").
-                setRangeDatatypeUri(XSD.xstring.toString()));
+                setRangeDatatypeUri(XSD.xstring.toString() ) );
 
-        conf.addField(new FieldVTwo().
+        conf.addField( new FieldVTwo().
+                setName("keepLabel").
+                setRangeDatatypeUri(XSD.xboolean.toString() ) );
+
+        conf.addField( new FieldVTwo().
                 setName("orgType").
                 setOptions(
-                        new ChildVClassesWithParent(orgClass)));
-
+                        new RdfTypeOptions(institutionClasses)));
+        
         conf.addField(new FieldVTwo().
                 setName("designationLabel").
                 setRangeDatatypeUri(XSD.xstring.toString()).
@@ -151,26 +159,28 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
                 setName("designationLabelDisplay").
                 setRangeDatatypeUri(XSD.xstring.toString()));
         
-        conf.addField(new FieldVTwo().setName("startField").
+        conf.addField( new FieldVTwo().setName("startField").
                 setEditElement(
                         new DateTimeWithPrecisionVTwo(null,
                                 VitroVocabulary.Precision.YEAR.uri(),
                                 VitroVocabulary.Precision.NONE.uri())
-                )
-        );
+                              )
+                );
 
-        conf.addField(new FieldVTwo().setName("endField").
+        conf.addField( new FieldVTwo().setName("endField").
                 setEditElement(
                         new DateTimeWithPrecisionVTwo(null,
                                 VitroVocabulary.Precision.YEAR.uri(),
                                 VitroVocabulary.Precision.NONE.uri())
-                )
-        );
+                              )
+                );
 
-        conf.addValidator(new DateTimeIntervalValidationVTwo("startField", "endField"));
+        conf.addValidator(new DateTimeIntervalValidationVTwo("startField","endField"));
         conf.addValidator(new AntiXssValidation());
         conf.addValidator(new AutocompleteRequiredInputValidator("existingOrg", "orgLabel"));
-
+        
+        conf.addEditSubmissionPreprocessor(
+ 			   new BooleanValuesPreprocessor(conf));
         //Adding additional data, specifically edit mode
         addFormSpecificData(conf, vreq);
         prepare(vreq, conf);
@@ -178,76 +188,87 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
     }
 
     final static String n3ForNewPosition =
-            "@prefix core: <" + vivoCore + "> . \n" +
-                    "?person core:relatedBy  ?position . \n" +
-                    "?position a  ?positionType . \n" +
-                    "?position core:relates ?person ; ";
+        "@prefix core: <" + vivoCore + "> . \n" +
+        "?person core:relatedBy  ?position . \n" +
+        "?position a  ?positionType . \n" +
+        "?position <" + keepLabelPred + ">  ?keepLabel . \n" +
+        "?position core:relates ?person ; ";
 
     final static String positionTitleAssertion =
-            "?position <" + label + "> ?positionTitle .";
+        "?position <" + label + "> ?positionTitle .";
 
     final static String positionTypeAssertion =
-            "?position a ?positionType .";
+        "?position a ?positionType .";
+
+    final static String keepLabelAssertion =
+        "?position <" + keepLabelPred + "> ?keepLabel .";
 
     final static String n3ForNewOrg =
-            "?position <" + positionInOrgPred + "> ?newOrg . \n" +
-                    "?newOrg <" + orgForPositionPred + "> ?position . \n" +
-                    "?newOrg <" + label + "> ?orgLabel . \n" +
-                    "?newOrg a ?orgType .";
+        "?position <" + positionInOrgPred + "> ?newOrg . \n" +
+        "?newOrg <" + orgForPositionPred + "> ?position . \n" +
+        "?newOrg <" + label + "> ?orgLabel . \n" +
+        "?newOrg a ?orgType .";
 
     final static String n3ForExistingOrg =
-            "?position <" + positionInOrgPred + "> ?existingOrg . \n" +
-                    "?existingOrg <" + orgForPositionPred + "> ?position . \n" +
-                    "?existingOrg a ?orgType .";
+        "?position <" + positionInOrgPred + "> ?existingOrg . \n" +
+        "?existingOrg <" + orgForPositionPred + "> ?position . \n" +
+        "?existingOrg a ?orgType .";
 
     final static String n3ForStart =
-            "?position <" + positionToInterval + "> ?intervalNode . \n" +
-                    "?intervalNode a <" + intervalType + "> . \n" +
-                    "?intervalNode <" + intervalToStart + "> ?startNode . \n" +
-                    "?startNode a <" + dateTimeValueType + "> . \n" +
-                    "?startNode  <" + dateTimeValue + "> ?startField-value . \n" +
-                    "?startNode  <" + dateTimePrecision + "> ?startField-precision . \n";
+        "?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "?intervalNode a <" + intervalType + "> . \n" +
+        "?intervalNode <" + intervalToStart + "> ?startNode . \n" +
+        "?startNode a <" + dateTimeValueType + "> . \n" +
+        "?startNode  <" + dateTimeValue + "> ?startField-value . \n" +
+        "?startNode  <" + dateTimePrecision + "> ?startField-precision . \n";
 
     final static String n3ForEnd =
-            "?position <" + positionToInterval + "> ?intervalNode . \n" +
-                    "?intervalNode a <" + intervalType + "> . \n" +
-                    "?intervalNode <" + intervalToEnd + "> ?endNode . \n" +
-                    "?endNode a <" + dateTimeValueType + "> . \n" +
-                    "?endNode  <" + dateTimeValue + "> ?endField-value . \n" +
-                    "?endNode  <" + dateTimePrecision + "> ?endField-precision . \n";
+        "?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "?intervalNode a <" + intervalType + "> . \n" +
+        "?intervalNode <" + intervalToEnd + "> ?endNode . \n" +
+        "?endNode a <" + dateTimeValueType + "> . \n" +
+        "?endNode  <" + dateTimeValue + "> ?endField-value . \n" +
+        "?endNode  <" + dateTimePrecision + "> ?endField-precision . \n";
 
-    // Queries for existing values
+// Queries for existing values
     final static String orgLabelQuery =
-            "SELECT ?existingOrgLabel WHERE { \n" +
-                    "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
-                    "  ?existingOrg a <" + orgClass + "> . \n" +
-                    "  ?existingOrg <" + label + "> ?existingOrgLabel . \n" +
-                    "}";
+        "SELECT ?existingOrgLabel WHERE { \n" +
+        "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
+        "  ?existingOrg a <" + orgClass + "> . \n" +
+        "  ?existingOrg <" + label + "> ?existingOrgLabel . \n" +
+        "}";
 
     final static String positionTitleQuery =
-            "SELECT ?existingPositionTitle WHERE { \n" +
-                    "?position <" + label + "> ?existingPositionTitle . }";
+        "SELECT ?existingPositionTitle WHERE { \n" +
+        "?position <" + label + "> ?existingPositionTitle . }";
+    
+	final static String existingKeepLabelQuery = "SELECT ?keepLabel WHERE { \n" 
+			+ "optional {\n" 
+			+ "?position <"+ keepLabelPred + "> ?keepLabelSrc . "
+			+ "}\n"
+			+ "bind(coalesce(?keepLabelSrc, 'true') as ?keepLabel) \n"
+			+ "}";
 
     final static String existingStartDateQuery =
-            "SELECT ?existingDateStart WHERE { \n" +
-                    "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
-                    "  ?intervalNode a <" + intervalType + "> . \n" +
-                    "  ?intervalNode <" + intervalToStart + "> ?startNode . \n" +
-                    "  ?startNode a <" + dateTimeValueType + "> . \n" +
-                    "  ?startNode <" + dateTimeValue + "> ?existingDateStart . }";
+        "SELECT ?existingDateStart WHERE { \n" +
+        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?intervalNode a <" + intervalType + "> . \n" +
+        "  ?intervalNode <" + intervalToStart + "> ?startNode . \n" +
+        "  ?startNode a <" + dateTimeValueType +"> . \n" +
+        "  ?startNode <" + dateTimeValue + "> ?existingDateStart . }";
 
     final static String existingEndDateQuery =
-            "SELECT ?existingEndDate WHERE { \n" +
-                    "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
-                    "  ?intervalNode a <" + intervalType + "> . \n " +
-                    "  ?intervalNode <" + intervalToEnd + "> ?endNode . \n" +
-                    "  ?endNode a <" + dateTimeValueType + "> . \n" +
-                    "  ?endNode <" + dateTimeValue + "> ?existingEndDate . }";
+        "SELECT ?existingEndDate WHERE { \n" +
+        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?intervalNode a <" + intervalType + "> . \n " +
+        "  ?intervalNode <" + intervalToEnd + "> ?endNode . \n" +
+        "  ?endNode a <" + dateTimeValueType + "> . \n" +
+        "  ?endNode <" + dateTimeValue + "> ?existingEndDate . }";
 
     final static String existingOrgQuery =
-            "SELECT ?existingOrg WHERE { \n" +
-                    "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
-                    "  ?existingOrg a <" + orgClass + ">  }";
+        "SELECT ?existingOrg WHERE { \n" +
+        "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
+        "  ?existingOrg a <" + orgClass + ">  }";
 
     final static String existingDesignationQuery =
             "SELECT ?existingOrg WHERE { \n" +
@@ -255,91 +276,65 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
                     "  ?existingOrg a <" + orgClass + ">  }";
     
     final static String orgTypeQuery =
-            "PREFIX rdfs: <" + rdfs + "> \n" +
-                    "SELECT ?existingOrgType WHERE { \n" +
-                    "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
-                    "  ?existingOrg a ?existingOrgType . \n" +
-                    "  ?existingOrgType rdfs:subClassOf <" + orgClass + "> " +
-                    "} ";
+        "PREFIX rdfs: <" + rdfs + "> \n" +
+        "SELECT ?existingOrgType WHERE { \n" +
+        "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
+        "  ?existingOrg a ?existingOrgType . \n" +
+        "  ?existingOrgType rdfs:subClassOf <" + orgClass + "> " +
+        "} ";
 
     //Huda: changed this from rdf:type to vitro:mostSpecificType since returning thing
     final static String positionTypeQuery =
-            "PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" +
-                    "SELECT ?existingPositionType WHERE { \n" +
-                    "  ?position vitro:mostSpecificType ?existingPositionType . }";
+    	"PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" +
+        "SELECT ?existingPositionType WHERE { \n" +
+        "  ?position vitro:mostSpecificType ?existingPositionType . }";
 
-    final static String designationQuery =
-            "PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" +
-                    "SELECT ?existingPositionType WHERE { \n" +
-                    "  ?position vitro:mostSpecificType ?existingPositionType . }";
-    
     final static String existingIntervalNodeQuery =
-            "SELECT ?existingIntervalNode WHERE { \n" +
-                    "  ?position <" + positionToInterval + "> ?existingIntervalNode . \n" +
-                    "  ?existingIntervalNode a <" + intervalType + "> . }";
+        "SELECT ?existingIntervalNode WHERE { \n" +
+        "  ?position <" + positionToInterval + "> ?existingIntervalNode . \n" +
+        "  ?existingIntervalNode a <" + intervalType + "> . }";
 
     final static String existingStartNodeQuery =
-            "SELECT ?existingStartNode WHERE { \n" +
-                    "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
-                    "  ?intervalNode a <" + intervalType + "> . \n" +
-                    "  ?intervalNode <" + intervalToStart + "> ?existingStartNode . \n" +
-                    "  ?existingStartNode a <" + dateTimeValueType + "> .}   ";
+        "SELECT ?existingStartNode WHERE { \n" +
+        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?intervalNode a <" + intervalType + "> . \n" +
+        "  ?intervalNode <" + intervalToStart + "> ?existingStartNode . \n" +
+        "  ?existingStartNode a <" + dateTimeValueType + "> .}   ";
 
     final static String existingEndNodeQuery =
-            "SELECT ?existingEndNode WHERE { \n" +
-                    "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
-                    "  ?intervalNode a <" + intervalType + "> . \n" +
-                    "  ?intervalNode <" + intervalToEnd + "> ?existingEndNode . \n" +
-                    "  ?existingEndNode a <" + dateTimeValueType + "> } ";
+        "SELECT ?existingEndNode WHERE { \n" +
+        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?intervalNode a <" + intervalType + "> . \n" +
+        "  ?intervalNode <" + intervalToEnd + "> ?existingEndNode . \n" +
+        "  ?existingEndNode a <" + dateTimeValueType + "> } ";
 
     final static String existingStartPrecisionQuery =
-            "SELECT ?existingStartPrecision WHERE { \n" +
-                    "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
-                    "  ?intervalNode a <" + intervalType + "> . \n" +
-                    "  ?intervalNode <" + intervalToStart + "> ?startNode . \n" +
-                    "  ?startNode a  <" + dateTimeValueType + "> . \n" +
-                    "  ?startNode <" + dateTimePrecision + "> ?existingStartPrecision . }";
+        "SELECT ?existingStartPrecision WHERE { \n" +
+        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?intervalNode a <" + intervalType + "> . \n" +
+        "  ?intervalNode <" + intervalToStart + "> ?startNode . \n" +
+        "  ?startNode a  <" + dateTimeValueType + "> . \n" +
+        "  ?startNode <" + dateTimePrecision + "> ?existingStartPrecision . }";
 
     final static String existingEndPrecisionQuery =
-            "SELECT ?existingEndPrecision WHERE { \n" +
-                    "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
-                    "  ?intervalNode a <" + intervalType + "> . \n" +
-                    "  ?intervalNode <" + intervalToEnd + "> ?endNode . \n" +
-                    "  ?endNode a <" + dateTimeValueType + "> . \n" +
-                    "  ?endNode <" + dateTimePrecision + "> ?existingEndPrecision . }";
+        "SELECT ?existingEndPrecision WHERE { \n" +
+        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?intervalNode a <" + intervalType + "> . \n" +
+        "  ?intervalNode <" + intervalToEnd + "> ?endNode . \n" +
+        "  ?endNode a <" + dateTimeValueType + "> . \n" +
+        "  ?endNode <" + dateTimePrecision + "> ?existingEndPrecision . }";
 
     //Adding form specific data such as edit mode
-    public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
-        editConfiguration.addFormSpecificData("editMode", getEditMode(vreq).name().toLowerCase());
-        editConfiguration.addFormSpecificData("ehessOrgTypes", getAllowedOrgTypeOptions(vreq));
-    }
+  	public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
+  		HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
+  		formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());
+  		editConfiguration.setFormSpecificData(formSpecificData);
+  	}
 
-    public EditMode getEditMode(VitroRequest vreq) {
-        List<String> predicates = new ArrayList<String>();
-        predicates.add(positionInOrgPred);
-        return EditModeUtils.getEditMode(vreq, predicates);
-    }
-
-    // HACK EHESS  Limit Allowed org types
-    private HashMap<String, String> getAllowedOrgTypeOptions(VitroRequest vreq) {
-        HashMap<String, String> options = new HashMap<String, String>();
-        List<VClass> orgTypes = getAllowedOrgTypes(vreq);
-        for (VClass v : orgTypes) {
-            options.put(v.getURI(), v.getName());
-        }
-        return options;
-    }
-
-    private List<VClass> getAllowedOrgTypes(VitroRequest vreq) {
-        List<VClass> types = new ArrayList<VClass>();
-        WebappDaoFactory ctxDaoFact = vreq.getLanguageNeutralWebappDaoFactory();
-        for (String rangeUri : ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS) {
-        	VClass vClass = ctxDaoFact.getVClassDao().getVClassByURI(rangeUri);
-        	if (vClass != null) {
-        		types.add(vClass);
-        	}
-        }
-        return types;
-    }
+  	public EditMode getEditMode(VitroRequest vreq) {
+  		List<String> predicates = new ArrayList<String>();
+  		predicates.add(positionInOrgPred);
+  		return EditModeUtils.getEditMode(vreq, predicates);
+  	}
 
 }
