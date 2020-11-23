@@ -1,0 +1,19 @@
+memberClass {
+	display: table-cell;
+	vertical-align: middle;
+	height: 50px;
+	border: 1px solid red;
+}
+
+.memberClass {
+	display: table-cell;
+	vertical-align: middle;
+	height: 50px;
+	border: 1px solid red;
+}
+
+input.radio {
+	padding: 0 10px 0 0;
+	position: relative;
+	top: -2px;
+}

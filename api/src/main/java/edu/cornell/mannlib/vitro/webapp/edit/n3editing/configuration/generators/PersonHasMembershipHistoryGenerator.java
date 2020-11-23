@@ -32,7 +32,7 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
         EditConfigurationGenerator {
 
     final static String positionClass = vivofr + "MMB_0000001";
-    final static String researchOrganizationClass = vivofr + "ORG_0000002";
+    final static String researchOrganizationClass = vivoCore + "ResearchOrganization";
     final static String administrativeEntityClass = vivofr + "ORG_0000014";
     
     final static String orgClass = "http://xmlns.com/foaf/0.1/Organization";
