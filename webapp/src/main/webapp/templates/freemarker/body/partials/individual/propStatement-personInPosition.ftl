@@ -18,7 +18,7 @@
 
     <#local posTitle>
         <span itemprop="jobTitle">
-        <#if statement.keepLabel == "true">${statement.subClassLabel?cap_first}, ${statement.positionTitle!statement.hrJobTitle!}
+        <#if statement.keepLabel == "true">${statement.subClassLabel?cap_first}<#if (statement.positionTitle!statement.hrJobTitle!)?has_content>, ${statement.positionTitle!statement.hrJobTitle!}</#if>
         <#else>${(statement.positionTitle!statement.hrJobTitle!)?cap_first}
         </#if>
         </span>
