@@ -3,6 +3,7 @@
 <#-- Template for adding a position history-->
 
 <#import "lib-vivo-form.ftl" as lvf>
+<#import "debugger.ftl" as debugger>
 
 <#--Retrieve certain edit configuration information-->
 <#assign htmlForElements = editConfiguration.pageData.htmlForElements />
@@ -32,7 +33,8 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 </#if>
 
 <#assign disabledVal = ""/>
-<#if editMode == "edit">        
+<#-- edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.getEditMode(HttpServletRequest, Individual, String) finds mutliples stmts -->
+<#if editMode == "edit" || editMode == "error">        
         <#assign formAction="${i18n().edit_capitalized}">        
         <#assign submitButtonText="${i18n().save_changes}">
         <#assign disabledVal="disabled">

@@ -17,6 +17,7 @@
             ?positionTitle
             ?hrJobTitle
             ?keepLabel
+            ?subClassLabel
             ?rank
             ?org ?orgName
             ?middleOrg ?middleOrgName
@@ -86,7 +87,12 @@
                 ?dateTimeInterval core:end ?dateTimeEndValue .
                 ?dateTimeEndValue core:dateTime ?dateTimeEnd .
             }
-
+            OPTIONAL {
+                <precise-subquery>?subject ?property ?position .
+                ?position a core:Position .</precise-subquery>
+                ?position vitro:mostSpecificType ?subclass .
+                ?subclass rdfs:label ?subClassLabel .
+            }
             <collated>
             OPTIONAL {
                 <precise-subquery>?subject ?property ?position .
