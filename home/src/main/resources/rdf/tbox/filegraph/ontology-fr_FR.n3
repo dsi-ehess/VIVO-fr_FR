@@ -668,7 +668,7 @@ vivofr:PRS_0000006
   vitro:prohibitedFromUpdateBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   rdfs:label "doctorant.e"@fr-FR ;
   rdfs:label "phD Student"@en-US ;
-  rdfs:subClassOf foaf:Person ;
+  rdfs:subClassOf vivo:GraduateStudent ;
 .
 vivofr:PRS_0000007
   a owl:Class ;

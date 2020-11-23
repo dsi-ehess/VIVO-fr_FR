@@ -10,7 +10,7 @@
 
 <#assign blankSentinel = "" />
 <#if editConfigurationConstants?has_content && editConfigurationConstants?keys?seq_contains("BLANK_SENTINEL")>
-	<#assign blankSentinel = editConfigurationConstants["BLANK_SENTINEL"] />
+    <#assign blankSentinel = editConfigurationConstants["BLANK_SENTINEL"] />
 </#if>
 
 <#--This flag is for clearing the label field on submission for an existing object being selected from autocomplete.
@@ -25,23 +25,28 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign positionTitleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "positionTitle")/>
 <#assign positionTypeValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "positionType")/>
 
+<#assign orgTypes = editConfiguration.pageData.orgTypes />
+<#if orgTypes?contains(",")>
+    <#assign multipleTypes = true/>
+</#if>
+
 <#--If edit submission exists, then retrieve validation errors if they exist-->
 <#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
-	<#assign submissionErrors = editSubmission.validationErrors/>
+    <#assign submissionErrors = editSubmission.validationErrors/>
 </#if>
 
 <#assign disabledVal = ""/>
-<#if editMode == "edit">        
-        <#assign formAction="${i18n().edit_capitalized}">        
+<#if editMode == "edit">
+        <#assign formAction="${i18n().edit_capitalized}">
         <#assign submitButtonText="${i18n().save_changes}">
         <#assign disabledVal="disabled">
 <#else>
-        <#assign formAction="${i18n().create_capitalized}">        
+        <#assign formAction="${i18n().create_capitalized}">
         <#assign submitButtonText="${i18n().create_entry}">
         <#assign disabledVal="">
 </#if>
 
-<#assign requiredHint="<span class='requiredHint'> *</span>"/> 
+<#assign requiredHint="<span class='requiredHint'> *</span>"/>
 <#assign yearHint     = "<span class='hint'>(${i18n().year_hint_format})</span>" />
 
 <h2>${formAction} ${i18n().posn_entry_for} ${editConfiguration.subjectName}</h2>
@@ -56,63 +61,65 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <p>
         <#--below shows examples of both printing out all error messages and checking the error message for a specific field-->
         <#list submissionErrors?keys as errorFieldName>
-        	<#if errorFieldName == "startField">
-        	    <#if submissionErrors[errorFieldName]?contains("before")>
-        	        ${i18n().start_year_must_precede_end}
-        	    <#else>
-        	        ${submissionErrors[errorFieldName]}
-        	    </#if>
-        	    <br />
-        	<#elseif errorFieldName == "endField">
-    	        <#if submissionErrors[errorFieldName]?contains("after")>
-    	            ${i18n().end_year_must_be_later}
-    	        <#else>
-    	            ${submissionErrors[errorFieldName]}
-    	        </#if>
-	        </#if>
+            <#if errorFieldName == "startField">
+                <#if submissionErrors[errorFieldName]?contains("before")>
+                    ${i18n().start_year_must_precede_end}
+                <#else>
+                    ${submissionErrors[errorFieldName]}
+                </#if>
+                <br />
+            <#elseif errorFieldName == "endField">
+                <#if submissionErrors[errorFieldName]?contains("after")>
+                    ${i18n().end_year_must_be_later}
+                <#else>
+                    ${submissionErrors[errorFieldName]}
+                </#if>
+            </#if>
         </#list>
         <#--Checking if Org Type field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "orgType")>
- 	        ${i18n().select_organization_type}<br />
+            ${i18n().select_organization_type}<br />
         </#if>
         <#--Checking if Org Name field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "orgLabel")>
- 	        ${i18n().select_an_organization_name}<br />
+            ${i18n().select_an_organization_name}<br />
         </#if>
         <#--Checking if Position Title field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "positionTitle")>
- 	        ${i18n().enter_posn_title_value}<br />
+            ${i18n().enter_posn_title_value}<br />
         </#if>
         <#--Checking if Position Type field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "positionType")>
- 	        ${i18n().enter_posn_type_value}<br />
+            ${i18n().enter_posn_type_value}<br />
         </#if>
-        
+
         </p>
     </section>
 </#if>
 
-<@lvf.unsupportedBrowser urls.base /> 
+<@lvf.unsupportedBrowser urls.base />
 
 <form class="customForm" action ="${submitUrl}" class="customForm noIE67" role="${formAction} position entry">
-  <p class="inline">    
+  <p class="inline">
     <label for="orgType">${i18n().org_type_capitalized}<#if editMode != "edit"> ${requiredHint}<#else>:</#if></label>
+    <#--HACK EHESS limit allowed org types-->
+    <#--assign orgTypeOpts = editConfiguration.pageData.ehessOrgTypes -->
     <#assign orgTypeOpts = editConfiguration.pageData.orgType />
 <#--
     <#if editMode == "edit">
-      <#list orgTypeOpts?keys as key>             
+      <#list orgTypeOpts?keys as key>
           <#if orgTypeValue = key >
-            <span class="readOnly" id="typeSelectorSpan">${orgTypeOpts[key]}</span> 
+            <span class="readOnly" id="typeSelectorSpan">${orgTypeOpts[key]}</span>
             <input type="hidden" id="typeSelectorInput" name="orgType" acGroupName="organization" value="${orgTypeValue}" >
-          </#if>           
+          </#if>
       </#list>
     <#else>
     </#if>
 -->
 <select id="typeSelector" name="orgType" acGroupName="organization">
-    <option value="" selected="selected">${i18n().select_one}</option>                
-    <#list orgTypeOpts?keys as key>             
-        <option value="${key}"  <#if orgTypeValue = key>selected</#if>>${orgTypeOpts[key]}</option>            
+    <option value="" selected="selected">${i18n().select_one}</option>
+    <#list orgTypeOpts?keys as key>
+        <option value="${key}"  <#if orgTypeValue = key>selected</#if>>${orgTypeOpts[key]}</option>
     </#list>
 </select>
   </p>
@@ -126,57 +133,66 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <p class="inline">
             <label>${i18n().selected_organization}:</label>
             <span class="acSelectionInfo"></span>
-            <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or} 
+            <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
             <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
         </p>
         <input class="acUriReceiver" type="hidden" id="orgUri" name="existingOrg" value="${existingOrgValue}" ${flagClearLabelForExisting}="true" />
     </div>
 
     <!-- HACK EHESS disable input -->
-    <#--<label for="positionTitle">${i18n().position_title} ${requiredHint}</label>-->
-    <#--<input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />-->
+    <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel"/>${i18n().func_keepLabel}</p>
+    <p></p>
+    <section id="positionTitleContainer" role="region">
+        <label for="positionTitle">${i18n().position_title} ${requiredHint}</label>
+        <input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />
+     </section>
 
       <label for="positionType">${i18n().position_type} ${requiredHint}</label>
       <#assign posnTypeOpts = editConfiguration.pageData.positionType />
       <select name="positionType" style="margin-top:-2px" >
-          <option value="" <#if positionTypeValue == "">selected</#if>>${i18n().select_one}</option>                
-          <#list posnTypeOpts?keys as key>             
-              <option value="${key}"  <#if positionTypeValue == key>selected</#if>>${posnTypeOpts[key]}</option>         
+          <option value="" <#if positionTypeValue == "">selected</#if>>${i18n().select_one}</option>
+          <#list posnTypeOpts?keys as key>
+              <option value="${key}"  <#if positionTypeValue == key>selected</#if>>${posnTypeOpts[key]}</option>
           </#list>
       </select>
       <p></p>
+      <div id="memberClass" id="memberClass"></div>
+      <p></p>
       <#--Need to draw edit elements for dates here-->
        <#if htmlForElements?keys?seq_contains("startField")>
-  			<label class="dateTime" for="startField">${i18n().start_capitalized}</label>
-  			${htmlForElements["startField"]} ${yearHint}
+            <label class="dateTime" for="startField">${i18n().start_capitalized}</label>
+            ${htmlForElements["startField"]} ${yearHint}
        </#if>
        <p></p>
        <#if htmlForElements?keys?seq_contains("endField")>
-  			<label class="dateTime" for="endField">${i18n().end_capitalized}</label>
-  		 	${htmlForElements["endField"]} ${yearHint}
+            <label class="dateTime" for="endField">${i18n().end_capitalized}</label>
+            ${htmlForElements["endField"]} ${yearHint}
        </#if>
 
-    	<#--End draw elements-->
-    	
+        <#--End draw elements-->
+
       <input type="hidden" name = "editKey" value="${editKey}" role="input"/>
 
       <p class="submit">
-        <#if editMode == "edit">  
-            <input type="submit" id="submit" name="submit-${formAction}" value="${submitButtonText}" class="submit" /> 
+        <#if editMode == "edit">
+            <input type="submit" id="submit" name="submit-${formAction}" value="${submitButtonText}" class="submit" />
         <#else>
-            <input type="submit" id="submit" name="submit-${formAction}" value="${submitButtonText}" class="submit" /> 
+            <input type="submit" id="submit" name="submit-${formAction}" value="${submitButtonText}" class="submit" />
         </#if>
 
         <span class="or"> ${i18n().or} </span><a class="cancel" href="${editConfiguration.cancelUrl}" title="${i18n().cancel_title}">${i18n().cancel_link}</a>
       </p>
       <p class="requiredHint"  id="requiredLegend" >* ${i18n().required_fields}</p>
-      
+
 </form>
 
 <script type="text/javascript">
 var customFormData  = {
     acUrl: '${urls.base}/autocomplete?tokenize=true',
-    acTypes: {organization: 'http://data.ehess.fr/ontology/vivo#ResearchOrganization'},
+    acTypes: {organization: '${orgTypes}'},
+<#if multipleTypes = true>
+    acMultipleTypes: 'true',
+</#if>
     editMode: '${editMode}',
     defaultTypeName: 'organization', // used in repair mode, to generate button text and org name field label
     baseHref: '${urls.base}/individual?uri=',
@@ -184,20 +200,21 @@ var customFormData  = {
     flagClearLabelForExisting: '${flagClearLabelForExisting}'
 };
 var i18nStrings = {
-	    selectAnExisting: '${i18n().select_an_existing?js_string}',
-	    orCreateNewOne: '${i18n().or_create_new_one?js_string}',
-	    selectedString: '${i18n().selected?js_string}'
+    selectAnExisting: '${i18n().select_an_existing?js_string}',
+    orCreateNewOne: '${i18n().or_create_new_one?js_string}',
+    selectedString: '${i18n().selected?js_string}'
 };
 </script>
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.12.1.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customFormWithAutocomplete.css" />')}
-
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/personHasHistoryMembership.css" />')}
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.12.1.min.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/customFormUtils.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/extensions/String.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/jquery_plugins/jquery.bgiframe.pack.js"></script>',
-             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>')}
+             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocompleteForPerson_Membership.js"></script>',
+             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/membershipKeepFlag.js"></script>')}
