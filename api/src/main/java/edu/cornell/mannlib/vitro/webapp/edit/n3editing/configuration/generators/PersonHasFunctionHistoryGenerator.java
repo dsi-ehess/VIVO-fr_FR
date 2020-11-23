@@ -80,11 +80,10 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         conf.setVarNameForPredicate("predicate");
         conf.setVarNameForObject("position");
 
-        conf.setN3Required( Arrays.asList( n3ForNewPosition,
-                                           positionTitleAssertion,
+        conf.setN3Required( Arrays.asList( n3ForNewPosition,                                           
                                            positionTypeAssertion,
                                            keepLabelAssertion) );
-        conf.setN3Optional( Arrays.asList( n3ForNewOrg, n3ForExistingOrg, n3ForStart, n3ForEnd ) );
+        conf.setN3Optional( Arrays.asList( positionTitleAssertion, n3ForNewOrg, n3ForExistingOrg, n3ForStart, n3ForEnd ) );
 
         conf.addNewResource("position", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("newOrg", DEFAULT_NS_FOR_NEW_RESOURCE);
@@ -121,8 +120,7 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 
         conf.addField( new FieldVTwo().
                 setName("positionTitle")
-                .setRangeDatatypeUri( XSD.xstring.toString() ).
-                setValidators( list("nonempty") ) );
+                .setRangeDatatypeUri( XSD.xstring.toString() ) );
 
         conf.addField( new FieldVTwo().
                 setName("positionType").
