@@ -22,6 +22,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign existingOrgValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "existingOrg")/>
 <#assign orgLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "orgLabel")/>
 <#assign orgLabelDisplayValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "orgLabelDisplay")/>
+<#assign keepLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "keepLabel")/>
 <#assign positionTitleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "positionTitle")/>
 <#assign positionTypeValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "positionType")/>
 
@@ -140,7 +141,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
               <option value="${key}"  <#if positionTypeValue == key>selected</#if>>${posnTypeOpts[key]}</option>         
           </#list>
       </select>
-      <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabel?? >checked</#if> />${i18n().func_keepLabel}</p>
+      <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabelValue?? >checked</#if> />${i18n().func_keepLabel}</p>
     <section id="designationContainer" role="region">
         <label for="positionTitle">${i18n().position_title} ${requiredHint}</label>
         <input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />

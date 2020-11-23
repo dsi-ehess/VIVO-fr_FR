@@ -591,6 +591,20 @@ vivofr:PRP_0000005
   rdfs:label "identifiant IdRef"@fr-FR ;
   rdfs:subPropertyOf vivo:identifier ;
 .
+vivofr:PRP_0000006
+  a owl:DatatypeProperty ;
+  a owl:FunctionalProperty ;
+  rdfs:label "display original label"@en-US ;
+  rdfs:label "afficher le libellé original"@en-US ;
+  rdfs:domain [
+      a owl:Class ;
+      owl:unionOf (
+          vivo:Position
+          vivofr:MMB_0000001
+        ) ;
+    ] ;
+  rdfs:range xsd:boolean ;
+.
 vivofr:PRS_0000002
   a owl:Class ;
   obo:IAO_0000115 "Personnels ingénieurs, administratifs, techniques, ouvriers et de service (IATOS)"@fr-FR ;

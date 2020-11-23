@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.jena.vocabulary.XSD;
 
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
@@ -18,6 +19,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeWithPrecisio
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.RdfTypeOptions;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.BooleanValuesPreprocessor;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
 import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
@@ -37,8 +39,9 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
 	final static String[] institutionClasses = { vivoCore + "University" };
-	final static String[] positionClasses = { vivofr + "FNC_0000002", vivofr + "FNC_0000004",
-			vivofr + "FNC_0000005", vivofr + "FNC_0000006", vivofr + "FNC_0000007", vivofr + "FNC_0000008",
+	final static String[] genericPositionClasses = { vivofr + "FNC_0000002", vivofr + "FNC_0000004",
+			vivofr + "FNC_0000005", vivofr + "FNC_0000006", vivofr + "FNC_0000007" };
+	final static String[] precisePositionClasses = { vivofr + "FNC_0000008",
 			vivofr + "FNC_0000009", vivofr + "FNC_0000010", vivofr + "FNC_0000011", vivofr + "FNC_0000012",
 			vivofr + "FNC_0000013", vivofr + "FNC_0000014", vivofr + "FNC_0000015", vivofr + "FNC_0000016",
 			vivofr + "FNC_0000017", vivofr + "FNC_0000018", vivofr + "FNC_0000019", vivofr + "FNC_0000020",
@@ -79,12 +82,12 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 
         conf.setN3Required( Arrays.asList( n3ForNewPosition,
                                            positionTitleAssertion,
-                                           positionTypeAssertion ) );
+                                           positionTypeAssertion,
+                                           keepLabelAssertion) );
         conf.setN3Optional( Arrays.asList( n3ForNewOrg, n3ForExistingOrg, n3ForStart, n3ForEnd ) );
 
         conf.addNewResource("position", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("newOrg", DEFAULT_NS_FOR_NEW_RESOURCE);
-        conf.addNewResource("designation", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("intervalNode", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("startNode", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("endNode", DEFAULT_NS_FOR_NEW_RESOURCE);
@@ -93,10 +96,11 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         //literals in scope: none
 
         conf.setUrisOnform(Arrays.asList("existingOrg", "orgType", "positionType"));
-        conf.setLiteralsOnForm(Arrays.asList("positionTitle", "orgLabel", "orgLabelDisplay", "designationLabel"));
+        conf.setLiteralsOnForm(Arrays.asList("positionTitle", "orgLabel", "orgLabelDisplay", "keepLabel"));
 
         conf.addSparqlForExistingLiteral("orgLabel", orgLabelQuery);
         conf.addSparqlForExistingLiteral("positionTitle", positionTitleQuery);
+        conf.addSparqlForExistingLiteral("keepLabel", existingKeepLabelQuery);
         conf.addSparqlForExistingLiteral(
                 "startField-value", existingStartDateQuery);
         conf.addSparqlForExistingLiteral(
@@ -124,7 +128,7 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
                 setName("positionType").
                 setValidators( list("nonempty") ).
                 setOptions(
-                		new RdfTypeOptions((String[]) positionClasses)));
+                		new RdfTypeOptions(ArrayUtils.addAll(genericPositionClasses , precisePositionClasses))));
 
 
         conf.addField( new FieldVTwo().
@@ -138,6 +142,10 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         conf.addField( new FieldVTwo().
                 setName("orgLabelDisplay").
                 setRangeDatatypeUri(XSD.xstring.toString() ) );
+
+        conf.addField( new FieldVTwo().
+                setName("keepLabel").
+                setRangeDatatypeUri(XSD.xboolean.toString() ) );
 
         conf.addField( new FieldVTwo().
                 setName("orgType").
@@ -172,7 +180,9 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         conf.addValidator(new DateTimeIntervalValidationVTwo("startField","endField"));
         conf.addValidator(new AntiXssValidation());
         conf.addValidator(new AutocompleteRequiredInputValidator("existingOrg", "orgLabel"));
-
+        
+        conf.addEditSubmissionPreprocessor(
+ 			   new BooleanValuesPreprocessor(conf));
         //Adding additional data, specifically edit mode
         addFormSpecificData(conf, vreq);
         prepare(vreq, conf);
@@ -183,6 +193,7 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         "@prefix core: <" + vivoCore + "> . \n" +
         "?person core:relatedBy  ?position . \n" +
         "?position a  ?positionType . \n" +
+        "?position <" + keepLabelPred + ">  ?keepLabel . \n" +
         "?position core:relates ?person ; ";
 
     final static String positionTitleAssertion =
@@ -190,6 +201,9 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 
     final static String positionTypeAssertion =
         "?position a ?positionType .";
+
+    final static String keepLabelAssertion =
+        "?position <" + keepLabelPred + "> ?keepLabel .";
 
     final static String n3ForNewOrg =
         "?position <" + positionInOrgPred + "> ?newOrg . \n" +
@@ -229,6 +243,13 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
     final static String positionTitleQuery =
         "SELECT ?existingPositionTitle WHERE { \n" +
         "?position <" + label + "> ?existingPositionTitle . }";
+    
+	final static String existingKeepLabelQuery = "SELECT ?keepLabel WHERE { \n" 
+			+ "optional {\n" 
+			+ "?position <"+ keepLabelPred + "> ?keepLabelSrc . "
+			+ "}\n"
+			+ "bind(coalesce(?keepLabelSrc, 'true') as ?keepLabel) \n"
+			+ "}";
 
     final static String existingStartDateQuery =
         "SELECT ?existingDateStart WHERE { \n" +
