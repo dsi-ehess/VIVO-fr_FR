@@ -44,7 +44,7 @@
                 ?position core:relates ?org .
                 ?org a foaf:Organization .
                 ?org rdfs:label ?orgName .
-                ?org obo:BFO_0000050 ?middleOrg .
+                ?middleOrg obo:BFO_0000050 ?org .
                 ?middleOrg rdfs:label ?middleOrgName .
             }
             OPTIONAL {
