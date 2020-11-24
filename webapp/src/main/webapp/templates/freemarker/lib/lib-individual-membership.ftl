@@ -39,7 +39,7 @@
 	<#assign membershipLabels = mapLabel(statements) />
 	<#list membershipLabels as membershipLabel>
 	    <li role="listitem">
-	        <span>${membershipLabel}</span>
+	        <span>${membershipLabel?cap_first}, </span>
 	        <#assign filteredStatements = filterStatement(statements, membershipLabel) />
 	        <#list filteredStatements as statement>
 	           <#assign localLabel = statement.positionLabel!i18n().unknown_position />
