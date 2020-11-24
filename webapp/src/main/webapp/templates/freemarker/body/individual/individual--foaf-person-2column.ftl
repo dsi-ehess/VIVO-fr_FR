@@ -85,6 +85,8 @@
         </header>     
         <!-- Positions -->
         <#include "individual-positions.ftl">
+        <!-- Memberships -->
+        <#include "individual-memberships.ftl">
         
         <!-- Overview -->
         <#if !editable>

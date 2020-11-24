@@ -18,6 +18,7 @@
     <#include "individual-vocabularyService.ftl">
     <#include "individual-webpage.ftl">
     <#include "individual-positions.ftl">
+    <#include "individual-memberships.ftl">
     <#include "individual-overview.ftl">
     <#include "individual-researchAreas.ftl">
     <#include "individual-geographicFocus.ftl">
