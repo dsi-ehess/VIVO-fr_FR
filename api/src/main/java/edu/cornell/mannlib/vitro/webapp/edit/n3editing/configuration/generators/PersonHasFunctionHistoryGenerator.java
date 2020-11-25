@@ -327,7 +327,9 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
     //Adding form specific data such as edit mode
   	public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
   		HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
-  		formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());
+  		formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());  	
+  		// Needed for client side processing
+  		formSpecificData.put("genericPositionClasses", genericPositionClasses);  		
   		editConfiguration.setFormSpecificData(formSpecificData);
   	}
 
