@@ -526,7 +526,7 @@ var customForm = {
         $changeLink = $acDiv.find('a.changeSelection');
         $changeLink.click(function() {
             customForm.undoAutocompleteSelection($acDiv);
-            $("#memberClassDiv").empty();
+            $("#memberClassRadioList").empty();
         });
 
         if ( this.acSelectOnly ) {
@@ -770,19 +770,19 @@ var customForm = {
                 // Not sure why, but we need an explicit json parse here.
                 var results = $.parseJSON(xhr.responseText);
                 var filteredResults = customForm.filterMemberResults(results);
-                $("#memberClassDiv").empty();
+                $("#memberClassRadioList").empty();
                 for (var i = 0; i < filteredResults.length; i++){
                 	var memberClassValue = filteredResults[i]["@id"] 
                 	
                 		
-                    var radioBtn = $('<input type="radio" name="memberClass" value="' + memberClassValue + '">' + filteredResults[i]["label"]["@value"] + '</input>');
+                    var radioBtn = $('<input type="radio" name="memberClass" value="' + memberClassValue + '">' + filteredResults[i]["label"]["@value"] + '</input><br/>');
                 	if (existingMemberClassValue != undefined) {
 	                	var checked = memberClassValue == existingMemberClassValue;
 	                	if (checked) {
 	                		radioBtn.prop("checked", true);
 	                	}
                 	}
-                	radioBtn.appendTo('#memberClassDiv');
+                	radioBtn.appendTo('#memberClassRadioList');
                 }
             }
         });

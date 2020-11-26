@@ -159,7 +159,15 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
           </#list>
       </select>
       <p></p>
-      <div id="memberClassDiv" id="memberClassDiv"></div>
+      <div id="memberClassContent">
+         <div id="left">    
+            <label>${i18n().member_class_label} - </label><span class="acSelectionInfo">${orgLabelDisplayValue} ${requiredHint}</span> - </label>
+        </div>       
+        <div id="right">    
+            <div id="memberClassRadioList"></div>
+        </div>
+        
+      </div>
       <p></p>
       <#--Need to draw edit elements for dates here-->
        <#if htmlForElements?keys?seq_contains("startField")>
