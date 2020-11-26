@@ -7,6 +7,7 @@
 <#--Retrieve certain edit configuration information-->
 <#assign htmlForElements = editConfiguration.pageData.htmlForElements />
 <#assign editMode = editConfiguration.pageData.editMode />
+<#assign apiMemberClass = editConfiguration.pageData.apiMemberClass />
 
 <#assign blankSentinel = "" />
 <#if editConfigurationConstants?has_content && editConfigurationConstants?keys?seq_contains("BLANK_SENTINEL")>
@@ -24,6 +25,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign orgLabelDisplayValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "orgLabelDisplay")/>
 <#assign positionTitleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "positionTitle")/>
 <#assign positionTypeValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "positionType")/>
+<#assign memberClassValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "memberClass")/>
 
 <#assign orgTypes = editConfiguration.pageData.orgTypes />
 <#if orgTypes?contains(",")>
@@ -92,7 +94,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
          <#if lvf.submissionErrorExists(editSubmission, "positionType")>
             ${i18n().enter_posn_type_value}<br />
         </#if>
-
+        <#--Checking if Org Type field is empty-->
+         <#if lvf.submissionErrorExists(editSubmission, "memberClass")>
+            ${i18n().select_member_class}<br />
+        </#if>
         </p>
     </section>
 </#if>
@@ -140,8 +145,6 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </div>
 
     <!-- HACK EHESS disable input -->
-    <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel"/>${i18n().func_keepLabel}</p>
-    <p></p>
     <section id="positionTitleContainer" role="region">
         <label for="positionTitle">${i18n().position_title} ${requiredHint}</label>
         <input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />
@@ -156,7 +159,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
           </#list>
       </select>
       <p></p>
-      <div id="memberClass" id="memberClass"></div>
+      <div id="memberClassDiv" id="memberClassDiv"></div>
       <p></p>
       <#--Need to draw edit elements for dates here-->
        <#if htmlForElements?keys?seq_contains("startField")>
@@ -194,9 +197,12 @@ var customFormData  = {
     acMultipleTypes: 'true',
 </#if>
     editMode: '${editMode}',
+    apiMemberClass : '${apiMemberClass}',
     defaultTypeName: 'organization', // used in repair mode, to generate button text and org name field label
     baseHref: '${urls.base}/individual?uri=',
     blankSentinel: '${blankSentinel}',
+    existingOrgValue: '${existingOrgValue}',
+    memberClassValue: '${memberClassValue}',
     flagClearLabelForExisting: '${flagClearLabelForExisting}'
 };
 var i18nStrings = {

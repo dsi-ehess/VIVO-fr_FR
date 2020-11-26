@@ -32,6 +32,9 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
         EditConfigurationGenerator {
 
     final static String positionClass = vivofr + "MMB_0000001";
+    final static String memberClassClass = vivofr + "CLS_0000001";
+    public static final String API_MEMBER_CLASS = "vivofr:CLS_0000001";
+    
     final static String researchOrganizationClass = vivoCore + "ResearchOrganization";
     final static String administrativeEntityClass = vivofr + "ORG_0000014";
     
@@ -47,7 +50,7 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
 
     public static final String[] ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS = {researchOrganizationClass, administrativeEntityClass};
-    
+
 
     public PersonHasMembershipHistoryGenerator() {
     }
@@ -85,10 +88,11 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 
         conf.setN3Required(Arrays.asList(n3ForNewPosition,
                                            positionTitleAssertion,
-                positionTypeAssertion));
+                positionTypeAssertion, memberClassAssertion));
         conf.setN3Optional(Arrays.asList(n3ForNewOrg, n3ForExistingOrg, n3ForStart, n3ForEnd));
 
         conf.addNewResource("position", DEFAULT_NS_FOR_NEW_RESOURCE);
+        conf.addNewResource("memberClass", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("newOrg", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("intervalNode", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("startNode", DEFAULT_NS_FOR_NEW_RESOURCE);
@@ -97,7 +101,7 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
         //uris in scope: none   
         //literals in scope: none
 
-        conf.setUrisOnform(Arrays.asList("existingOrg", "orgType", "positionType"));
+        conf.setUrisOnform(Arrays.asList("existingOrg", "orgType", "positionType", "memberClass"));
         conf.setLiteralsOnForm(Arrays.asList("positionTitle", "orgLabel", "orgLabelDisplay"));
 
         conf.addSparqlForExistingLiteral("orgLabel", orgLabelQuery);
@@ -109,6 +113,7 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 
         conf.addSparqlForExistingUris("existingOrg", existingOrgQuery);
         conf.addSparqlForExistingUris("orgType", orgTypeQuery);
+        conf.addSparqlForExistingUris("memberClass", existingMemberClassQuery);
         conf.addSparqlForExistingUris("positionType", positionTypeQuery);
         conf.addSparqlForExistingUris(
                 "intervalNode", existingIntervalNodeQuery);
@@ -133,7 +138,13 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 
         conf.addField(new FieldVTwo().
                 setName("existingOrg")); //options set in browser by auto complete JS
-
+        
+        conf.addField(new FieldVTwo().
+        		setName("memberClass").
+        		setValidators(list("nonempty")).
+        		setOptions(
+                        new ChildVClassesWithParent(memberClassClass)));
+        
         conf.addField(new FieldVTwo().
                 setName("orgLabel").
                 setRangeDatatypeUri(XSD.xstring.toString()).
@@ -185,9 +196,13 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
     final static String positionTitleAssertion =
             "?position <" + label + "> ?positionTitle .";
 
+    final static String memberClassAssertion =
+    		"@prefix core: <" + vivoCore + "> . \n" +
+            "?position core:relates ?memberClass .";
+
     final static String positionTypeAssertion =
             "?position a ?positionType .";
-
+    
     final static String n3ForNewOrg =
             "?position <" + positionInOrgPred + "> ?newOrg . \n" +
                     "?newOrg <" + orgForPositionPred + "> ?position . \n" +
@@ -248,6 +263,10 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
                     "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
                     "  ?existingOrg a <" + orgClass + ">  }";
 
+    final static String existingMemberClassQuery =
+            "SELECT ?existingMemberClass WHERE { \n" +
+                    "  ?position <" + positionInOrgPred + "> ?existingMemberClass . }";
+    
     final static String orgTypeQuery =
             "PREFIX rdfs: <" + rdfs + "> \n" +
                     "SELECT ?existingOrgType WHERE { \n" +
@@ -301,6 +320,7 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         editConfiguration.addFormSpecificData("editMode", getEditMode(vreq).name().toLowerCase());
         editConfiguration.addFormSpecificData("orgTypes", StringUtils.join(ALLOWED_EHESS_ORGTYPES_POSITION_EDITION_URIS, ","));
+        editConfiguration.addFormSpecificData("apiMemberClass", API_MEMBER_CLASS);
     }
 
     public EditMode getEditMode(VitroRequest vreq) {
