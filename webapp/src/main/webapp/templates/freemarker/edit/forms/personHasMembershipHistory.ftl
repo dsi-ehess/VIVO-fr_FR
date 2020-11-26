@@ -23,8 +23,8 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign existingOrgValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "existingOrg")/>
 <#assign orgLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "orgLabel")/>
 <#assign orgLabelDisplayValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "orgLabelDisplay")/>
-<#assign positionTitleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "positionTitle")/>
-<#assign positionTypeValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "positionType")/>
+<#assign membershipTitleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "membershipTitle")/>
+<#assign membershipTypeValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "membershipType")/>
 <#assign memberClassValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "memberClass")/>
 
 <#assign orgTypes = editConfiguration.pageData.orgTypes />
@@ -87,11 +87,11 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
             ${i18n().select_an_organization_name}<br />
         </#if>
         <#--Checking if Position Title field is empty-->
-         <#if lvf.submissionErrorExists(editSubmission, "positionTitle")>
+         <#if lvf.submissionErrorExists(editSubmission, "membershipTitle")>
             ${i18n().enter_posn_title_value}<br />
         </#if>
         <#--Checking if Position Type field is empty-->
-         <#if lvf.submissionErrorExists(editSubmission, "positionType")>
+         <#if lvf.submissionErrorExists(editSubmission, "membershipType")>
             ${i18n().enter_posn_type_value}<br />
         </#if>
         <#--Checking if Org Type field is empty-->
@@ -104,7 +104,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <@lvf.unsupportedBrowser urls.base />
 
-<form class="customForm" action ="${submitUrl}" class="customForm noIE67" role="${formAction} position entry">
+<form class="customForm" action ="${submitUrl}" class="customForm noIE67" role="${formAction} membership entry">
   <p class="inline">
     <label for="orgType">${i18n().org_type_capitalized}<#if editMode != "edit"> ${requiredHint}<#else>:</#if></label>
     <#--HACK EHESS limit allowed org types-->
@@ -145,17 +145,17 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </div>
 
     <!-- HACK EHESS disable input -->
-    <section id="positionTitleContainer" role="region">
-        <label for="positionTitle">${i18n().position_title} ${requiredHint}</label>
-        <input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />
+    <section id="membershipTitleContainer" role="region">
+        <label for="membershipTitle">${i18n().membership_title} ${requiredHint}</label>
+        <input  size="30"  type="text" id="membershipTitle" name="membershipTitle" value="${membershipTitleValue}" role="input" />
      </section>
 
-      <label for="positionType">${i18n().position_type} ${requiredHint}</label>
-      <#assign posnTypeOpts = editConfiguration.pageData.positionType />
-      <select name="positionType" style="margin-top:-2px" >
-          <option value="" <#if positionTypeValue == "">selected</#if>>${i18n().select_one}</option>
+      <label for="membershipType">${i18n().membership_type} ${requiredHint}</label>
+      <#assign posnTypeOpts = editConfiguration.pageData.membershipType />
+      <select name="membershipType" style="margin-top:-2px" >
+          <option value="" <#if membershipTypeValue == "">selected</#if>>${i18n().select_one}</option>
           <#list posnTypeOpts?keys as key>
-              <option value="${key}"  <#if positionTypeValue == key>selected</#if>>${posnTypeOpts[key]}</option>
+              <option value="${key}"  <#if membershipTypeValue == key>selected</#if>>${posnTypeOpts[key]}</option>
           </#list>
       </select>
       <p></p>
@@ -222,5 +222,4 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/
              '<script type="text/javascript" src="${urls.base}/js/extensions/String.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/jquery_plugins/jquery.bgiframe.pack.js"></script>',
-             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocompleteForPerson_Membership.js"></script>',
-             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/membershipKeepFlag.js"></script>')}
+             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocompleteForPersonMembership.js"></script>')}

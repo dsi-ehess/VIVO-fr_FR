@@ -13,9 +13,9 @@
         PREFIX vivofr: &lt;http://data.ehess.fr/ontology/vivo-fr#&gt;
 
         SELECT DISTINCT <collated>?subclass</collated>
-            ?position
-            ?positionTitle
-            ?positionLabel
+            ?membership
+            ?membershipTitle
+            ?membershipLabel
             ?hrJobTitle
             ?rank
             ?org ?orgName
@@ -24,33 +24,33 @@
             ?dateTimeStart ?dateTimeEnd
         WHERE
         {
-            ?subject ?property ?position .
-            ?position a vivofr:MMB_0000001 .
+            ?subject ?property ?membership .
+            ?membership a vivofr:MMB_0000001 .
             OPTIONAL {
-                <precise-subquery>?subject ?property ?position .
-                ?position a vivofr:MMB_0000001 .</precise-subquery>
-                ?position rdfs:label ?positionLabel .
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership rdfs:label ?membershipLabel .
             }
             OPTIONAL {
-                <precise-subquery>?subject ?property ?position .
-                ?position a vivofr:MMB_0000001 .</precise-subquery>
-                ?position core:relates ?org .
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership core:relates ?org .
                 ?org a foaf:Organization .
                 ?org rdfs:label ?orgName .
             }
             OPTIONAL {
-                <precise-subquery>?subject ?property ?position .
-                ?position a vivofr:MMB_0000001 .</precise-subquery>
-                ?position core:relates ?org .
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership core:relates ?org .
                 ?org a foaf:Organization .
                 ?org rdfs:label ?orgName .
                 ?middleOrg obo:BFO_0000050 ?org .
                 ?middleOrg rdfs:label ?middleOrgName .
             }
             OPTIONAL {
-                <precise-subquery>?subject ?property ?position .
-                ?position a vivofr:MMB_0000001 .</precise-subquery>
-                ?position core:relates ?org .
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership core:relates ?org .
                 ?org a foaf:Organization .
                 ?org rdfs:label ?orgName .
                 ?org obo:BFO_0000050 ?middleOrg .
@@ -58,42 +58,42 @@
                 ?outerOrg rdfs:label ?outerOrgName .
             }
             OPTIONAL {
-                <precise-subquery>?subject ?property ?position .
-                ?position a vivofr:MMB_0000001 .</precise-subquery>
-                ?position vitro:mostSpecificType ?subclass .
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership vitro:mostSpecificType ?subclass .
                 ?subclass rdfs:subClassOf vivofr:MMB_0000001 .
-                ?subclass rdfs:label ?positionTitle .
+                ?subclass rdfs:label ?membershipTitle .
             }
             OPTIONAL {
-                <precise-subquery>?subject ?property ?position .
-                ?position a vivofr:MMB_0000001 .</precise-subquery>
-                ?position core:hrJobTitle ?hrJobTitle .
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership core:hrJobTitle ?hrJobTitle .
             }
             OPTIONAL {
-                <precise-subquery>?subject ?property ?position .
-                ?position a vivofr:MMB_0000001 .</precise-subquery>
-                ?position core:rank ?rank .
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership core:rank ?rank .
             }
             OPTIONAL {
-                <precise-subquery>?subject ?property ?position .
-                ?position a vivofr:MMB_0000001 .</precise-subquery>
-                ?position core:dateTimeInterval ?dateTimeInterval .
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership core:dateTimeInterval ?dateTimeInterval .
                 ?dateTimeInterval core:start ?dateTimeStartValue .
                 ?dateTimeStartValue core:dateTime ?dateTimeStart .
             }
             OPTIONAL {
-                <precise-subquery>?subject ?property ?position .
-                ?position a vivofr:MMB_0000001 .</precise-subquery>
-                ?position core:dateTimeInterval ?dateTimeInterval .
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership core:dateTimeInterval ?dateTimeInterval .
                 ?dateTimeInterval core:end ?dateTimeEndValue .
                 ?dateTimeEndValue core:dateTime ?dateTimeEnd .
             }
 
             <collated>
             OPTIONAL {
-                <precise-subquery>?subject ?property ?position .
-                ?position a vivofr:MMB_0000001 .</precise-subquery>
-                ?position vitro:mostSpecificType ?subclass .
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership vitro:mostSpecificType ?subclass .
                 ?subclass rdfs:subClassOf vivofr:MMB_0000001 .
             }
             </collated>
