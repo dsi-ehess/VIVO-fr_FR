@@ -17,57 +17,23 @@
 
 # warning: don't use blank nodes; the display model doesn't currently support them.
 
-local:personInPositionContext a :ConfigContext ;
-    :hasConfiguration local:personInPositionConfig ;
+local:personInFunctionContext a :ConfigContext ;
+    :hasConfiguration local:personInFunctionConfig ;
     :configContextFor vivo:relatedBy ;
     :qualifiedByDomain <http://xmlns.com/foaf/0.1/Person> ;
-    :qualifiedBy vivo:Position .
+    :qualifiedBy vivofr:FNC_0000001 .
 
-local:personInPositionConfig a :ObjectPropertyDisplayConfig ;
+local:personInFunctionConfig a :ObjectPropertyDisplayConfig ;
     rdfs:label "personInFunction"@en-US;
     rdfs:label "personneEnFonction"@fr-FR;
     :displayName "functions" ;
-    :listViewConfigFile "listViewConfig-personInPosition.xml"^^xsd:string ;
+    :listViewConfigFile "listViewConfig-personInFunction.xml"^^xsd:string ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
     vitro:displayRankAnnot 40;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.PersonHasFunctionHistoryGenerator"^^xsd:string .
-
-local:personInPostdocMemberContext a :ConfigContext ;
-    :hasConfiguration local:personInPostdocMemberConfig ;
-    :configContextFor vivo:relatedBy ;
-    :qualifiedByDomain foaf:Person ;
-    :qualifiedBy ehess:AppartenanceEnTantQuePostDoctorant .
-
-local:personInPostdocMemberConfig a :ObjectPropertyDisplayConfig ;
-    rdfs:label "personInPostdocMember"@en-US;
-    :displayName "Postdoc Member Of"@en-US, "Membre postdoctorant.e de"@fr-FR;
-    :listViewConfigFile "listViewConfig-personInStatutoryMember.xml"^^xsd:string ;
-    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
-    vitro:displayRankAnnot 40;
-    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
-    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
-    vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
-    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.PersonHasPostdocMemberHistoryGenerator"^^xsd:string .
-
-local:personInPhdStudentMemberContext a :ConfigContext ;
-    :hasConfiguration local:personInPhdStudentMemberConfig ;
-    :configContextFor vivo:relatedBy ;
-    :qualifiedByDomain foaf:Person ;
-    :qualifiedBy ehess:AppartenanceEnTantQueDoctorant .
-
-local:personInPhdStudentMemberConfig a :ObjectPropertyDisplayConfig ;
-    rdfs:label "Phd Student Member Of"@en-US, "Membre doctorant de"@fr-FR;
-    :displayName "PhD Student Members"@en-US, "Doctorant.e.s"@fr-FR;
-    :listViewConfigFile "listViewConfig-personInPhdStudentMember.xml"^^xsd:string ;
-    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
-    vitro:displayRankAnnot 40;
-    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
-    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
-    vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
-    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.PersonHasPhdStudentMemberHistoryGenerator"^^xsd:string .
 
 local:personInMembershipContext a :ConfigContext ;
     :hasConfiguration local:personInMembershipConfig ;
@@ -85,8 +51,6 @@ local:personInMembershipConfig a :ObjectPropertyDisplayConfig ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.PersonHasMembershipHistoryGenerator"^^xsd:string .
-
-
 
 local:organizationForPositionContext a :ConfigContext ;
     :hasConfiguration local:organizationForPositionConfig ;

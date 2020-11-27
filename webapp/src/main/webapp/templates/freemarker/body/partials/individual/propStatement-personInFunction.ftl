@@ -1,6 +1,6 @@
 <#-- $This file is distributed under the terms of the license in LICENSE$ -->
 
-<#-- Custom object property statement view for faux property "positions". See the PropertyConfig.n3 file for details.
+<#-- Custom object property statement view for faux property "functions". See the PropertyConfig-custom.n3 file for details.
 
      This template must be self-contained and not rely on other variables set for the individual page, because it
      is also used to generate the property statement during a deletion.
@@ -8,18 +8,17 @@
 
 <#import "lib-sequence.ftl" as s>
 <#import "lib-datetime.ftl" as dt>
-<#import "debugger.ftl" as debugger>
 
-<@showPosition statement />
+<@showFunction statement />
 
 <#-- Use a macro to keep variable assignments local; otherwise the values carry over to the
      next statement -->
-<#macro showPosition statement>
+<#macro showFunction statement>
 
-    <#local posTitle>
+    <#local fncTitle>
         <span itemprop="jobTitle">
-        <#if statement.keepLabel?? && statement.keepLabel == "true">${statement.subClassLabel?cap_first}<#if (statement.positionTitle!statement.hrJobTitle!)?has_content>, ${statement.positionTitle!statement.hrJobTitle!}</#if>
-        <#else>${(statement.positionTitle!statement.hrJobTitle!)?cap_first}
+        <#if statement.keepLabel?? && statement.keepLabel == "true">${statement.subClassLabel?cap_first}<#if (statement.functionTitle!statement.hrJobTitle!)?has_content>, ${statement.functionTitle!statement.hrJobTitle!}</#if>
+        <#else>${(statement.functionTitle!statement.hrJobTitle!)?cap_first}
         </#if>
         </span>
     </#local>
@@ -43,6 +42,6 @@
         </#if>
     </#local>
 
-    <@s.join [ posTitle, linkedIndividual, middleOrganization! ]/>  <@dt.yearIntervalSpan "${statement.dateTimeStart!}" "${statement.dateTimeEnd!}" />
+    <@s.join [ fncTitle, linkedIndividual, middleOrganization! ]/>  <@dt.yearIntervalSpan "${statement.dateTimeStart!}" "${statement.dateTimeEnd!}" />
 
 </#macro>

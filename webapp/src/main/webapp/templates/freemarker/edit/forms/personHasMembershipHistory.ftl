@@ -8,6 +8,7 @@
 <#assign htmlForElements = editConfiguration.pageData.htmlForElements />
 <#assign editMode = editConfiguration.pageData.editMode />
 <#assign apiMemberClass = editConfiguration.pageData.apiMemberClass />
+<#assign genericMembershipClasses = editConfiguration.pageData.genericMembershipClasses />
 
 <#assign blankSentinel = "" />
 <#if editConfigurationConstants?has_content && editConfigurationConstants?keys?seq_contains("BLANK_SENTINEL")>
@@ -23,6 +24,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign existingOrgValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "existingOrg")/>
 <#assign orgLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "orgLabel")/>
 <#assign orgLabelDisplayValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "orgLabelDisplay")/>
+<#assign keepLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "keepLabel")/>
 <#assign membershipTitleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "membershipTitle")/>
 <#assign membershipTypeValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "membershipType")/>
 <#assign memberClassValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "memberClass")/>
@@ -38,8 +40,9 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 </#if>
 
 <#assign disabledVal = ""/>
-<#if editMode == "edit">
-        <#assign formAction="${i18n().edit_capitalized}">
+<#-- edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.getEditMode(HttpServletRequest, Individual, String) finds mutliples stmts -->
+<#if editMode == "edit" || editMode == "error">        
+        <#assign formAction="${i18n().edit_capitalized}">        
         <#assign submitButtonText="${i18n().save_changes}">
         <#assign disabledVal="disabled">
 <#else>
@@ -51,7 +54,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign requiredHint="<span class='requiredHint'> *</span>"/>
 <#assign yearHint     = "<span class='hint'>(${i18n().year_hint_format})</span>" />
 
-<h2>${formAction} ${i18n().posn_entry_for} ${editConfiguration.subjectName}</h2>
+<h2>${formAction} ${i18n().mmb_entry_for} ${editConfiguration.subjectName}</h2>
 
 <#--Display error messages if any-->
 <#if submissionErrors?has_content>
@@ -86,15 +89,15 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
          <#if lvf.submissionErrorExists(editSubmission, "orgLabel")>
             ${i18n().select_an_organization_name}<br />
         </#if>
-        <#--Checking if Position Title field is empty-->
+        <#--Checking if Membership Title field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "membershipTitle")>
             ${i18n().enter_posn_title_value}<br />
         </#if>
-        <#--Checking if Position Type field is empty-->
+        <#--Checking if Membership Type field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "membershipType")>
             ${i18n().enter_posn_type_value}<br />
         </#if>
-        <#--Checking if Org Type field is empty-->
+        <#--Checking if Member Class field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "memberClass")>
             ${i18n().select_member_class}<br />
         </#if>
@@ -107,20 +110,9 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <form class="customForm" action ="${submitUrl}" class="customForm noIE67" role="${formAction} membership entry">
   <p class="inline">
     <label for="orgType">${i18n().org_type_capitalized}<#if editMode != "edit"> ${requiredHint}<#else>:</#if></label>
-    <#--HACK EHESS limit allowed org types-->
-    <#--assign orgTypeOpts = editConfiguration.pageData.ehessOrgTypes -->
+    
     <#assign orgTypeOpts = editConfiguration.pageData.orgType />
-<#--
-    <#if editMode == "edit">
-      <#list orgTypeOpts?keys as key>
-          <#if orgTypeValue = key >
-            <span class="readOnly" id="typeSelectorSpan">${orgTypeOpts[key]}</span>
-            <input type="hidden" id="typeSelectorInput" name="orgType" acGroupName="organization" value="${orgTypeValue}" >
-          </#if>
-      </#list>
-    <#else>
-    </#if>
--->
+
 <select id="typeSelector" name="orgType" acGroupName="organization">
     <option value="" selected="selected">${i18n().select_one}</option>
     <#list orgTypeOpts?keys as key>
@@ -138,13 +130,13 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <p class="inline">
             <label>${i18n().selected_organization}:</label>
             <span class="acSelectionInfo"></span>
-            <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
+            <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or} 
             <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
         </p>
         <input class="acUriReceiver" type="hidden" id="orgUri" name="existingOrg" value="${existingOrgValue}" ${flagClearLabelForExisting}="true" />
     </div>
 
-    <!-- HACK EHESS disable input -->
+    <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabelValue == "true" >checked="checked"</#if> />${i18n().func_keepLabel}</p>
     <section id="membershipTitleContainer" role="region">
         <label for="membershipTitle">${i18n().membership_title} ${requiredHint}</label>
         <input  size="30"  type="text" id="membershipTitle" name="membershipTitle" value="${membershipTitleValue}" role="input" />
@@ -194,14 +186,15 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <span class="or"> ${i18n().or} </span><a class="cancel" href="${editConfiguration.cancelUrl}" title="${i18n().cancel_title}">${i18n().cancel_link}</a>
       </p>
       <p class="requiredHint"  id="requiredLegend" >* ${i18n().required_fields}</p>
-
+      
 </form>
 
 <script type="text/javascript">
 var customFormData  = {
     acUrl: '${urls.base}/autocomplete?tokenize=true',
     acTypes: {organization: '${orgTypes}'},
-<#if multipleTypes = true>
+    relType: 'membership',
+<#if multipleTypes == true>
     acMultipleTypes: 'true',
 </#if>
     editMode: '${editMode}',
@@ -231,3 +224,8 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/
              '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/jquery_plugins/jquery.bgiframe.pack.js"></script>',
              '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocompleteForPersonMembership.js"></script>')}
+             
+<#list genericMembershipClasses as genericMembershipClass>
+    <input type="hidden" id="generic-membership-class-${genericMembershipClass?index}" class="generic-membership-class-indicator" value=${genericMembershipClass} />
+</#list>
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/relationship/keepRelationshipLabelFlag.js"></script>')}
