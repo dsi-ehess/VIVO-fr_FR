@@ -32,7 +32,7 @@ public class BooleanValuesPreprocessor extends BaseEditSubmissionPreprocessorVTw
 		Map<String, List<Literal>> literalsFromForm = inputSubmission.getLiteralsFromForm();
 		boolean findLiteral = literalsFromForm.entrySet().stream().filter(p -> p.getKey().equals(KEEP_LABEL_FIELD)).
 				map(Map.Entry::getValue).flatMap(List::stream).filter(lit -> 
-					lit.getLexicalForm().equals(KEEP_LABEL_FIELD_VALUE_ON)).findFirst().isPresent();
+				KEEP_LABEL_FIELD_VALUE_ON.equals(lit.getLexicalForm())).findFirst().isPresent();
 
 		Literal keepLabel = inputSubmission.createLiteral(String.valueOf(findLiteral), XSD.xboolean.getURI(), null);
 		literalsFromForm.put("keepLabel", Arrays.asList(keepLabel));
