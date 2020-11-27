@@ -1,19 +1,27 @@
-memberClass {
-	display: table-cell;
-	vertical-align: middle;
-	height: 50px;
-	border: 1px solid red;
+#memberClassContent {   
+  margin: 2em auto;
+  width: 100%;
 }
 
-.memberClass {
+#memberClassRadio {
 	display: table-cell;
 	vertical-align: middle;
 	height: 50px;
-	border: 1px solid red;
+	border: 1px solid;
 }
+
 
 input.radio {
 	padding: 0 10px 0 0;
 	position: relative;
 	top: -2px;
+}
+
+
+#left, #right {
+  display: inline-block;
+  width: 40%; 
+  margin:5px; 
+  padding: 1em;
+  background: white;
 }

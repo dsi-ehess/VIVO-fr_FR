@@ -342,7 +342,7 @@ var customForm = {
                 customForm.showAutocompleteSelection(ui.item.label, ui.item.uri, $(selectedObj));
                 if ( $(selectedObj).attr('acGroupName') == customForm.typeSelector.attr('acGroupName') ) {
                     customForm.typeSelector.val(ui.item.msType);
-                    customForm.updateMemberClass(ui.item);
+                    customForm.updateMemberClass(ui.item.uri);
                 }
             }
         });
@@ -526,6 +526,7 @@ var customForm = {
         $changeLink = $acDiv.find('a.changeSelection');
         $changeLink.click(function() {
             customForm.undoAutocompleteSelection($acDiv);
+            $("#memberClassRadioList").empty();
         });
 
         if ( this.acSelectOnly ) {
@@ -747,7 +748,7 @@ var customForm = {
 
         filteredResults = [];
         $.each(results['@graph'], function() {
-            if ($.inArray(this["@type"], [ "vivofr:CLS_0000001" ]) != -1) {
+            if ($.inArray(this["@type"], [customForm.apiMemberClass]) != -1) {
                 //console.log('adding ' + this.label + ' to filtered results');
                 filteredResults.push(this);
             }
@@ -757,32 +758,31 @@ var customForm = {
         });
         return filteredResults;
     },
-    updateMemberClass: function(individual) {
+    updateMemberClass: function(individualUri, existingMemberClassValue) {
         $.ajax({
             url: 'individual?',
             dataType: 'json',
             data: {
-            	uri:individual.uri,
+            	uri:individualUri,
             	format: 'application/json'
             },
             complete: function(xhr, status) {
                 // Not sure why, but we need an explicit json parse here.
                 var results = $.parseJSON(xhr.responseText);
                 var filteredResults = customForm.filterMemberResults(results);
-                /*
-                if ( customForm.acTypes[$(selectedObj).attr('acGroupName')] == customForm.conceptClassURI ) {
-                    filteredResults = customForm.removeConceptSubclasses(filteredResults);
-                }*/
-                
-                
-                if(customForm.doRemoveConceptSubclasses()) {
-                	filteredResults = customForm.removeConceptSubclasses(filteredResults);
-                }
-                var options = '';
-                $("#memberClass").empty();
+                $("#memberClassRadioList").empty();
                 for (var i = 0; i < filteredResults.length; i++){
-                    var radioBtn = $('<input type="radio" name="member" value="' + filteredResults[i]["@id"] + '">' + filteredResults[i]["label"]["@value"] + '</input>');
-                    radioBtn.appendTo('#memberClass');
+                	var memberClassValue = filteredResults[i]["@id"] 
+                	
+                		
+                    var radioBtn = $('<input type="radio" name="memberClass" value="' + memberClassValue + '">' + filteredResults[i]["label"]["@value"] + '</input><br/>');
+                	if (existingMemberClassValue != undefined) {
+	                	var checked = memberClassValue == existingMemberClassValue;
+	                	if (checked) {
+	                		radioBtn.prop("checked", true);
+	                	}
+                	}
+                	radioBtn.appendTo('#memberClassRadioList');
                 }
             }
         });
@@ -792,4 +792,5 @@ var customForm = {
 
 $(document).ready(function() {
     customForm.onLoad();
+    customForm.updateMemberClass(customForm.existingOrgValue, customForm.memberClassValue);
 });

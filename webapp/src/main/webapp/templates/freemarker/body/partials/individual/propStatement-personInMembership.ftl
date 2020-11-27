@@ -1,6 +1,6 @@
 <#-- $This file is distributed under the terms of the license in LICENSE$ -->
 
-<#-- Custom object property statement view for faux property "positions". See the PropertyConfig.n3 file for details.
+<#-- Custom object property statement view for faux property "memberships". See the PropertyConfig.n3 file for details.
     
      This template must be self-contained and not rely on other variables set for the individual page, because it
      is also used to generate the property statement during a deletion.  
@@ -16,9 +16,9 @@
 <#macro showMembership statement>
     
     <#local posTitle>
-    <#--HACK EHESS rename variable : positionTitle does not exist, poisition lab il the rdfs lable of the poition, Redmine 1193-->
-        <#--<span itemprop="jobTitle">${statement.positionTitle!statement.hrJobTitle!}</span>-->
-        <span itemprop="jobTitle">${statement.positionTitle!i18n().unknown_position}</span>
+    <#--HACK EHESS rename variable : membershipTitle does not exist, poisition lab il the rdfs lable of the poition, Redmine 1193-->
+        <#--<span itemprop="jobTitle">${statement.membershipTitle!statement.hrJobTitle!}</span>-->
+        <span itemprop="jobTitle">${statement.membershipTitle!i18n().unknown_membership}</span>
     </#local>
     <#local linkedIndividual>
         <#if statement.org??>
@@ -27,7 +27,7 @@
             </span>
         <#else>
             <#-- This shouldn't happen, but we must provide for it -->
-            <a href="${profileUrl(statement.uri("position"))}" title="${i18n().missing_organization}">${i18n().missing_organization}</a>
+            <a href="${profileUrl(statement.uri("membership"))}" title="${i18n().missing_organization}">${i18n().missing_organization}</a>
         </#if>
     </#local>
     <#-- The sparql query returns both the org's parent (middleOrg) and grandparent (outerOrg).

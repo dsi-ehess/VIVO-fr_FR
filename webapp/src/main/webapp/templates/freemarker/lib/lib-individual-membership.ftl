@@ -2,7 +2,7 @@
 <#function mapLabel statements>
   <#assign labelList = []>
   <#list statements as statement>
-      <#assign label = "${statement.positionLabel!i18n().unknown_position}">
+      <#assign label = "${statement.membershipLabel!i18n().unknown_membership}">
       <#if !labelList?seq_contains(label)>
         <#assign labelList = labelList + [ "${label}" ] />
        </#if>
@@ -14,7 +14,7 @@
 <#function filterStatement statements membershipLabel>
   <#assign filteredList = []>
   <#list statements as statement>
-      <#assign label = "${statement.positionLabel!i18n().unknown_position}">
+      <#assign label = "${statement.membershipLabel!i18n().unknown_membership}">
       <#if label == membershipLabel>
         <#assign filteredList = filteredList + [ statement ] />
       </#if>
@@ -35,14 +35,14 @@
 
 
 <#macro propertyListMemberships property editable statements=property.statements template=property.template>
-	<ul id="individual-personInPosition" role="list">
+	<ul id="individual-personInMembership" role="list">
 	<#assign membershipLabels = mapLabel(statements) />
 	<#list membershipLabels as membershipLabel>
 	    <li role="listitem">
 	        <span>${membershipLabel?cap_first}, </span>
 	        <#assign filteredStatements = filterStatement(statements, membershipLabel) />
 	        <#list filteredStatements as statement>
-	           <#assign localLabel = statement.positionLabel!i18n().unknown_position />
+	           <#assign localLabel = statement.membershipLabel!i18n().unknown_membership />
 	           <#if localLabel == membershipLabel>
 	               <@propertyListItemMembership property statement editable><#include "${template}"></@propertyListItemMembership>
 	               <#if (statements?seq_index_of(statement) < ((filteredStatements?size) -1)) >
