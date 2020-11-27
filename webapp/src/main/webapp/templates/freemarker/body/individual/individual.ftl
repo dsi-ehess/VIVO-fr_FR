@@ -17,7 +17,7 @@
     <!--PREINDIVIDUAL OVERVIEW.FTL-->
     <#include "individual-vocabularyService.ftl">
     <#include "individual-webpage.ftl">
-    <#include "individual-positions.ftl">
+    <#include "individual-functions.ftl">
     <#include "individual-memberships.ftl">
     <#include "individual-overview.ftl">
     <#include "individual-researchAreas.ftl">

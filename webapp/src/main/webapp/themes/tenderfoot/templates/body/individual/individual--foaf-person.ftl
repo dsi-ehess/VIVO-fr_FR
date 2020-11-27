@@ -93,7 +93,7 @@
 			<div class="row person-details">
 				<div class="col-md-12">
 					<!-- Positions -->
-					<#include "individual-positions.ftl">
+					<#include "individual-functions.ftl">
 			        <!-- Overview -->
 			        <#include "individual-overview.ftl">
 			        <#include "individual-chair.ftl">

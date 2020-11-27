@@ -95,7 +95,7 @@
                 </section>
             </#if>
             <!-- Positions -->
-            <#include "individual-positions.ftl">
+            <#include "individual-functions.ftl">
         </header>
 
         <!-- Overview -->

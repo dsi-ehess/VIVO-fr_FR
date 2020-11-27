@@ -84,7 +84,7 @@
             </#if>
         </header>     
         <!-- Positions -->
-        <#include "individual-positions.ftl">
+        <#include "individual-functions.ftl">
         <!-- Memberships -->
         <#include "individual-memberships.ftl">
         

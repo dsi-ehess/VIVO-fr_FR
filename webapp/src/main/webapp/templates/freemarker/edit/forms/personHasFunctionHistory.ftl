@@ -3,12 +3,11 @@
 <#-- Template for adding a position history-->
 
 <#import "lib-vivo-form.ftl" as lvf>
-<#import "debugger.ftl" as debugger>
 
 <#--Retrieve certain edit configuration information-->
 <#assign htmlForElements = editConfiguration.pageData.htmlForElements />
 <#assign editMode = editConfiguration.pageData.editMode />
-<#assign genericPositionClasses = editConfiguration.pageData.genericPositionClasses />
+<#assign genericFunctionClasses = editConfiguration.pageData.genericFunctionClasses />
 
 <#assign blankSentinel = "" />
 <#if editConfigurationConstants?has_content && editConfigurationConstants?keys?seq_contains("BLANK_SENTINEL")>
@@ -25,8 +24,13 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign orgLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "orgLabel")/>
 <#assign orgLabelDisplayValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "orgLabelDisplay")/>
 <#assign keepLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "keepLabel")/>
-<#assign positionTitleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "positionTitle")/>
-<#assign positionTypeValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "positionType")/>
+<#assign functionTitleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "functionTitle")/>
+<#assign functionTypeValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "functionType")/>
+
+<#assign orgTypes = editConfiguration.pageData.orgTypes />
+<#if orgTypes?contains(",")>
+    <#assign multipleTypes = true/>
+</#if>
 
 <#--If edit submission exists, then retrieve validation errors if they exist-->
 <#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
@@ -83,12 +87,12 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
          <#if lvf.submissionErrorExists(editSubmission, "orgLabel")>
             ${i18n().select_an_organization_name}<br />
         </#if>
-        <#--Checking if Position Title field is empty-->
-         <#if lvf.submissionErrorExists(editSubmission, "positionTitle")>
+        <#--Checking if Function Title field is empty-->
+         <#if lvf.submissionErrorExists(editSubmission, "functionTitle")>
             ${i18n().enter_posn_title_value}<br />
         </#if>
-        <#--Checking if Position Type field is empty-->
-         <#if lvf.submissionErrorExists(editSubmission, "positionType")>
+        <#--Checking if Function Type field is empty-->
+         <#if lvf.submissionErrorExists(editSubmission, "functionType")>
             ${i18n().enter_posn_type_value}<br />
         </#if>
         
@@ -98,21 +102,12 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <@lvf.unsupportedBrowser urls.base /> 
 
-<form class="customForm" action ="${submitUrl}" class="customForm noIE67" role="${formAction} position entry">
+<form class="customForm" action ="${submitUrl}" class="customForm noIE67" role="${formAction} function entry">
   <p class="inline">    
     <label for="orgType">${i18n().org_type_capitalized}<#if editMode != "edit"> ${requiredHint}<#else>:</#if></label>
+    
     <#assign orgTypeOpts = editConfiguration.pageData.orgType />
-<#--
-    <#if editMode == "edit">
-      <#list orgTypeOpts?keys as key>             
-          <#if orgTypeValue = key >
-            <span class="readOnly" id="typeSelectorSpan">${orgTypeOpts[key]}</span> 
-            <input type="hidden" id="typeSelectorInput" name="orgType" acGroupName="organization" value="${orgTypeValue}" >
-          </#if>           
-      </#list>
-    <#else>
-    </#if>
--->
+
 <select id="typeSelector" name="orgType" acGroupName="organization">
     <option value="" selected="selected">${i18n().select_one}</option>                
     <#list orgTypeOpts?keys as key>             
@@ -136,18 +131,18 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input class="acUriReceiver" type="hidden" id="orgUri" name="existingOrg" value="${existingOrgValue}" ${flagClearLabelForExisting}="true" />
     </div>
     
-      <label for="positionType">${i18n().position_type} ${requiredHint}</label>
-      <#assign posnTypeOpts = editConfiguration.pageData.positionType />
-      <select name="positionType" style="margin-top:-2px" >
-          <option value="" <#if positionTypeValue == "">selected</#if>>${i18n().select_one}</option>                
+      <label for="functionType">${i18n().function_type} ${requiredHint}</label>
+      <#assign posnTypeOpts = editConfiguration.pageData.functionType />
+      <select name="functionType" style="margin-top:-2px" >
+          <option value="" <#if functionTypeValue == "">selected</#if>>${i18n().select_one}</option>                
           <#list posnTypeOpts?keys as key>             
-              <option value="${key}"  <#if positionTypeValue == key>selected</#if>>${posnTypeOpts[key]}</option>         
+              <option value="${key}"  <#if functionTypeValue == key>selected</#if>>${posnTypeOpts[key]}</option>         
           </#list>
       </select>
       <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabelValue == "true" >checked="checked"</#if> />${i18n().func_keepLabel}</p>
-    <section id="designationContainer" role="region">
-        <label for="positionTitle">${i18n().position_title} ${requiredHint}</label>
-        <input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />
+    <section id="functionTitleContainer" role="region">
+        <label for="functionTitle">${i18n().function_title} ${requiredHint}</label>
+        <input  size="30"  type="text" id="functionTitle" name="functionTitle" value="${functionTitleValue}" role="input" />
     </section>
     <p></p>
       <#--Need to draw edit elements for dates here-->
@@ -181,7 +176,11 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <script type="text/javascript">
 var customFormData  = {
     acUrl: '${urls.base}/autocomplete?tokenize=true',
-    acTypes: {organization: 'http://xmlns.com/foaf/0.1/Organization'},
+    acTypes: {organization: '${orgTypes}'},
+    relType: 'function',
+<#if multipleTypes!false == true>
+    acMultipleTypes: 'true',
+</#if>
     editMode: '${editMode}',
     defaultTypeName: 'organization', // used in repair mode, to generate button text and org name field label
     baseHref: '${urls.base}/individual?uri=',
@@ -207,7 +206,7 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/
              '<script type="text/javascript" src="${urls.base}/js/jquery_plugins/jquery.bgiframe.pack.js"></script>',
              '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>')}
 
-<#list genericPositionClasses as genericPositionClass>
-    <input type="hidden" id="generic-position-class-${genericPositionClass?index}" class="generic-position-class-indicator" value=${genericPositionClass} />
+<#list genericFunctionClasses as genericFunctionClass>
+    <input type="hidden" id="generic-function-class-${genericFunctionClass?index}" class="generic-function-class-indicator" value=${genericFunctionClass} />
 </#list>
-${scripts.add('<script type="text/javascript" src="${urls.base}/js/function/functionKeepLabelFlag.js"></script>')}
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/relationship/keepRelationshipLabelFlag.js"></script>')}

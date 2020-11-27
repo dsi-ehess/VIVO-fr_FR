@@ -130,7 +130,7 @@
     </#if>
     <section id="individual-info" class="qv-individual-info" role="region" style=" <#if !editable>padding-top:12px;</#if><#if hasWebpage>width:53%<#else>width:100%;clear:left</#if>;">       
         <!-- Positions -->
-        <#include "individual-positions.ftl">
+        <#include "individual-functions.ftl">
         <!-- Memberships -->
         <#include "individual-memberships.ftl">
 

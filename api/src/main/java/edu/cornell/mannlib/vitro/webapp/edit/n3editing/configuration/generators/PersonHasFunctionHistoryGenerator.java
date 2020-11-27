@@ -4,11 +4,12 @@ package edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.vocabulary.XSD;
 
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
@@ -28,11 +29,12 @@ import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
 public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator implements
         EditConfigurationGenerator {
 
-    final static String positionClass = vivoCore + "Position";
+	final static String universityClass = vivoCore + "ResearchOrganization";
+	
     final static String orgClass = "http://xmlns.com/foaf/0.1/Organization";
-    final static String positionInOrgPred = vivoCore + "relates";
-    final static String orgForPositionPred = vivoCore + "relatedBy";
-    final static String positionToInterval = vivoCore + "dateTimeInterval";
+    final static String functionInOrgPred = vivoCore + "relates";
+    final static String orgForFunctionPred = vivoCore + "relatedBy";
+    final static String functionToInterval = vivoCore + "dateTimeInterval";
     final static String intervalType = vivoCore + "DateTimeInterval";
     final static String intervalToStart = vivoCore + "start";
     final static String intervalToEnd = vivoCore + "end";
@@ -40,14 +42,16 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
 	final static String[] institutionClasses = { vivoCore + "University" };
-	final static String[] genericPositionClasses = { vivofr + "FNC_0000002", vivofr + "FNC_0000004",
+	final static String[] genericFunctionClasses = { vivofr + "FNC_0000002", vivofr + "FNC_0000004",
 			vivofr + "FNC_0000005", vivofr + "FNC_0000006", vivofr + "FNC_0000007" };
-	final static String[] precisePositionClasses = { vivofr + "FNC_0000008",
+	final static String[] preciseFunctionClasses = { vivofr + "FNC_0000008",
 			vivofr + "FNC_0000009", vivofr + "FNC_0000010", vivofr + "FNC_0000011", vivofr + "FNC_0000012",
 			vivofr + "FNC_0000013", vivofr + "FNC_0000014", vivofr + "FNC_0000015", vivofr + "FNC_0000016",
 			vivofr + "FNC_0000017", vivofr + "FNC_0000018", vivofr + "FNC_0000019", vivofr + "FNC_0000020",
 			vivofr + "FNC_0000021" };
 
+	public static final String[] ALLOWED_EHESS_ORGTYPES_FUNCTION_EDITION_URIS = { universityClass };
+	
     public PersonHasFunctionHistoryGenerator() {}
 
     // There are 4 modes that this form can be in:
@@ -79,14 +83,14 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 
         conf.setVarNameForSubject("person");
         conf.setVarNameForPredicate("predicate");
-        conf.setVarNameForObject("position");
+        conf.setVarNameForObject("function");
 
-        conf.setN3Required( Arrays.asList( n3ForNewPosition,                                           
-                                           positionTypeAssertion,
+        conf.setN3Required( Arrays.asList( n3ForNewFunction,                                           
+                                           functionTypeAssertion,
                                            keepLabelAssertion) );
-        conf.setN3Optional( Arrays.asList( positionTitleAssertion, n3ForNewOrg, n3ForExistingOrg, n3ForStart, n3ForEnd ) );
+        conf.setN3Optional( Arrays.asList( functionTitleAssertion, n3ForNewOrg, n3ForExistingOrg, n3ForStart, n3ForEnd ) );
 
-        conf.addNewResource("position", DEFAULT_NS_FOR_NEW_RESOURCE);
+        conf.addNewResource("function", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("newOrg", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("intervalNode", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("startNode", DEFAULT_NS_FOR_NEW_RESOURCE);
@@ -95,11 +99,11 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         //uris in scope: none
         //literals in scope: none
 
-        conf.setUrisOnform(Arrays.asList("existingOrg", "orgType", "positionType"));
-        conf.setLiteralsOnForm(Arrays.asList("positionTitle", "orgLabel", "orgLabelDisplay", "keepLabel"));
+        conf.setUrisOnform(Arrays.asList("existingOrg", "orgType", "functionType"));
+        conf.setLiteralsOnForm(Arrays.asList("functionTitle", "orgLabel", "orgLabelDisplay", "keepLabel"));
 
         conf.addSparqlForExistingLiteral("orgLabel", orgLabelQuery);
-        conf.addSparqlForExistingLiteral("positionTitle", positionTitleQuery);
+        conf.addSparqlForExistingLiteral("functionTitle", functionTitleQuery);
         conf.addSparqlForExistingLiteral("keepLabel", existingKeepLabelQuery);
         conf.addSparqlForExistingLiteral(
                 "startField-value", existingStartDateQuery);
@@ -108,10 +112,9 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 
         conf.addSparqlForExistingUris("existingOrg", existingOrgQuery);
         conf.addSparqlForExistingUris("orgType", orgTypeQuery);
-        conf.addSparqlForExistingUris("positionType", positionTypeQuery);
+        conf.addSparqlForExistingUris("functionType", functionTypeQuery);
         conf.addSparqlForExistingUris(
                 "intervalNode", existingIntervalNodeQuery);
-        conf.addSparqlForExistingUris("designationLabel", existingDesignationQuery);
         conf.addSparqlForExistingUris("startNode", existingStartNodeQuery);
         conf.addSparqlForExistingUris("endNode", existingEndNodeQuery);
         conf.addSparqlForExistingUris("startField-precision",
@@ -120,14 +123,14 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
                 existingEndPrecisionQuery);
 
         conf.addField( new FieldVTwo().
-                setName("positionTitle")
+                setName("functionTitle")
                 .setRangeDatatypeUri( XSD.xstring.toString() ) );
 
         conf.addField( new FieldVTwo().
-                setName("positionType").
+                setName("functionType").
                 setValidators( list("nonempty") ).
                 setOptions(
-                		new RdfTypeOptions(ArrayUtils.addAll(genericPositionClasses , precisePositionClasses))));
+                		new RdfTypeOptions(ArrayUtils.addAll(genericFunctionClasses , preciseFunctionClasses))));
 
 
         conf.addField( new FieldVTwo().
@@ -151,15 +154,6 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
                 setOptions(
                         new RdfTypeOptions(institutionClasses)));
         
-        conf.addField(new FieldVTwo().
-                setName("designationLabel").
-                setRangeDatatypeUri(XSD.xstring.toString()).
-                setValidators(list("datatype:" + XSD.xstring.toString())));
-
-        conf.addField(new FieldVTwo().
-                setName("designationLabelDisplay").
-                setRangeDatatypeUri(XSD.xstring.toString()));
-        
         conf.addField( new FieldVTwo().setName("startField").
                 setEditElement(
                         new DateTimeWithPrecisionVTwo(null,
@@ -179,8 +173,9 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         conf.addValidator(new DateTimeIntervalValidationVTwo("startField","endField"));
         conf.addValidator(new AntiXssValidation());
         conf.addValidator(new AutocompleteRequiredInputValidator("existingOrg", "orgLabel"));
-        conf.addValidator(new RelationshipMandatoryLabelValidator("positionType", "positionTitle", precisePositionClasses));
+        conf.addValidator(new RelationshipMandatoryLabelValidator("functionType", "functionTitle", preciseFunctionClasses));
         
+        //Convert values from forms to xsd booleans
         conf.addEditSubmissionPreprocessor(
  			   new BooleanValuesPreprocessor(conf));
         //Adding additional data, specifically edit mode
@@ -189,35 +184,35 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         return conf;
     }
 
-    final static String n3ForNewPosition =
+    final static String n3ForNewFunction =
         "@prefix core: <" + vivoCore + "> . \n" +
-        "?person core:relatedBy  ?position . \n" +
-        "?position a  ?positionType . \n" +
-        "?position <" + keepLabelPred + ">  ?keepLabel . \n" +
-        "?position core:relates ?person ; ";
+        "?person core:relatedBy  ?function . \n" +
+        "?function a  ?functionType . \n" +
+        "?function <" + keepLabelPred + ">  ?keepLabel . \n" +
+        "?function core:relates ?person ; ";
 
-    final static String positionTitleAssertion =
-        "?position <" + label + "> ?positionTitle .";
+    final static String functionTitleAssertion =
+        "?function <" + label + "> ?functionTitle .";
 
-    final static String positionTypeAssertion =
-        "?position a ?positionType .";
+    final static String functionTypeAssertion =
+        "?function a ?functionType .";
 
     final static String keepLabelAssertion =
-        "?position <" + keepLabelPred + "> ?keepLabel .";
+        "?function <" + keepLabelPred + "> ?keepLabel .";
 
     final static String n3ForNewOrg =
-        "?position <" + positionInOrgPred + "> ?newOrg . \n" +
-        "?newOrg <" + orgForPositionPred + "> ?position . \n" +
+        "?function <" + functionInOrgPred + "> ?newOrg . \n" +
+        "?newOrg <" + orgForFunctionPred + "> ?function . \n" +
         "?newOrg <" + label + "> ?orgLabel . \n" +
         "?newOrg a ?orgType .";
 
     final static String n3ForExistingOrg =
-        "?position <" + positionInOrgPred + "> ?existingOrg . \n" +
-        "?existingOrg <" + orgForPositionPred + "> ?position . \n" +
+        "?function <" + functionInOrgPred + "> ?existingOrg . \n" +
+        "?existingOrg <" + orgForFunctionPred + "> ?function . \n" +
         "?existingOrg a ?orgType .";
 
     final static String n3ForStart =
-        "?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "?function <" + functionToInterval + "> ?intervalNode . \n" +
         "?intervalNode a <" + intervalType + "> . \n" +
         "?intervalNode <" + intervalToStart + "> ?startNode . \n" +
         "?startNode a <" + dateTimeValueType + "> . \n" +
@@ -225,7 +220,7 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         "?startNode  <" + dateTimePrecision + "> ?startField-precision . \n";
 
     final static String n3ForEnd =
-        "?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "?function <" + functionToInterval + "> ?intervalNode . \n" +
         "?intervalNode a <" + intervalType + "> . \n" +
         "?intervalNode <" + intervalToEnd + "> ?endNode . \n" +
         "?endNode a <" + dateTimeValueType + "> . \n" +
@@ -235,25 +230,25 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 // Queries for existing values
     final static String orgLabelQuery =
         "SELECT ?existingOrgLabel WHERE { \n" +
-        "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
+        "  ?function <" + functionInOrgPred + "> ?existingOrg . \n" +
         "  ?existingOrg a <" + orgClass + "> . \n" +
         "  ?existingOrg <" + label + "> ?existingOrgLabel . \n" +
         "}";
 
-    final static String positionTitleQuery =
-        "SELECT ?existingPositionTitle WHERE { \n" +
-        "?position <" + label + "> ?existingPositionTitle . }";
+    final static String functionTitleQuery =
+        "SELECT ?existingFunctionTitle WHERE { \n" +
+        "?function <" + label + "> ?existingFunctionTitle . }";
     
 	final static String existingKeepLabelQuery = "SELECT ?keepLabel WHERE { \n" 
 			+ "optional {\n" 
-			+ "?position <"+ keepLabelPred + "> ?keepLabelSrc . "
+			+ "?function <"+ keepLabelPred + "> ?keepLabelSrc . "
 			+ "}\n"
 			+ "bind(coalesce(?keepLabelSrc, 'true') as ?keepLabel) \n"
 			+ "}";
 
     final static String existingStartDateQuery =
         "SELECT ?existingDateStart WHERE { \n" +
-        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?function <" + functionToInterval + "> ?intervalNode . \n" +
         "  ?intervalNode a <" + intervalType + "> . \n" +
         "  ?intervalNode <" + intervalToStart + "> ?startNode . \n" +
         "  ?startNode a <" + dateTimeValueType +"> . \n" +
@@ -261,7 +256,7 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 
     final static String existingEndDateQuery =
         "SELECT ?existingEndDate WHERE { \n" +
-        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?function <" + functionToInterval + "> ?intervalNode . \n" +
         "  ?intervalNode a <" + intervalType + "> . \n " +
         "  ?intervalNode <" + intervalToEnd + "> ?endNode . \n" +
         "  ?endNode a <" + dateTimeValueType + "> . \n" +
@@ -269,50 +264,50 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 
     final static String existingOrgQuery =
         "SELECT ?existingOrg WHERE { \n" +
-        "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
+        "  ?function <" + functionInOrgPred + "> ?existingOrg . \n" +
         "  ?existingOrg a <" + orgClass + ">  }";
 
     final static String existingDesignationQuery =
             "SELECT ?existingOrg WHERE { \n" +
-                    "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
+                    "  ?function <" + functionInOrgPred + "> ?existingOrg . \n" +
                     "  ?existingOrg a <" + orgClass + ">  }";
     
     final static String orgTypeQuery =
         "PREFIX rdfs: <" + rdfs + "> \n" +
         "SELECT ?existingOrgType WHERE { \n" +
-        "  ?position <" + positionInOrgPred + "> ?existingOrg . \n" +
+        "  ?function <" + functionInOrgPred + "> ?existingOrg . \n" +
         "  ?existingOrg a ?existingOrgType . \n" +
         "  ?existingOrgType rdfs:subClassOf <" + orgClass + "> " +
         "} ";
 
     //Huda: changed this from rdf:type to vitro:mostSpecificType since returning thing
-    final static String positionTypeQuery =
+    final static String functionTypeQuery =
     	"PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" +
-        "SELECT ?existingPositionType WHERE { \n" +
-        "  ?position vitro:mostSpecificType ?existingPositionType . }";
+        "SELECT ?existingFunctionType WHERE { \n" +
+        "  ?function vitro:mostSpecificType ?existingFunctionType . }";
 
     final static String existingIntervalNodeQuery =
         "SELECT ?existingIntervalNode WHERE { \n" +
-        "  ?position <" + positionToInterval + "> ?existingIntervalNode . \n" +
+        "  ?function <" + functionToInterval + "> ?existingIntervalNode . \n" +
         "  ?existingIntervalNode a <" + intervalType + "> . }";
 
     final static String existingStartNodeQuery =
         "SELECT ?existingStartNode WHERE { \n" +
-        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?function <" + functionToInterval + "> ?intervalNode . \n" +
         "  ?intervalNode a <" + intervalType + "> . \n" +
         "  ?intervalNode <" + intervalToStart + "> ?existingStartNode . \n" +
         "  ?existingStartNode a <" + dateTimeValueType + "> .}   ";
 
     final static String existingEndNodeQuery =
         "SELECT ?existingEndNode WHERE { \n" +
-        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?function <" + functionToInterval + "> ?intervalNode . \n" +
         "  ?intervalNode a <" + intervalType + "> . \n" +
         "  ?intervalNode <" + intervalToEnd + "> ?existingEndNode . \n" +
         "  ?existingEndNode a <" + dateTimeValueType + "> } ";
 
     final static String existingStartPrecisionQuery =
         "SELECT ?existingStartPrecision WHERE { \n" +
-        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?function <" + functionToInterval + "> ?intervalNode . \n" +
         "  ?intervalNode a <" + intervalType + "> . \n" +
         "  ?intervalNode <" + intervalToStart + "> ?startNode . \n" +
         "  ?startNode a  <" + dateTimeValueType + "> . \n" +
@@ -320,7 +315,7 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 
     final static String existingEndPrecisionQuery =
         "SELECT ?existingEndPrecision WHERE { \n" +
-        "  ?position <" + positionToInterval + "> ?intervalNode . \n" +
+        "  ?function <" + functionToInterval + "> ?intervalNode . \n" +
         "  ?intervalNode a <" + intervalType + "> . \n" +
         "  ?intervalNode <" + intervalToEnd + "> ?endNode . \n" +
         "  ?endNode a <" + dateTimeValueType + "> . \n" +
@@ -328,16 +323,16 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 
     //Adding form specific data such as edit mode
   	public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
-  		HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
-  		formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());  	
+  		editConfiguration.addFormSpecificData("editMode", getEditMode(vreq).name().toLowerCase());  
+  		editConfiguration.addFormSpecificData("orgTypes",
+				StringUtils.join(ALLOWED_EHESS_ORGTYPES_FUNCTION_EDITION_URIS, ","));
   		// Needed for client side processing
-  		formSpecificData.put("genericPositionClasses", genericPositionClasses);  		
-  		editConfiguration.setFormSpecificData(formSpecificData);
+  		editConfiguration.addFormSpecificData("genericFunctionClasses", genericFunctionClasses);  		
   	}
 
   	public EditMode getEditMode(VitroRequest vreq) {
   		List<String> predicates = new ArrayList<String>();
-  		predicates.add(positionInOrgPred);
+  		predicates.add(functionInOrgPred);
   		return EditModeUtils.getEditMode(vreq, predicates);
   	}
 
