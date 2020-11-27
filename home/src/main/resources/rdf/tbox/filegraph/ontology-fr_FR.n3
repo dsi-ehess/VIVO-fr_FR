@@ -92,11 +92,39 @@ vivofr:CLS_0000001
   rdfs:label "members class"@en-US ;
   rdfs:subClassOf owl:Thing ;
 .
+vivofr:FNC_0000001
+  a owl:Class ;
+  obo:IAO_0000115 "Une fonction, un emploi dans une organisation"@fr-FR ;
+  rdfs:label "fonction"@fr-FR ;
+  rdfs:label "function"@en-US ;
+  rdfs:subClassOf vivofr:REL_0000001 ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:allValuesFrom vivo:DateTimeInterval ;
+      owl:onProperty vivo:dateTimeInterval ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:onProperty vivo:rank ;
+      owl:someValuesFrom xsd:int ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:onProperty vivo:relates ;
+      owl:someValuesFrom foaf:Organization ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:onProperty vivo:relates ;
+      owl:someValuesFrom foaf:Person ;
+    ] ;
+  owl:equivalentClass vivo:Position ;
+.
 vivofr:FNC_0000002
   a owl:Class ;
   rdfs:label "autre fonction"@fr-FR ;
   rdfs:label "other function"@en-US ;
-  rdfs:subClassOf vivo:Position ;
+  rdfs:subClassOf vivofr:FNC_0000001 ;
 .
 vivofr:FNC_0000003
   a rdfs:Class ;
@@ -109,7 +137,7 @@ vivofr:FNC_0000003
   vitro:prohibitedFromUpdateBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   rdfs:label "administrative corps"@en-US ;
   rdfs:label "corps administratif"@fr-FR ;
-  rdfs:subClassOf vivo:Position ;
+  rdfs:subClassOf vivofr:FNC_0000001 ;
   owl:disjointWith vivofr:FNC_0000004 ;
   owl:disjointWith vivofr:FNC_0000005 ;
   owl:disjointWith vivofr:FNC_0000006 ;
