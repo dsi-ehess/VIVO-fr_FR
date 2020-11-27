@@ -13,10 +13,10 @@ import org.apache.jena.rdf.model.Literal;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.N3ValidatorVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.MultiValueEditSubmission;
-
+import static edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.VivoBaseGenerator.KEEP_LABEL_FIELD;
+import static edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.VivoBaseGenerator.KEEP_LABEL_FIELD_VALUE_ON;;
 public class RelationshipMandatoryLabelValidator implements N3ValidatorVTwo {
 
-	private static final String KEEP_LABEL_FIELD = "keepLabel";
 
 	private static String MISSING_LABEL_ERROR = "Please select an existing value or enter a new value in the Name field.";
 
@@ -40,7 +40,7 @@ public class RelationshipMandatoryLabelValidator implements N3ValidatorVTwo {
 		Map<String, String> errors = new HashMap<String, String>();
 
 		String selectedRelationship = null;
-		if (urisFromForm.size() > 0 && urisFromForm.containsKey(positionField)) {
+		if (urisFromForm.containsKey(positionField)) {
 			selectedRelationship = urisFromForm.get(positionField).get(0);
 		}
 		if (selectedRelationship == null) {
@@ -48,20 +48,19 @@ public class RelationshipMandatoryLabelValidator implements N3ValidatorVTwo {
 			return errors;
 		}
 		String relationShipLabel = null;
-		if (!literalsFromForm.isEmpty() && literalsFromForm.containsKey(labelField)
-				&& literalsFromForm.get(labelField).size() > 0) {
-			relationShipLabel = literalsFromForm.get(labelField).get(0).toString();
-		}
-		Literal keepLabelFlag = null;
-		if (!literalsFromForm.isEmpty() && literalsFromForm.containsKey(KEEP_LABEL_FIELD)
-				&& literalsFromForm.get(KEEP_LABEL_FIELD).size() > 0) {
-			keepLabelFlag = literalsFromForm.get(KEEP_LABEL_FIELD).get(0);
+		if (literalsFromForm.containsKey(labelField) && literalsFromForm.get(labelField).size() > 0) {
+			relationShipLabel = literalsFromForm.get(labelField).get(0).getString();
 		}
 		if (StringUtils.isNotBlank(relationShipLabel)) {
 			return null;
 		}
-		if (preciseRelationClasses.contains(selectedRelationship) && keepLabelFlag != null
-				&& keepLabelFlag.toString().equals("on^^http://www.w3.org/2001/XMLSchema#boolean")) {
+		
+		String keepLabelFlag = null;
+		if (literalsFromForm.containsKey(KEEP_LABEL_FIELD)
+				&& literalsFromForm.get(KEEP_LABEL_FIELD).size() > 0) {
+			keepLabelFlag = literalsFromForm.get(KEEP_LABEL_FIELD).get(0).getString();
+		}
+		if (preciseRelationClasses.contains(selectedRelationship) && (KEEP_LABEL_FIELD_VALUE_ON).equals(keepLabelFlag)) {
 			return null;
 		} else {
 			errors.put(labelField, MISSING_LABEL_ERROR);
