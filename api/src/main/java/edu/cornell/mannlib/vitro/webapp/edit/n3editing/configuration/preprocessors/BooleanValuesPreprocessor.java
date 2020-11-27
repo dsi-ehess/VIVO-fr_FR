@@ -44,8 +44,8 @@ public class BooleanValuesPreprocessor extends BaseEditSubmissionPreprocessorVTw
 				}
 			}
 		}
-		//Literal keepLabel = inputSubmission.createLiteral(bool ? "true" : "false", XSD.xboolean.getURI(), null);
-		Literal keepLabel = inputSubmission.createLiteral(bool ? "true" : "false", null, null);
+		Literal keepLabel = inputSubmission.createLiteral(bool ? "true" : "false", XSD.xboolean.getURI(), null);
+		//Literal keepLabel = inputSubmission.createLiteral(bool ? "true" : "false", null, null);
 		ArrayList<Literal> keepLabels = new ArrayList<Literal>();
 		keepLabels.add(keepLabel);
 		literalsFromForm.remove("keepLabel");

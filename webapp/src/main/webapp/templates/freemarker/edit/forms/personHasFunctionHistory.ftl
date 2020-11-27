@@ -8,6 +8,7 @@
 <#--Retrieve certain edit configuration information-->
 <#assign htmlForElements = editConfiguration.pageData.htmlForElements />
 <#assign editMode = editConfiguration.pageData.editMode />
+<#assign genericPositionClasses = editConfiguration.pageData.genericPositionClasses />
 
 <#assign blankSentinel = "" />
 <#if editConfigurationConstants?has_content && editConfigurationConstants?keys?seq_contains("BLANK_SENTINEL")>
@@ -143,7 +144,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
               <option value="${key}"  <#if positionTypeValue == key>selected</#if>>${posnTypeOpts[key]}</option>         
           </#list>
       </select>
-      <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabelValue == "true" >checked</#if> />${i18n().func_keepLabel}</p>
+      <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabelValue == "true" >checked="checked"</#if> />${i18n().func_keepLabel}</p>
     <section id="designationContainer" role="region">
         <label for="positionTitle">${i18n().position_title} ${requiredHint}</label>
         <input  size="30"  type="text" id="positionTitle" name="positionTitle" value="${positionTitleValue}" role="input" />
@@ -206,3 +207,7 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/
              '<script type="text/javascript" src="${urls.base}/js/jquery_plugins/jquery.bgiframe.pack.js"></script>',
              '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>')}
 
+<#list genericPositionClasses as genericPositionClass>
+    <input type="hidden" id="generic-position-class-${genericPositionClass?index}" class="generic-position-class-indicator" value=${genericPositionClass} />
+</#list>
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/function/functionKeepLabelFlag.js"></script>')}
