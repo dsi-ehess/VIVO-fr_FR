@@ -87,9 +87,9 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 		conf.setVarNameForPredicate("predicate");
 		conf.setVarNameForObject("membership");
 
-		conf.setN3Required(Arrays.asList(n3ForNewMembership, membershipTitleAssertion, membershipTypeAssertion,
+		conf.setN3Required(Arrays.asList(n3ForNewMembership, membershipTypeAssertion,
 				memberClassAssertion, keepLabelAssertion));
-		conf.setN3Optional(Arrays.asList(n3ForNewOrg, n3ForExistingOrg, n3ForStart, n3ForEnd));
+		conf.setN3Optional(Arrays.asList(n3ForNewOrg, n3ForExistingOrg, membershipTitleAssertion, n3ForStart, n3ForEnd));
 
 		conf.addNewResource("membership", DEFAULT_NS_FOR_NEW_RESOURCE);
 		conf.addNewResource("memberClass", DEFAULT_NS_FOR_NEW_RESOURCE);
