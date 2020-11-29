@@ -17,6 +17,7 @@
             ?membershipTitle
             ?membershipLabel
             ?hrJobTitle
+            ?keepLabel
             ?rank
             ?org ?orgName
             ?middleOrg ?middleOrgName
@@ -46,6 +47,11 @@
                 ?org rdfs:label ?orgName .
                 ?middleOrg obo:BFO_0000050 ?org .
                 ?middleOrg rdfs:label ?middleOrgName .
+            }
+            OPTIONAL {
+                <precise-subquery>?subject ?property ?membership .
+                ?membership a vivofr:MMB_0000001 .</precise-subquery>
+                ?membership vivofr:PRP_0000006 ?keepLabel .
             }
             OPTIONAL {
                 <precise-subquery>?subject ?property ?membership .

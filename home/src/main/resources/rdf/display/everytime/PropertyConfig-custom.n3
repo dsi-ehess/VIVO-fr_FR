@@ -26,7 +26,7 @@ local:personInFunctionContext a :ConfigContext ;
 local:personInFunctionConfig a :ObjectPropertyDisplayConfig ;
     rdfs:label "personInFunction"@en-US;
     rdfs:label "personneEnFonction"@fr-FR;
-    :displayName "functions" ;
+    :displayName "functions"@en-US, "fonctions"@fr-FR;
     :listViewConfigFile "listViewConfig-personInFunction.xml"^^xsd:string ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
     vitro:displayRankAnnot 40;
@@ -43,7 +43,7 @@ local:personInMembershipContext a :ConfigContext ;
 
 local:personInMembershipConfig a :ObjectPropertyDisplayConfig ;
     rdfs:label "Member Of"@en-US, "Membre de"@fr-FR;
-    :displayName "Memberships"@en-US, "Appartenances"@fr-FR;
+    :displayName "memberships"@en-US, "appartenances"@fr-FR;
     :listViewConfigFile "listViewConfig-personInMembership.xml"^^xsd:string ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
     vitro:displayRankAnnot 40;
