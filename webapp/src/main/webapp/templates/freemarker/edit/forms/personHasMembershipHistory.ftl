@@ -153,7 +153,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
       <p></p>
       <div id="memberClassContent">
          <div id="left">    
-            <label>${i18n().member_class_label} - </label><span class="acSelectionInfo">${orgLabelDisplayValue} ${requiredHint}</span> - </label>
+            <label>${i18n().member_class_label} - </label><span id="memberClassOrg"></span> ${requiredHint}
         </div>       
         <div id="right">    
             <div id="memberClassRadioList"></div>
@@ -203,6 +203,7 @@ var customFormData  = {
     baseHref: '${urls.base}/individual?uri=',
     blankSentinel: '${blankSentinel}',
     existingOrgValue: '${existingOrgValue}',
+    orgLabelDisplayValue : '${orgLabelDisplayValue}',
     memberClassValue: '${memberClassValue}',
     flagClearLabelForExisting: '${flagClearLabelForExisting}'
 };

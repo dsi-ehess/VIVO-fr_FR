@@ -342,7 +342,7 @@ var customForm = {
                 customForm.showAutocompleteSelection(ui.item.label, ui.item.uri, $(selectedObj));
                 if ( $(selectedObj).attr('acGroupName') == customForm.typeSelector.attr('acGroupName') ) {
                     customForm.typeSelector.val(ui.item.msType);
-                    customForm.updateMemberClass(ui.item.uri);
+                    customForm.updateMemberClass(ui.item);
                 }
             }
         });
@@ -526,7 +526,7 @@ var customForm = {
         $changeLink = $acDiv.find('a.changeSelection');
         $changeLink.click(function() {
             customForm.undoAutocompleteSelection($acDiv);
-            $("#memberClassRadioList").empty();
+            customForm.clearMemberClass();
         });
 
         if ( this.acSelectOnly ) {
@@ -534,6 +534,8 @@ var customForm = {
         	this.enableSubmit();
         }
     },
+    
+    
 
     undoAutocompleteSelection: function(selectedObj) {
         // The test is not just for efficiency: undoAutocompleteSelection empties the acSelector value,
@@ -758,19 +760,26 @@ var customForm = {
         });
         return filteredResults;
     },
-    updateMemberClass: function(individualUri, existingMemberClassValue) {
+    clearMemberClass: function() {
+        $("#memberClassRadioList").empty();
+        $("#memberClassOrg").empty();
+    },
+    
+    
+    updateMemberClass: function(individual, existingMemberClassValue) {
         $.ajax({
             url: 'individual?',
             dataType: 'json',
             data: {
-            	uri:individualUri,
+            	uri:individual.uri,
             	format: 'application/json'
             },
             complete: function(xhr, status) {
                 // Not sure why, but we need an explicit json parse here.
                 var results = $.parseJSON(xhr.responseText);
                 var filteredResults = customForm.filterMemberResults(results);
-                $("#memberClassRadioList").empty();
+                customForm.clearMemberClass();
+                $("#memberClassOrg").html($("#orgLabel").val());
                 for (var i = 0; i < filteredResults.length; i++){
                 	var memberClassValue = filteredResults[i]["@id"] 
                 	
@@ -792,5 +801,6 @@ var customForm = {
 
 $(document).ready(function() {
     customForm.onLoad();
-    customForm.updateMemberClass(customForm.existingOrgValue, customForm.memberClassValue);
+    var item = {uri:customForm.existingOrgValue};
+    customForm.updateMemberClass(item, customForm.memberClassValue);
 });
