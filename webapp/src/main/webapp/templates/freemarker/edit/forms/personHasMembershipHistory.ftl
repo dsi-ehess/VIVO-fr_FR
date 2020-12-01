@@ -203,7 +203,6 @@ var customFormData  = {
     baseHref: '${urls.base}/individual?uri=',
     blankSentinel: '${blankSentinel}',
     existingOrgValue: '${existingOrgValue}',
-    orgLabelDisplayValue : '${orgLabelDisplayValue}',
     memberClassValue: '${memberClassValue}',
     flagClearLabelForExisting: '${flagClearLabelForExisting}'
 };
