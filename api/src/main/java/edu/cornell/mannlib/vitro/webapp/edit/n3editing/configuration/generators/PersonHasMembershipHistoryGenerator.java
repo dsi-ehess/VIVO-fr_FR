@@ -36,6 +36,7 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 
 	final static String orgClass = "http://xmlns.com/foaf/0.1/Organization";
 	final static String membershipInOrgPred = vivoCore + "relates";
+	final static String memberClassInMembership = vivoCore + "relates";
 	final static String orgForMembershipPred = vivoCore + "relatedBy";
 	final static String membershipToInterval = vivoCore + "dateTimeInterval";
 	final static String intervalType = vivoCore + "DateTimeInterval";
@@ -171,8 +172,7 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 
 	final static String membershipTitleAssertion = "?membership <" + label + "> ?membershipTitle .";
 
-	final static String memberClassAssertion = "@prefix core: <" + vivoCore + "> . \n"
-			+ "?membership core:relates ?memberClass .";
+	final static String memberClassAssertion = "?membership <" + memberClassInMembership + "> ?memberClass .";
 
 	final static String membershipTypeAssertion = "?membership a ?membershipType .";
 
