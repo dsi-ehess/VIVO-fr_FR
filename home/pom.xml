@@ -2,13 +2,13 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vivoweb</groupId>
+    <groupId>fr.ehess</groupId>
     <artifactId>vivo-home-fr_FR</artifactId>
     <version>1.11.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
-        <groupId>org.vivoweb</groupId>
+        <groupId>fr.ehess</groupId>
         <artifactId>vivo-fr_FR</artifactId>
         <version>1.11.2-SNAPSHOT</version>
         <relativePath>..</relativePath>

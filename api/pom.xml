@@ -2,19 +2,19 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vivoweb</groupId>
+    <groupId>fr.ehess</groupId>
     <artifactId>vivo-api-fr_FR</artifactId>
     <version>1.11.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>org.vivoweb</groupId>
+        <groupId>fr.ehess</groupId>
         <artifactId>vivo-fr_FR</artifactId>
         <version>1.11.2-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
-    <name>Vivo for Api fr_FR</name>
+    <name>VIVO for Api fr_FR</name>
 
     <dependencies>
         <dependency>

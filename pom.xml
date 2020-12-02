@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <groupId>org.vivoweb</groupId>
+    <groupId>fr.ehess</groupId>
     <artifactId>vivo-fr_FR</artifactId>
     <version>1.11.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Vivo fr_FR</name>
-    <description>Vivo fr_FR</description>
+    <name>VIVO for fr_FR</name>
+    <description>VIVO for fr_FR</description>
     <url>http://vivoweb.org/</url>
 
     <licenses>
