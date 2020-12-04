@@ -93,7 +93,6 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 		conf.setN3Optional(Arrays.asList(n3ForNewOrg, n3ForExistingOrg, membershipTitleAssertion, n3ForStart, n3ForEnd));
 
 		conf.addNewResource("membership", DEFAULT_NS_FOR_NEW_RESOURCE);
-		conf.addNewResource("memberClass", DEFAULT_NS_FOR_NEW_RESOURCE);
 		conf.addNewResource("newOrg", DEFAULT_NS_FOR_NEW_RESOURCE);
 		conf.addNewResource("intervalNode", DEFAULT_NS_FOR_NEW_RESOURCE);
 		conf.addNewResource("startNode", DEFAULT_NS_FOR_NEW_RESOURCE);
@@ -172,7 +171,8 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 
 	final static String membershipTitleAssertion = "?membership <" + label + "> ?membershipTitle .";
 
-	final static String memberClassAssertion = "?membership <" + memberClassInMembership + "> ?memberClass .";
+	final static String memberClassAssertion = "@prefix core: <" + vivoCore + "> . \n"
+			+ "?membership <" + memberClassInMembership + "> ?memberClass .";
 
 	final static String membershipTypeAssertion = "?membership a ?membershipType .";
 

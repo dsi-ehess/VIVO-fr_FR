@@ -780,19 +780,27 @@ var customForm = {
                 var filteredResults = customForm.filterMemberResults(results);
                 customForm.clearMemberClass();
                 $("#memberClassOrg").html($("#orgLabel").val());
+                var checkedOne = false;
                 for (var i = 0; i < filteredResults.length; i++){
                 	var memberClassValue = filteredResults[i]["@id"] 
                 	
                 		
                     var radioBtn = $('<input type="radio" name="memberClass" value="' + memberClassValue + '">' + filteredResults[i]["label"]["@value"] + '</input><br/>');
                 	if (existingMemberClassValue != undefined) {
-	                	var checked = memberClassValue == existingMemberClassValue;
-	                	if (checked) {
+	                	checkedOne = memberClassValue == existingMemberClassValue;
+	                	if (checkedOne) {
 	                		radioBtn.prop("checked", true);
 	                	}
                 	}
                 	radioBtn.appendTo('#memberClassRadioList');
                 }
+                if(!checkedOne) {
+               	 var radioBtn = $('<input type="radio" name="memberClass" value=""></input><br/>');
+                    radioBtn.prop("checked", true);
+                    radioBtn.css( "display", "none" );
+                    radioBtn.appendTo('#memberClassRadioList');
+               }
+                
             }
         });
     }
