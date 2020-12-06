@@ -71,6 +71,26 @@ local:organizationForPositionConfig a :ObjectPropertyDisplayConfig ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasPositionHistoryGenerator"^^xsd:string .
 
+local:organizationForMembershipContext a :ConfigContext ;
+    :hasConfiguration local:organizationForMembershipConfig ;
+    :configContextFor vivo:relatedBy ;
+    :qualifiedByDomain <http://xmlns.com/foaf/0.1/Organization> ;
+    :qualifiedBy vivofr:MMB_0000001 .
+
+local:organizationForMembershipConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "organizationForMembership"@en-US;
+    :displayName "membership" ;
+    :listViewConfigFile "listViewConfig-organizationForMembership.xml"^^xsd:string ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
+    vitro:collateBySubclassAnnot
+              "false"^^xsd:boolean;
+    vitro:displayRankAnnot 10;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
+    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasMembershipHistoryGenerator"^^xsd:string .
+
+
 local:organizationForAssociateMemberContext a :ConfigContext ;
     :hasConfiguration local:organizationForAssociateMemberConfig ;
     :configContextFor vivo:relatedBy ;

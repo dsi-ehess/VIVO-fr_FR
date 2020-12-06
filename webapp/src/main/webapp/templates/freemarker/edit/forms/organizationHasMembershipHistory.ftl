@@ -31,7 +31,7 @@
 <#--This flag is for clearing the label field on submission for an existing object being selected from autocomplete.
 Set this flag on the input acUriReceiver where you would like this behavior to occur. -->
 <#assign flagClearLabelForExisting = "flagClearLabelForExisting" />
-
+<#assign keepLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "keepLabel")/>
 <#assign membershipTitleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "membershipTitle") />
 <#assign membershipTypeValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "membershipType") />
 <#assign existingPersonValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "existingPerson") />
@@ -90,6 +90,9 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <section id="organizationHasPositionHistory" role="region">
 
 	<form id="organizationHasPositionHistory" class="customForm noIE67" action="${submitUrl}"  role="add/edit membership history">
+	    <p>
+	       <input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabelValue == "true" >checked="checked"</#if> />${i18n().func_keepLabel}
+	    </p>
 	    <p>
 	        <label for="membershipTitle">${i18n().membership_title} ${requiredHint}</label>
 	        <input size="30" type="text" id="membershipTitle" name="membershipTitle" value="${membershipTitleValue}" />
