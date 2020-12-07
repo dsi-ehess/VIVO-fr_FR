@@ -1,54 +1,54 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
 
-	<groupId>org.vivoweb</groupId>
-	<artifactId>vivo-fr_FR</artifactId>
-	<version>1.11.2-SNAPSHOT</version>
-	<packaging>pom</packaging>
+    <groupId>fr.ehess</groupId>
+    <artifactId>vivo-fr_FR</artifactId>
+    <version>1.11.2-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<name>Vivo fr_FR</name>
-	<description>Vivo fr_FR</description>
-	<url>http://vivoweb.org/</url>
+    <name>VIVO for fr_FR</name>
+    <description>VIVO for fr_FR</description>
+    <url>http://vivoweb.org/</url>
 
-	<licenses>
-		<license>
-			<name>BSD 3-Clause License</name>
-			<url>https://raw.github.com/vivo-project/VIVO/develop/LICENSE</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>BSD 3-Clause License</name>
+            <url>https://raw.github.com/vivo-project/VIVO/develop/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-	<developers>
-		<developer>
-			<name>Berthomé Fabien</name>
-			<email>gtriggs@duraspace.org</email>
-			<organization>EHESS</organization>
-			<organizationUrl>http://ehess.fr/</organizationUrl>
-		</developer>
-	</developers>
+    <developers>
+        <developer>
+            <name>Berthomé Fabien</name>
+            <email>gtriggs@duraspace.org</email>
+            <organization>EHESS</organization>
+            <organizationUrl>http://ehess.fr/</organizationUrl>
+        </developer>
+    </developers>
 
-	<!-- The SCM repository location is used by Continuum to update against
-		when changes have occurred. This spawns a new build cycle and releases snapshots
-		into the snapshot repository below. -->
-	<scm>
-		<connection>scm:git:git@github.com:dsi-ehess/Vivo-fr_FR.git</connection>
-		<developerConnection>scm:git:git@github.com:dsi-ehess/Vivo-fr_FR.git</developerConnection>
-		<url>git@github.com:dsi-ehess/Vivo-fr_FR.git</url>
-		<tag>HEAD</tag>
-	</scm>
+    <!-- The SCM repository location is used by Continuum to update against 
+        when changes have occurred. This spawns a new build cycle and releases snapshots 
+        into the snapshot repository below. -->
+    <scm>
+        <connection>scm:git:git@github.com:dsi-ehess/Vivo-fr_FR.git</connection>
+        <developerConnection>scm:git:git@github.com:dsi-ehess/Vivo-fr_FR.git</developerConnection>
+        <url>git@github.com:dsi-ehess/Vivo-fr_FR.git</url>
+        <tag>HEAD</tag>
+    </scm>
 
-	<properties>
-		<vitro-version>${project.version}</vitro-version>
-		<vivo-dir>${basedir}</vivo-dir>
-		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
-		<build.timestamp>${maven.build.timestamp}</build.timestamp>
-		<maven-site-plugin.skip>false</maven-site-plugin.skip>
-		<stagingBase>/</stagingBase>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <properties>
+        <vitro-version>${project.version}</vitro-version>
+        <vivo-dir>${basedir}</vivo-dir>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+        <build.timestamp>${maven.build.timestamp}</build.timestamp>
+        <maven-site-plugin.skip>false</maven-site-plugin.skip>
+        <stagingBase>/</stagingBase>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -72,7 +72,7 @@
     </dependencyManagement>
 
 
-  <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -113,7 +113,8 @@
                 </configuration>
             </plugin>
 
-            <!-- Used to validate all code style rules in source code using Checkstyle -->
+            <!-- Used to validate all code style rules in source code using 
+                Checkstyle -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -121,7 +122,8 @@
                 <executions>
                     <execution>
                         <id>verify-style</id>
-                        <!-- Bind to verify so it runs after package & unit tests, but before install -->
+                        <!-- Bind to verify so it runs after package & unit 
+                            tests, but before install -->
                         <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
@@ -130,10 +132,10 @@
                 </executions>
                 <configuration>
                     <configLocation>
-                      duraspace-checkstyle/checkstyle.xml
+                        duraspace-checkstyle/checkstyle.xml
                     </configLocation>
                     <suppressionsLocation>
-                      vitro-checkstyle/checkstyle-suppressions.xml
+                        vitro-checkstyle/checkstyle-suppressions.xml
                     </suppressionsLocation>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
@@ -229,23 +231,23 @@
         </pluginManagement>
     </build>
 
-	<distributionManagement>
-		<site>
-			<id>vivo-project</id>
-			<url>https://vivo-project.github.io/</url>
-		</site>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
-	<modules>
-		<module>home</module>
-		<module>webapp</module>
-		<module>api</module>
-	</modules>
+    <distributionManagement>
+        <site>
+            <id>vivo-project</id>
+            <url>https://vivo-project.github.io/</url>
+        </site>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+    <modules>
+        <module>home</module>
+        <module>webapp</module>
+        <module>api</module>
+    </modules>
 </project>
