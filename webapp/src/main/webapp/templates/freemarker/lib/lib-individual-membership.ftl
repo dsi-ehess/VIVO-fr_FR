@@ -71,10 +71,8 @@
         <#assign localName = property.localName>
         <#if editable>
             <h2 id="${localName}" class="mainPropGroup" title="${property.publicDescription!}">${property.name?cap_first} <@p.addLink property editable /> <@p.verboseDisplay property /></h2>
-                <@propertyListMemberships property editable />
-        <#else>
-             <@propertyListMemberships property editable />
         </#if>
+         <@propertyListMemberships property editable />
     </#if>
 </#macro>
 

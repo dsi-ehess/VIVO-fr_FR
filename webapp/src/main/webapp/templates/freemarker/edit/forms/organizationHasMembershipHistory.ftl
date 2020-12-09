@@ -34,11 +34,13 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign keepLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "keepLabel")/>
 <#assign membershipTitleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "membershipTitle") />
 <#assign membershipTypeValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "membershipType") />
+<#assign memberClassValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "memberClass") />
 <#assign existingPersonValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "existingPerson") />
 <#assign personLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "personLabel") />
 <#assign personLabelDisplayValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "personLabelDisplay") />
 <#assign firstNameValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "firstName") />
 <#assign lastNameValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "lastName") />
+<#assign genericMembershipClasses = editConfiguration.pageData.genericMembershipClasses />
 
 <#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
 	<#assign submissionErrors = editSubmission.validationErrors/>
@@ -62,7 +64,9 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <#if lvf.submissionErrorExists(editSubmission, "personLabel")>
  	        ${i18n().enter_or_select_person_value}
         </#if>
-
+        <#if lvf.submissionErrorExists(editSubmission, "memberClass")>
+            ${i18n().enter_membership_memberClass_value}<br />
+        </#if>
         <#list submissionErrors?keys as errorFieldName>
         	<#if errorFieldName == "startField">
         	    <#if submissionErrors[errorFieldName]?contains("before")>
@@ -87,9 +91,9 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <@lvf.unsupportedBrowser urls.base/>
 
-<section id="organizationHasPositionHistory" role="region">
+<section id="organizationHasMembershipHistory" role="region">
 
-	<form id="organizationHasPositionHistory" class="customForm noIE67" action="${submitUrl}"  role="add/edit membership history">
+	<form id="organizationHasMembershipHistory" class="customForm noIE67" action="${submitUrl}"  role="add/edit membership history">
 	    <p>
 	       <input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabelValue == "true" >checked="checked"</#if> />${i18n().func_keepLabel}
 	    </p>
@@ -144,6 +148,32 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </#if>
     	<#--End draw elements-->
 
+        <div id="memberClassContent">
+            <div id="left">    
+                <label>${i18n().member_class_label} - </label><span id="memberClassOrg">${editConfiguration.subjectName} ${requiredHint}</span> 
+            </div>       
+            <div id="right">    
+                <div id="memberClassRadioList">
+	                <#assign memberClassOpts = editConfiguration.pageData.memberClass />
+			        <#if (memberClassOpts?keys)??>
+			            <#list memberClassOpts?keys as key>
+			                <#if memberClassValue?has_content && memberClassValue = key>
+			                    <input type="radio" name="memberClass" value="${key}" selected >${memberClassOpts[key]}</input><br/>
+			                <#else>
+			                    <input type="radio" name="memberClass" value="${key}">${memberClassOpts[key]}</input><br/>
+			                </#if>
+			            </#list>
+			        </#if>
+			        <#if !memberClassValue?has_content>
+			             <input type="radio" name="memberClass" value="">Test2</input><br/>
+                 </div>
+            </div>
+      </div>
+
+    
+        
+
+
 
         <p class="submit">
             <input type="hidden" id="editKey" name="editKey" value="${editKey}" />
@@ -160,6 +190,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 	var customFormData  = {
 	    acUrl: '${urls.base}/autocomplete?tokenize=true&stem=true',
         acTypes: {person: 'http://xmlns.com/foaf/0.1/Person'},
+        relType: 'membership',
 	    editMode: '${editMode}',
 	    defaultTypeName: 'person',
 	    baseHref: '${urls.base}/individual?uri=',
@@ -177,19 +208,24 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 </section>
 <script type="text/javascript">
 $(document).ready(function(){
-    orgHasPositionUtils.onLoad('${blankSentinel}');
+    orgHasMembershipUtils.onLoad('${blankSentinel}');
 });
 </script>
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.12.1.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customFormWithAutocomplete.css" />')}
-
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/personandorganizationHasHistoryMembership.css" />')}
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.12.1.min.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/customFormUtils.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/extensions/String.js"></script>',
-             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/orgHasPositionUtils.js"></script>',
+             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/orgHasMembershipUtils.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/jquery_plugins/jquery.bgiframe.pack.js"></script>',
              '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>')}
+             
+<#list genericMembershipClasses as genericMembershipClass>
+<input type="hidden" id="generic-membership-class-${genericMembershipClass?index}" class="generic-membership-class-indicator" value=${genericMembershipClass} />
+</#list>
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/relationship/keepRelationshipLabelFlag.js"></script>')}

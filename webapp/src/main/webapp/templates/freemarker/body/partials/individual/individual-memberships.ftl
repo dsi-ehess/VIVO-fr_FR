@@ -7,9 +7,7 @@
 <#if individual.person() >
     <#if memberships?has_content> <#-- true when the property is in the list, even if not populated (when editing) -->
         <ul id="individual-personInMembership" role="list">
-            <#if memberships?has_content>
-                <@showMembership memberships editable />
-            </#if>
+            <@showMembership memberships editable />
         </ul>
     </#if>
 </#if>

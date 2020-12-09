@@ -12,20 +12,23 @@ import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary;
 import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary.Precision;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.FirstAndLastNameValidator;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.BooleanValuesPreprocessor;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeIntervalValidationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeWithPrecisionVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.ChildVClassesWithParent;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.IndividualsViaPropertyOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.RdfTypeOptions;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.BooleanValuesPreprocessor;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
 
 public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 		implements EditConfigurationGenerator {
 
 	private static final String URI_PRECISION_NONE = Precision.NONE.uri();
 	private static final String URI_PRECISION_YEAR = Precision.YEAR.uri();
+	final static String memberClassClass = vivofr + "CLS_0000001";
+	final static String relatedByPredicate = vivoCore + "relatedBy";
+	
 	
 	final static String[] genericMembershipClasses = { vivofr + "MMB_0000002", vivofr + "MMB_0000003",
 			vivofr + "MMB_0000004", vivofr + "MMB_0000005", vivofr + "MMB_0000006" };
@@ -46,8 +49,11 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 	private static final String QUERY_EXISTING_PERSON = ""
 			+ "PREFIX core: <http://vivoweb.org/ontology/core#> \n"
 			+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
+			+ "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n"
 			+ "SELECT ?existingPerson WHERE { \n"
-			+ "  ?membership core:relates ?existingPerson .}";
+			+ "  ?membership core:relates ?existingPerson . \n"
+			+ "  ?existingPerson a foaf:Person . \n"
+			+ "}";
 
 	final static String existingKeepLabelQuery = "SELECT ?keepLabel WHERE { \n" + "optional {\n" + "?membership <"
 			+ keepLabelPred + "> ?keepLabelSrc . " + "}\n" + "bind(coalesce(?keepLabelSrc, 'true') as ?keepLabel) \n"
@@ -56,9 +62,11 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 	
 	private static final String QUERY_EXISTING_PERSON_LABEL = ""
 			+ "PREFIX core: <http://vivoweb.org/ontology/core#> \n"
+			+ "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n"
 			+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
 			+ "SELECT ?existingPersonLabel WHERE { \n"
 			+ "  ?membership core:relates ?existingPerson . \n"
+    		+ "  ?existingPerson a foaf:Person . \n"
 			+ "  ?existingPerson rdfs:label ?existingPersonLabel . }";
 
 	private static final String QUERY_EXISTING_INTERVAL_NODE = ""
@@ -119,6 +127,14 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 			+ "  ?endNode a core:DateTimeValue ; \n"
 			+ "      core:dateTimePrecision ?existingEndPrecision . }";
 
+	final static String existingMemberClassQuery = ""
+			+ "PREFIX core: <http://vivoweb.org/ontology/core#> \n"
+			+ "PREFIX vivofr: <http://data.ehess.fr/ontology/vivo-fr#> \n"
+			+ "SELECT ?existingMemberClass WHERE { \n" 
+			+ "  ?membership core:relates ?existingMemberClass . \n"
+			+ "  ?existingMemberClass a vivofr:CLS_0000001 . }";
+	
+	
 	private static final String N3_NEW_MEMBERSHIP = ""
 			+ "@prefix core: <http://vivoweb.org/ontology/core#> . \n"
 			+ "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . \n"
@@ -126,8 +142,14 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 			+ "?membership a core:Membership . \n"
 			+ "?membership a  ?membershipType . \n"
 			+ "?membership rdfs:label ?membershipTitle . \n"
+			+ "?membership core:relates ?memberClass . \n"
 			+ "?membership core:relates ?organization . ";
 
+	
+	final static String memberClassAssertion = ""
+			+ "@prefix core: <http://vivoweb.org/ontology/core#> . \n"
+			+ "?membership core:relates ?memberClass .";
+	
 	final static String keepLabelAssertion = "?membership <" + keepLabelPred + "> ?keepLabel .";
 	
 	
@@ -160,7 +182,9 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 
     private static final String N3_EXISTING_PERSON = ""
 			+ "@prefix core: <http://vivoweb.org/ontology/core#> . \n"
+			+ "@prefix foaf: <http://xmlns.com/foaf/0.1/> . \n"
         	+ "?membership core:relates ?existingPerson . \n"
+    		+ "?existingPerson a foaf:Person . \n"
         	+ "?existingPerson core:relatedBy ?membership . \n";
 
 	private static final String N3_NEW_START_NODE = ""
@@ -196,7 +220,7 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 
 		conf.setTemplate("organizationHasMembershipHistory.ftl");
 
-		conf.setN3Required(Arrays.asList(N3_NEW_MEMBERSHIP, keepLabelAssertion));
+		conf.setN3Required(Arrays.asList(N3_NEW_MEMBERSHIP, memberClassAssertion, keepLabelAssertion));
 		conf.setN3Optional(Arrays.asList(N3_NEW_PERSON, N3_EXISTING_PERSON, N3_NEW_START_NODE, N3_NEW_END_NODE, N3_NEW_FIRST_NAME, N3_NEW_LAST_NAME));
 
 		conf.addNewResource("membership", DEFAULT_NS_FOR_NEW_RESOURCE);
@@ -207,14 +231,16 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 		conf.addNewResource("startNode", DEFAULT_NS_FOR_NEW_RESOURCE);
 		conf.addNewResource("endNode", DEFAULT_NS_FOR_NEW_RESOURCE);
 
-		conf.setUrisOnform(Arrays.asList("existingPerson", "membership", "membershipType"));
+		conf.setUrisOnform(Arrays.asList("existingPerson", "membership", "membershipType", "memberClass"));
 		conf.addSparqlForExistingUris("membershipType",
 				QUERY_EXISTING_MEMBERSHIP_TYPE);
+		conf.addSparqlForExistingUris("memberClass", existingMemberClassQuery);
+		
 		conf.addSparqlForExistingUris("intervalNode",
 				QUERY_EXISTING_INTERVAL_NODE);
 		conf.addSparqlForExistingUris("startNode", QUERY_EXISTING_START_NODE);
 		conf.addSparqlForExistingUris("endNode", QUERY_EXISTING_END_NODE);
-
+		
 		conf.setLiteralsOnForm(Arrays.asList("membershipTitle", "personLabelDisplay", "personLabel", "firstName", "lastName"));
 		conf.addSparqlForExistingLiteral("membershipTitle",
 				QUERY_EXISTING_MEMBERSHIP_TITLE);
@@ -236,6 +262,7 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 
 		
 		conf.addField(new FieldVTwo().setName("keepLabel").setRangeDatatypeUri(XSD.xboolean.toString()));
+		
 		
 		conf.addField(new FieldVTwo()
 				.setName("membershipType")
@@ -280,7 +307,12 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 		conf.addValidator(new DateTimeIntervalValidationVTwo("startField",
 				"endField"));
 
+		conf.addField(new FieldVTwo().setName("memberClass").setValidators(list("nonempty"))
+				.setOptions(new IndividualsViaPropertyOptions(conf.getSubjectUri(), relatedByPredicate, memberClassClass)));
+		
+		
 		conf.addEditSubmissionPreprocessor(new BooleanValuesPreprocessor(conf));
+		conf.addFormSpecificData("genericMembershipClasses", genericMembershipClasses); 
 		prepare(vreq, conf);
 		return conf;
 	}
