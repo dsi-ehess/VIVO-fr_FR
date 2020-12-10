@@ -165,7 +165,8 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 	}
 
 	final static String n3ForNewMembership = "@prefix core: <" + vivoCore + "> . \n"
-			+ "?person core:relatedBy  ?membership . \n" + "?membership a  ?membershipType . \n"
+			+ "?person core:relatedBy  ?membership . \n" 
+			+ "?membership a  ?membershipType . \n"
 	        + "?membership <" + keepLabelPred + ">  ?keepLabel . \n"
 			+ "?membership core:relates ?person ; ";
 

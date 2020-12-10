@@ -71,105 +71,21 @@ local:organizationForPositionConfig a :ObjectPropertyDisplayConfig ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasPositionHistoryGenerator"^^xsd:string .
 
-local:organizationForAssociateMemberContext a :ConfigContext ;
-    :hasConfiguration local:organizationForAssociateMemberConfig ;
+local:organizationForMembershipContext a :ConfigContext ;
+    :hasConfiguration local:organizationForMembershipConfig ;
     :configContextFor vivo:relatedBy ;
     :qualifiedByDomain <http://xmlns.com/foaf/0.1/Organization> ;
-    :qualifiedBy ehess:AppartenanceATitreDAssocie .
+    :qualifiedBy vivofr:MMB_0000001 .
 
-local:organizationForAssociateMemberConfig a :ObjectPropertyDisplayConfig ;
-    rdfs:label "organizationForAssociateMember"@en-US;
-    :displayName "associate member" ;
-    :listViewConfigFile "listViewConfig-organizationForStatutoryMember.xml"^^xsd:string ;
+local:organizationForMembershipConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "organizationForMembership"@en-US;
+    :displayName "membership" ;
+    :listViewConfigFile "listViewConfig-organizationForMembership.xml"^^xsd:string ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
     vitro:collateBySubclassAnnot
               "false"^^xsd:boolean;
     vitro:displayRankAnnot 10;
-    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:selfEditor ;
-    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:editor ;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
-    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasAssociateMemberHistoryGenerator"^^xsd:string .
-
-local:organizationForStatutoryMemberContext a :ConfigContext ;
-    :hasConfiguration local:organizationForStatutoryMemberConfig ;
-    :configContextFor vivo:relatedBy ;
-    :qualifiedByDomain <http://xmlns.com/foaf/0.1/Organization> ;
-    :qualifiedBy ehess:AppartenanceStatutaire .
-
-local:organizationForStatutoryMemberConfig a :ObjectPropertyDisplayConfig ;
-    rdfs:label "organizationForStatutoryMember"@en-US;
-    :displayName "membre statutaire"@fr-FR, "statutory member"@en-US ;
-    :listViewConfigFile "listViewConfig-organizationForStatutoryMember.xml"^^xsd:string ;
-    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
-    vitro:collateBySubclassAnnot
-              "false"^^xsd:boolean;
-    vitro:displayRankAnnot 10;
-    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:selfEditor ;
-    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:editor ;
-    vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
-    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasStatutoryMemberHistoryGenerator"^^xsd:string .
-
-local:organizationForMemberContext a :ConfigContext ;
-    :hasConfiguration local:organizationForMemberConfig ;
-    :configContextFor vivo:relatedBy ;
-    :qualifiedByDomain <http://data.ehess.fr/ontology/vivo#ComposanteDUnite> ;
-    :qualifiedBy ehess:Appartenance .
-
-local:organizationForMemberConfig a :ObjectPropertyDisplayConfig ;
-    rdfs:label "organizationForMember"@en-US;
-    :displayName "member" ;
-    :listViewConfigFile "listViewConfig-organizationForMember.xml"^^xsd:string ;
-    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
-    vitro:collateBySubclassAnnot
-              "false"^^xsd:boolean;
-    vitro:displayRankAnnot 10;
-    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:selfEditor ;
-    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:editor ;
-    vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
-    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasMemberHistoryGenerator"^^xsd:string .
-
-
-
-
-
-
-
-
-
-local:organizationForPostDocMemberContext a :ConfigContext ;
-    :hasConfiguration local:organizationForPostDocMemberConfig ;
-    :configContextFor vivo:relatedBy ;
-    :qualifiedByDomain <http://xmlns.com/foaf/0.1/Organization> ;
-    :qualifiedBy ehess:AppartenanceEnTantQuePostDoctorant .
-    
-local:organizationForPostDocMemberConfig a :ObjectPropertyDisplayConfig ;
-    rdfs:label "organizationForPostDocMember"@en-US;
-    :displayName "postdoctorants"@fr-FR, "postdoc members"@en-US ;
-    :listViewConfigFile "listViewConfig-organizationForStatutoryMember.xml"^^xsd:string ;
-    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
-    vitro:collateBySubclassAnnot
-              "false"^^xsd:boolean;
-    vitro:displayRankAnnot 10;
-    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:selfEditor ;
-    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:editor ;
-    vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
-    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasPostdocMemberHistoryGenerator"^^xsd:string .
-
-local:organizationForPhdStudentMemberContext a :ConfigContext ;
-    :hasConfiguration local:organizationForPhdStudentMemberConfig ;
-    :configContextFor vivo:relatedBy ;
-    :qualifiedByDomain <http://xmlns.com/foaf/0.1/Organization> ;
-    :qualifiedBy ehess:AppartenanceEnTantQueDoctorant .
-
-local:organizationForPhdStudentMemberConfig a :ObjectPropertyDisplayConfig ;
-    rdfs:label "organizationForPhdStudentMember"@en-US;
-    :displayName "doctorants"@fr-FR, "PHD students members"@en-US ;
-    :listViewConfigFile "listViewConfig-organizationForPhdStudentMember.xml"^^xsd:string ;
-    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> ;
-    vitro:collateBySubclassAnnot
-              "false"^^xsd:boolean;
-    vitro:displayRankAnnot 10;
-    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:selfEditor ;
-    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:editor ;
-    vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
-    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasPhdStudentMemberHistoryGenerator"^^xsd:string .
+    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.OrganizationHasMembershipHistoryGenerator"^^xsd:string .

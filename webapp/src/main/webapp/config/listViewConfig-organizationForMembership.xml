@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $This file is distributed under the terms of the license in /doc/license.txt$ -->
+
+<!-- See guidelines at https://wiki.duraspace.org/x/eYXVAw -->
+<list-view-config>
+    <query-select>
+        PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+        PREFIX core: &lt;http://vivoweb.org/ontology/core#&gt;
+        PREFIX vitro: &lt;http://vitro.mannlib.cornell.edu/ns/vitro/0.7#&gt;
+        PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+        PREFIX fn:   &lt;http://www.w3.org/2005/xpath-functions#&gt;
+        PREFIX vivofr: &lt;http://data.ehess.fr/ontology/vivo-fr#&gt;
+        
+        SELECT DISTINCT <collated> ?subclass </collated>
+            ?membership
+            ?membershipTitle
+            ?membershipLabel
+            ?keepLabel
+            ?person ?personName
+            ?dateTimeStart ?dateTimeEnd
+            ?hideThis
+        WHERE
+        {
+            ?subject ?property ?membership
+            OPTIONAL
+            {
+                ?membership core:relates ?person .
+                ?person a foaf:Person .
+                ?person rdfs:label ?personName .
+            }
+            OPTIONAL
+            {
+                ?membership vitro:mostSpecificType ?subclass .
+                ?subclass rdfs:label ?membershipTitle .
+            }
+        <collated>
+            OPTIONAL
+            {
+                ?membership vitro:mostSpecificType ?subclass .
+                OPTIONAL
+                {
+                    ?subclass vitro:displayRankAnnot ?displayRank .
+                }
+            }
+        </collated>
+            OPTIONAL { ?membership rdfs:label ?membershipLabel }
+            OPTIONAL { ?membership vivofr:PRP_0000006 ?keepLabel }
+            OPTIONAL { ?membership core:hideFromDisplay ?hideThis }
+            OPTIONAL
+            {
+                ?membership core:dateTimeInterval ?dateTimeInterval .
+                ?dateTimeInterval core:start ?dateTimeStartValue .
+                ?dateTimeStartValue core:dateTime ?dateTimeStart
+            }
+            OPTIONAL
+            {
+                ?membership core:dateTimeInterval ?dateTimeInterval .
+                ?dateTimeInterval core:end ?dateTimeEndValue .
+                ?dateTimeEndValue core:dateTime ?dateTimeEnd
+            }
+            # Get current memberships only: end date is either null or not in the past
+            FILTER ( !bound(?dateTimeEnd) || substr(str(?dateTimeEnd), 1, 4) &gt;= substr(str(now()), 1, 4) )
+        <critical-data-required>
+            FILTER ( bound(?person) )
+        </critical-data-required>
+        <collated>FILTER ( ?displayRank &lt; 500 )</collated>
+        } ORDER BY <collated> ?subclass </collated> (fn:lower-case(?personName))
+    </query-select>
+
+    <query-construct>
+        PREFIX core: &lt;http://vivoweb.org/ontology/core#&gt;
+        PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+        PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+        PREFIX vitro: &lt;http://vitro.mannlib.cornell.edu/ns/vitro/0.7#&gt;
+        PREFIX vivofr: &lt;http://data.ehess.fr/ontology/vivo-fr#&gt;
+
+          CONSTRUCT
+          {
+              ?subject ?property ?membership .
+        
+              ?membership a vivofr:MMB_0000001 .
+              ?membership rdfs:label ?membershipLabel .
+              ?membership core:hideFromDisplay ?hideThis .
+        
+              ?membership vitro:mostSpecificType ?subclass .
+              ?subclass vitro:displayRankAnnot ?displayRank .
+              ?subclass rdfs:label ?membershipTitle .
+        
+              ?membership core:dateTimeInterval ?dateTimeInterval .
+        
+              ?dateTimeInterval core:start ?dateTimeStartValue .
+              ?dateTimeStartValue core:dateTime ?dateTimeStart .
+        
+              ?dateTimeInterval core:end ?dateTimeEndValue .
+              ?dateTimeEndValue core:dateTime ?dateTimeEnd .
+        
+              ?membership core:relates ?person .
+              ?person a foaf:Person .
+              ?person rdfs:label ?personName .
+        
+              ?membership vivofr:PRP_0000006 ?keepLabel .
+          }
+          WHERE
+          {
+              {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership core:relates ?org .
+                  ?org a core:ResearchOrganization.
+              }
+              UNION
+              {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership core:relates ?org .
+                  ?org a core:ResearchOrganization.
+                  ?membership core:hideFromDisplay ?hideThis .
+              }
+              UNION
+              {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership core:relates ?org .
+                  ?org a core:ResearchOrganization.
+                  ?membership vitro:mostSpecificType ?subclass .
+              }
+              UNION
+              {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership core:relates ?org .
+                  ?org a core:ResearchOrganization.
+                  ?membership vitro:mostSpecificType ?subclass .
+                  ?subclass vitro:displayRankAnnot ?displayRank .
+              }
+              UNION
+              {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership core:relates ?org .
+                  ?org a core:ResearchOrganization.
+                  ?membership rdfs:label ?membershipLabel .
+              }
+              UNION {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership vitro:mostSpecificType ?subclass .
+                  ?subclass rdfs:subClassOf vivofr:MMB_0000001 .
+                  ?subclass rdfs:label ?membershipTitle .
+              }    
+              UNION
+              {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership core:relates ?org .
+                  ?org a core:ResearchOrganization.
+                  ?membership core:dateTimeInterval ?dateTimeInterval .
+                  ?dateTimeInterval core:start ?dateTimeStartValue .
+                  ?dateTimeStartValue core:dateTime ?dateTimeStart .
+              }
+              UNION
+              {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership core:relates ?org .
+                  ?org a core:ResearchOrganization.
+                  ?membership core:dateTimeInterval ?dateTimeInterval .
+                  ?dateTimeInterval core:end ?dateTimeEndValue .
+                  ?dateTimeEndValue core:dateTime ?dateTimeEnd .
+              }
+              UNION
+              {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership core:relates ?org .
+                  ?org a core:ResearchOrganization.
+                  ?membership core:relates ?person .
+                  ?person a foaf:Person .
+                  ?person rdfs:label ?personName .
+              }
+              UNION {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership vivofr:PRP_0000006 ?keepLabel .
+              }
+          }
+    </query-construct>
+
+    <template>propStatement-organizationForMembership.ftl</template>
+</list-view-config>

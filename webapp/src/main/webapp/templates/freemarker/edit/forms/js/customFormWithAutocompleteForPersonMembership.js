@@ -787,8 +787,8 @@ var customForm = {
                 		
                     var radioBtn = $('<input type="radio" name="memberClass" value="' + memberClassValue + '">' + filteredResults[i]["label"]["@value"] + '</input><br/>');
                 	if (existingMemberClassValue != undefined) {
-	                	checkedOne = memberClassValue == existingMemberClassValue;
-	                	if (checkedOne) {
+	                	if (memberClassValue == existingMemberClassValue) {
+	                		checkedOne = true;
 	                		radioBtn.prop("checked", true);
 	                	}
                 	}
