@@ -17,7 +17,6 @@
     
     <#local posTitle>
     <#--HACK EHESS rename variable : membershipTitle does not exist, poisition lab il the rdfs lable of the poition, Redmine 1193-->
-        <#--<span itemprop="jobTitle">${statement.membershipTitle!statement.hrJobTitle!}</span>-->
         <span itemprop="jobTitle">${statement.membershipTitle!i18n().unknown_membership}</span>
     </#local>
     <#local linkedIndividual>
@@ -30,16 +29,16 @@
             <a href="${profileUrl(statement.uri("membership"))}" title="${i18n().missing_organization}">${i18n().missing_organization}</a>
         </#if>
     </#local>
-    <#-- The sparql query returns both the org's parent (middleOrg) and grandparent (outerOrg).
+    <#-- The sparql query returns both the org's parent (parentOrg) and grandparent (outerOrg).
          For now, we are only displaying the parent in the list view. -->
-    <#local middleOrganization>
-        <#if statement.middleOrg??>
+    <#local parentOrganization>
+        <#if statement.parentOrg??>
             <span itemprop="worksFor" itemscope itemtype="http://schema.org/Organization">
-                <a href="${profileUrl(statement.uri("middleOrg"))}" title="${i18n().middle_organization}"><span itemprop="name">${statement.middleOrgName!}</span></a>
+                <a href="${profileUrl(statement.uri("parentOrg"))}" title="${i18n().parent_organization}"><span itemprop="name">${statement.parentOrgName!}</span></a>
             </span>
         </#if>
     </#local>
     
-    <@s.join [linkedIndividual, middleOrganization! ]/>  <@dt.yearIntervalSpan "${statement.dateTimeStart!}" "${statement.dateTimeEnd!}" />
+    ${linkedIndividual} <@dt.yearIntervalSpan "${statement.dateTimeStart!}" "${statement.dateTimeEnd!}" />
 
 </#macro>
