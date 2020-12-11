@@ -165,7 +165,8 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 			            </#list>
 			        </#if>
 			        <#if !memberClassValue?has_content>
-			             <input type="radio" name="memberClass" value="">Test2</input><br/>
+			             <input type="hidden" name="memberClass" value=""></input><br/>
+			        </#if>
                  </div>
             </div>
       </div>
