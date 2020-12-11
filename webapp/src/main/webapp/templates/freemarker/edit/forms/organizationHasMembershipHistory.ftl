@@ -25,7 +25,7 @@
 
 <#assign blankSentinel = "" />
 <#if editConfigurationConstants?has_content && editConfigurationConstants?keys?seq_contains("BLANK_SENTINEL")>
-	<#assign blankSentinel = editConfigurationConstants["BLANK_SENTINEL"] />
+    <#assign blankSentinel = editConfigurationConstants["BLANK_SENTINEL"] />
 </#if>
 
 <#--This flag is for clearing the label field on submission for an existing object being selected from autocomplete.
@@ -43,7 +43,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign genericMembershipClasses = editConfiguration.pageData.genericMembershipClasses />
 
 <#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
-	<#assign submissionErrors = editSubmission.validationErrors/>
+    <#assign submissionErrors = editSubmission.validationErrors/>
 </#if>
 
 <h2>${titleVerb}&nbsp;${i18n().membership_history_entry_for} ${editConfiguration.subjectName}</h2>
@@ -62,28 +62,28 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
             ${i18n().enter_membership_type_value}<br />
         </#if>
         <#if lvf.submissionErrorExists(editSubmission, "personLabel")>
- 	        ${i18n().enter_or_select_person_value}
+            ${i18n().enter_or_select_person_value}
         </#if>
         <#if lvf.submissionErrorExists(editSubmission, "memberClass")>
             ${i18n().enter_membership_memberClass_value}<br />
         </#if>
         <#list submissionErrors?keys as errorFieldName>
-        	<#if errorFieldName == "startField">
-        	    <#if submissionErrors[errorFieldName]?contains("before")>
-        	        ${i18n().start_year_must_precede_end}
-        	    <#else>
-        	        ${submissionErrors[errorFieldName]}
-        	    </#if>
+            <#if errorFieldName == "startField">
+                <#if submissionErrors[errorFieldName]?contains("before")>
+                    ${i18n().start_year_must_precede_end}
+                <#else>
+                    ${submissionErrors[errorFieldName]}
+                </#if>
 
-        	<#elseif errorFieldName == "endField">
-    	        <#if submissionErrors[errorFieldName]?contains("after")>
-    	            ${i18n().end_year_must_be_later}
-    	        <#else>
-    	            ${submissionErrors[errorFieldName]}
-    	        </#if>
-	        <#else>
-    	        ${submissionErrors[errorFieldName]}
-	        </#if><br />
+            <#elseif errorFieldName == "endField">
+                <#if submissionErrors[errorFieldName]?contains("after")>
+                    ${i18n().end_year_must_be_later}
+                <#else>
+                    ${submissionErrors[errorFieldName]}
+                </#if>
+            <#else>
+                ${submissionErrors[errorFieldName]}
+            </#if><br />
         </#list>
         </p>
     </section>
@@ -93,60 +93,60 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <section id="organizationHasMembershipHistory" role="region">
 
-	<form id="organizationHasMembershipHistory" class="customForm noIE67" action="${submitUrl}"  role="add/edit membership history">
-	    <p>
-	       <input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabelValue == "true" >checked="checked"</#if> />${i18n().func_keepLabel}
-	    </p>
-	    <p>
-	        <label for="membershipTitle">${i18n().membership_title} ${requiredHint}</label>
-	        <input size="30" type="text" id="membershipTitle" name="membershipTitle" value="${membershipTitleValue}" />
-	    </p>
+    <form id="organizationHasMembershipHistory" class="customForm noIE67" action="${submitUrl}"  role="add/edit membership history">
+        <p>
+           <input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabelValue == "true" >checked="checked"</#if> />${i18n().func_keepLabel}
+        </p>
+        <p>
+            <label for="membershipTitle">${i18n().membership_title} ${requiredHint}</label>
+            <input size="30" type="text" id="membershipTitle" name="membershipTitle" value="${membershipTitleValue}" />
+        </p>
 
-	    <label for="membershipType">${i18n().membership_type} ${requiredHint}</label>
+        <label for="membershipType">${i18n().membership_type} ${requiredHint}</label>
         <#assign membershipTypeOpts = editConfiguration.pageData.membershipType />
-	    <select id="membershipType" name="membershipType">
-	        <option value="" selected="selected">${i18n().select_one}</option>
-	        <#if (membershipTypeOpts?keys)??>
-		        <#list membershipTypeOpts?keys as key>
+        <select id="membershipType" name="membershipType">
+            <option value="" selected="selected">${i18n().select_one}</option>
+            <#if (membershipTypeOpts?keys)??>
+                <#list membershipTypeOpts?keys as key>
                     <#if membershipTypeValue?has_content && membershipTypeValue = key>
                         <option value="${key}" selected >${membershipTypeOpts[key]}</option>
                     <#else>
                         <option value="${key}">${membershipTypeOpts[key]}</option>
                     </#if>
                 </#list>
-	        </#if>
-	    </select>
-  	    <p>
-	        <label for="relatedIndLabel">${i18n().person_capitalized}: ${i18n().last_name} ${requiredHint}<span style="padding-left:322px">${i18n().first_name}  ${requiredHint}</span></label>
-	            <input class="acSelector" size="50"  type="text" id="person" name="personLabel" acGroupName="person" value="${personLabelValue}" >
+            </#if>
+        </select>
+        <p>
+            <label for="relatedIndLabel">${i18n().person_capitalized}: ${i18n().last_name} ${requiredHint}<span style="padding-left:322px">${i18n().first_name}  ${requiredHint}</span></label>
+                <input class="acSelector" size="50"  type="text" id="person" name="personLabel" acGroupName="person" value="${personLabelValue}" >
                 <input  size="30"  type="text" id="firstName" name="firstName" value="${firstNameValue}" ><br />
                 <input type="hidden" id="lastName" name="lastName" value="">
                 <input class="display" type="hidden" acGroupName="person" id="personDisplay" name="personLabelDisplay" value="${personLabelDisplayValue}" >
-	    </p>
+        </p>
 
-	    <div class="acSelection" id="personAcSelection" acGroupName="person">
-	        <p class="inline">
-	            <label>${i18n().selected_person}:</label>
-	            <span class="acSelectionInfo"></span>
+        <div class="acSelection" id="personAcSelection" acGroupName="person">
+            <p class="inline">
+                <label>${i18n().selected_person}:</label>
+                <span class="acSelectionInfo"></span>
                 <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
                 <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
-	        </p>
-	        <input class="acUriReceiver" type="hidden" id="personUri" name="existingPerson" value="${existingPersonValue}" ${flagClearLabelForExisting}="true" />
-	    </div>
+            </p>
+            <input class="acUriReceiver" type="hidden" id="personUri" name="existingPerson" value="${existingPersonValue}" ${flagClearLabelForExisting}="true" />
+        </div>
 
         <br />
         <#--Need to draw edit elements for dates here-->
         <#assign htmlForElements = editConfiguration.pageData.htmlForElements />
         <#if htmlForElements?keys?seq_contains("startField")>
-  	        <label class="dateTime" for="startField">${i18n().start_capitalized}</label>
-  			${htmlForElements["startField"]} ${yearHint}
+            <label class="dateTime" for="startField">${i18n().start_capitalized}</label>
+            ${htmlForElements["startField"]} ${yearHint}
         </#if>
         <br/>
         <#if htmlForElements?keys?seq_contains("endField")>
-  			<label class="dateTime" for="endField">${i18n().end_capitalized}</label>
-  		 	${htmlForElements["endField"]} ${yearHint}
+            <label class="dateTime" for="endField">${i18n().end_capitalized}</label>
+            ${htmlForElements["endField"]} ${yearHint}
         </#if>
-    	<#--End draw elements-->
+        <#--End draw elements-->
 
         <div id="memberClassContent">
             <div id="left">    
@@ -154,19 +154,19 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
             </div>       
             <div id="right">    
                 <div id="memberClassRadioList">
-	                <#assign memberClassOpts = editConfiguration.pageData.memberClass />
-			        <#if (memberClassOpts?keys)??>
-			            <#list memberClassOpts?keys as key>
-			                <#if memberClassValue?has_content && memberClassValue = key>
-			                    <input type="radio" name="memberClass" value="${key}" selected >${memberClassOpts[key]}</input><br/>
-			                <#else>
-			                    <input type="radio" name="memberClass" value="${key}">${memberClassOpts[key]}</input><br/>
-			                </#if>
-			            </#list>
-			        </#if>
-			        <#if !memberClassValue?has_content>
-			             <input type="hidden" name="memberClass" value=""></input><br/>
-			        </#if>
+                    <#assign memberClassOpts = editConfiguration.pageData.memberClass />
+                    <#if (memberClassOpts?keys)??>
+                        <#list memberClassOpts?keys as key>
+                            <#if memberClassValue?has_content && (memberClassValue == key)>
+                                <input type="radio" name="memberClass" value="${key}" checked="true">${memberClassOpts[key]}</input><br/>
+                            <#else>
+                                <input type="radio" name="memberClass" value="${key}">${memberClassOpts[key]}</input><br/>
+                            </#if>
+                        </#list>
+                    </#if>
+                    <#if !memberClassValue??>
+                         <input type="hidden" name="memberClass" value=""></input><br/>
+                    </#if>
                  </div>
             </div>
       </div>
@@ -182,24 +182,24 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
             <span class="or"> ${i18n().or} </span><a class="cancel" href="${cancelUrl}" title="${i18n().cancel_title}">${i18n().cancel_link}</a>
         </p>
 
-	    <p id="requiredLegend" class="requiredHint">* ${i18n().required_fields}</p>
+        <p id="requiredLegend" class="requiredHint">* ${i18n().required_fields}</p>
 
-	</form>
+    </form>
 
 
-	<script type="text/javascript">
-	var customFormData  = {
-	    acUrl: '${urls.base}/autocomplete?tokenize=true&stem=true',
+    <script type="text/javascript">
+    var customFormData  = {
+        acUrl: '${urls.base}/autocomplete?tokenize=true&stem=true',
         acTypes: {person: 'http://xmlns.com/foaf/0.1/Person'},
         relType: 'membership',
-	    editMode: '${editMode}',
-	    defaultTypeName: 'person',
-	    baseHref: '${urls.base}/individual?uri=',
+        editMode: '${editMode}',
+        defaultTypeName: 'person',
+        baseHref: '${urls.base}/individual?uri=',
         blankSentinel: '${blankSentinel}',
         flagClearLabelForExisting: '${flagClearLabelForExisting}'
 
-	};
-	var i18nStrings = {
+    };
+    var i18nStrings = {
         selectAnExisting: '${i18n().select_an_existing?js_string}',
         orCreateNewOne: '${i18n().or_create_new_one?js_string}',
         selectedString: '${i18n().selected?js_string}'
