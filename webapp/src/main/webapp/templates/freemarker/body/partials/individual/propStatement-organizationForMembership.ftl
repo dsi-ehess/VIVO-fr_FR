@@ -24,7 +24,7 @@
         $('span.hideThis').parent().remove();
     </script>
 <#else>
-    <#assign membershipTitleLabel = memfunc.computeStatementLabel(statement)>
+    <#assign membershipTitleLabel = memfunc.computeStatementLabelOrg(statement)>
     
     <#local linkedIndividual>
         <#if statement.person??>

@@ -16,12 +16,10 @@
             ?membership
             ?membershipTitle
             ?membershipLabel
-            ?hrJobTitle
             ?keepLabel
             ?rank
             ?org ?orgName
-            ?middleOrg ?middleOrgName
-            ?outerOrg ?outerOrgName
+            ?parentOrg ?parentOrgName
             ?dateTimeStart ?dateTimeEnd
         WHERE
         {
@@ -45,8 +43,8 @@
                 ?membership core:relates ?org .
                 ?org a foaf:Organization .
                 ?org rdfs:label ?orgName .
-                ?middleOrg obo:BFO_0000050 ?org .
-                ?middleOrg rdfs:label ?middleOrgName .
+                ?org obo:BFO_0000050 ?parentOrg .
+                ?parentOrg rdfs:label ?parentOrgName .
             }
             OPTIONAL {
                 <precise-subquery>?subject ?property ?membership .
@@ -56,24 +54,9 @@
             OPTIONAL {
                 <precise-subquery>?subject ?property ?membership .
                 ?membership a vivofr:MMB_0000001 .</precise-subquery>
-                ?membership core:relates ?org .
-                ?org a foaf:Organization .
-                ?org rdfs:label ?orgName .
-                ?org obo:BFO_0000050 ?middleOrg .
-                ?middleOrg obo:BFO_0000050 ?outerOrg .
-                ?outerOrg rdfs:label ?outerOrgName .
-            }
-            OPTIONAL {
-                <precise-subquery>?subject ?property ?membership .
-                ?membership a vivofr:MMB_0000001 .</precise-subquery>
                 ?membership vitro:mostSpecificType ?subclass .
                 ?subclass rdfs:subClassOf vivofr:MMB_0000001 .
                 ?subclass rdfs:label ?membershipTitle .
-            }
-            OPTIONAL {
-                <precise-subquery>?subject ?property ?membership .
-                ?membership a vivofr:MMB_0000001 .</precise-subquery>
-                ?membership core:hrJobTitle ?hrJobTitle .
             }
             OPTIONAL {
                 <precise-subquery>?subject ?property ?membership .
