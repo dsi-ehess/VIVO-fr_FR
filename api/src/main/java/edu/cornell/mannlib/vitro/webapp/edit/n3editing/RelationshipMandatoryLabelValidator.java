@@ -22,14 +22,22 @@ public class RelationshipMandatoryLabelValidator implements N3ValidatorVTwo {
 
 	private String positionField;
 	private String labelField;
-
 	private List<String> preciseRelationClasses;
-
+	private String errorMessage;
+	
 	public RelationshipMandatoryLabelValidator(String positionField, String labelField,
 			String[] preciseRelationClasses) {
 		this.positionField = positionField;
 		this.labelField = labelField;
 		this.preciseRelationClasses = Arrays.asList(preciseRelationClasses);
+	}
+	
+	public RelationshipMandatoryLabelValidator(String positionField, String labelField,
+			String[] preciseRelationClasses,  String errorMessage) {
+		this.positionField = positionField;
+		this.labelField = labelField;
+		this.preciseRelationClasses = Arrays.asList(preciseRelationClasses);
+		this.errorMessage = errorMessage;
 	}
 
 	@Override
@@ -63,7 +71,7 @@ public class RelationshipMandatoryLabelValidator implements N3ValidatorVTwo {
 		if (preciseRelationClasses.contains(selectedRelationship) && (KEEP_LABEL_FIELD_VALUE_ON).equals(keepLabelFlag)) {
 			return null;
 		} else {
-			errors.put(labelField, MISSING_LABEL_ERROR);
+			errors.put(labelField, errorMessage != null? errorMessage: MISSING_LABEL_ERROR);
 		}
 
 		return errors.size() != 0 ? errors : null;

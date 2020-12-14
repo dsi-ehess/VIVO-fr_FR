@@ -12,6 +12,7 @@ import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary;
 import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary.Precision;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.FirstAndLastNameValidator;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.RelationshipMandatoryLabelValidator;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeIntervalValidationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeWithPrecisionVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
@@ -20,6 +21,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.IndividualsVi
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.RdfTypeOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.BooleanValuesPreprocessor;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
+import edu.cornell.mannlib.vitro.webapp.i18n.I18n;
 
 public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 		implements EditConfigurationGenerator {
@@ -139,7 +141,6 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 			+ "@prefix core: <http://vivoweb.org/ontology/core#> . \n"
 			+ "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . \n"
 			+ "?organization core:relatedBy ?membership . \n"
-			+ "?membership a core:Membership . \n"
 			+ "?membership a  ?membershipType . \n"
 			+ "?membership rdfs:label ?membershipTitle . \n"
 			+ "?membership core:relates ?memberClass . \n"
@@ -306,7 +307,11 @@ public class OrganizationHasMembershipHistoryGenerator extends VivoBaseGenerator
 		conf.addValidator(new AntiXssValidation());
 		conf.addValidator(new DateTimeIntervalValidationVTwo("startField",
 				"endField"));
-
+		
+		String msgErreur = I18n.text(vreq, "enter_membership_title_value");
+		conf.addValidator(
+				new RelationshipMandatoryLabelValidator("membershipType", "membershipTitle", preciseMembershipClasses, msgErreur));
+		
 		conf.addField(new FieldVTwo().setName("memberClass").setValidators(list("nonempty"))
 				.setOptions(new IndividualsViaPropertyOptions(conf.getSubjectUri(), relatedByPredicate, memberClassClass)));
 		

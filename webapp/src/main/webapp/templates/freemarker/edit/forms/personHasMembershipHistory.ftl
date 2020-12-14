@@ -91,15 +91,15 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </#if>
         <#--Checking if Membership Title field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "membershipTitle")>
-            ${i18n().enter_posn_title_value}<br />
+            ${i18n().enter_membership_title_value}<br />
         </#if>
         <#--Checking if Membership Type field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "membershipType")>
-            ${i18n().enter_posn_type_value}<br />
+            ${i18n().enter_membership_type_value}<br />
         </#if>
         <#--Checking if Member Class field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "memberClass")>
-            ${i18n().select_member_class}<br />
+            ${i18n().select_membership_class}<br />
         </#if>
         </p>
     </section>
