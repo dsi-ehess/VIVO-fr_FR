@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $This file is distributed under the terms of the license in LICENSE$ -->
+
+<!-- See guidelines at https://wiki.duraspace.org/x/eYXVAw -->
+
+<list-view-config>
+    <query-select>
+        PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+        PREFIX core: &lt;http://vivoweb.org/ontology/core#&gt;
+        PREFIX vitro: &lt;http://vitro.mannlib.cornell.edu/ns/vitro/0.7#&gt;
+        PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+        PREFIX fn:   &lt;http://www.w3.org/2005/xpath-functions#&gt;
+        PREFIX vivofr: &lt;http://data.ehess.fr/ontology/vivo-fr#&gt;
+
+        SELECT DISTINCT <collated> ?subclass </collated>
+            ?function
+            ?functionTitle
+            ?keepLabel
+            ?subClassLabel
+            ?person ?personName
+            ?dateTimeStart ?dateTimeEnd
+            ?hideThis
+        WHERE
+        {
+            ?subject ?property ?function .
+            ?function a vivofr:FNC_0000001 .
+
+            OPTIONAL {
+                <precise-subquery>?subject ?property ?function .
+                ?function a vivofr:FNC_0000001 .</precise-subquery>
+                ?function core:relates ?person .
+                ?person a foaf:Person .
+                ?person rdfs:label ?personName .
+            }
+            
+        <collated>
+            OPTIONAL
+            {
+                <precise-subquery>?subject ?property ?function .
+                ?function a vivofr:FNC_0000001 .</precise-subquery>
+                ?function vitro:mostSpecificType ?subclass .
+                OPTIONAL
+                {
+                    <precise-subquery>?subject ?property ?function .
+                    ?function a vivofr:FNC_0000001 .
+                    ?function vitro:mostSpecificType ?subclass .</precise-subquery>
+                    ?subclass vitro:displayRankAnnot ?displayRank .
+                }
+            }
+        </collated>
+            OPTIONAL
+            {
+                ?subject ?property ?function .
+                ?function a vivofr:FNC_0000001 .
+                ?function vitro:mostSpecificType ?subclass .
+                ?subclass rdfs:label ?subClassLabel .
+            }
+            OPTIONAL {
+                <precise-subquery>?subject ?property ?function .
+                ?function a vivofr:FNC_0000001 .</precise-subquery>
+                ?function vivofr:PRP_0000006 ?keepLabel .
+            }
+            OPTIONAL {
+                <precise-subquery>?subject ?property ?function .
+                ?function a vivofr:FNC_0000001 .</precise-subquery>
+                ?function rdfs:label ?functionTitle .
+            }
+            OPTIONAL {
+                <precise-subquery>?subject ?property ?function .
+                ?function a vivofr:FNC_0000001 .</precise-subquery>
+                ?function core:hideFromDisplay ?hideThis .
+            }
+            OPTIONAL {
+                <precise-subquery>?subject ?property ?function .
+                ?function a vivofr:FNC_0000001 .</precise-subquery>
+                ?function core:dateTimeInterval ?dateTimeInterval .
+                ?dateTimeInterval core:start ?dateTimeStartValue .
+                ?dateTimeStartValue core:dateTime ?dateTimeStart .
+            }
+            OPTIONAL
+            {
+                <precise-subquery>?subject ?property ?function .
+                ?function a vivofr:FNC_0000001 .</precise-subquery>
+                ?function core:dateTimeInterval ?dateTimeInterval .
+                ?dateTimeInterval core:end ?dateTimeEndValue .
+                ?dateTimeEndValue core:dateTime ?dateTimeEnd .
+            }
+            # Get current functions only: end date is either null or not in the past
+            FILTER ( !bound(?dateTimeEnd) || substr(str(?dateTimeEnd), 1, 4) &gt;= substr(str(now()), 1, 4) )
+        <critical-data-required>
+            FILTER ( bound(?person) )
+        </critical-data-required>
+        <collated>FILTER ( ?displayRank &lt; 500 )</collated>
+        } ORDER BY <collated> ?subclass </collated> (fn:lower-case(?personName))
+    </query-select>
+
+    <template>propStatement-organizationForFunction.ftl</template>
+</list-view-config>
