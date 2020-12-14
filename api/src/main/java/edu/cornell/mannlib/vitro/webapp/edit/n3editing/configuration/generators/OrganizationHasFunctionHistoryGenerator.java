@@ -15,6 +15,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.FirstAndLastNameValidator
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.RelationshipMandatoryLabelValidator;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.BooleanValuesPreprocessor;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
+import edu.cornell.mannlib.vitro.webapp.i18n.I18n;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeIntervalValidationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeWithPrecisionVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
@@ -292,6 +293,9 @@ public class OrganizationHasFunctionHistoryGenerator extends VivoBaseGenerator
 				"endField"));
 		conf.addValidator(new RelationshipMandatoryLabelValidator("functionType", "functionTitle", preciseFunctionClasses));
 	       
+		String msgErreur = I18n.text(vreq, "enter_function_title_value");
+        conf.addValidator(new RelationshipMandatoryLabelValidator("functionType", "functionTitle", preciseFunctionClasses, msgErreur));
+  
 		
 		conf.addEditSubmissionPreprocessor(new BooleanValuesPreprocessor(conf));
 		conf.addFormSpecificData("genericFunctionClasses", genericFunctionClasses);  
