@@ -5,7 +5,7 @@
 <#if functions?has_content> <#-- true when the property is in the list, even if not populated (when editing) -->
     <#assign localName = functions.localName>
     <#if editable > 
-    <h2 id="${localName}" class="mainPropGroup" title="${functions.publicDescription!}">${functions.name} <@p.addLink functions editable /> <@p.verboseDisplay functions /></h2>
+    <h2 id="${localName}" class="mainPropGroup" title="${functions.publicDescription!}">${functions.name?cap_first} <@p.addLink functions editable /> <@p.verboseDisplay functions /></h2>
     </#if>
     <ul id="individual-personInFunction" role="list">
         <@p.objectProperty functions editable />
