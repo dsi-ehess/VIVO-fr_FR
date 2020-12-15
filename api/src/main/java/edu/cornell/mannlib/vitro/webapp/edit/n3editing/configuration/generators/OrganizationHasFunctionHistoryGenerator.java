@@ -294,7 +294,7 @@ public class OrganizationHasFunctionHistoryGenerator extends VivoBaseGenerator
 		conf.addValidator(new RelationshipMandatoryLabelValidator("functionType", "functionTitle", preciseFunctionClasses));
 	       
 		String msgErreur = I18n.text(vreq, "enter_function_title_value");
-        conf.addValidator(new RelationshipMandatoryLabelValidator("functionType", "functionTitle", preciseFunctionClasses, msgErreur));
+        conf.addValidator(new RelationshipMandatoryLabelValidator("functionType", "functionTitle", preciseFunctionClasses));
   
 		
 		conf.addEditSubmissionPreprocessor(new BooleanValuesPreprocessor(conf));
