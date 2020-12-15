@@ -89,11 +89,11 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </#if>
         <#--Checking if Function Title field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "functionTitle")>
-            ${i18n().enter_posn_title_value}<br />
+            ${i18n().enter_fnct_title_value}<br />
         </#if>
         <#--Checking if Function Type field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "functionType")>
-            ${i18n().enter_posn_type_value}<br />
+            ${i18n().enter_fnct_type_value}<br />
         </#if>
         
         </p>
@@ -132,11 +132,11 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </div>
     
       <label for="functionType">${i18n().function_type} ${requiredHint}</label>
-      <#assign posnTypeOpts = editConfiguration.pageData.functionType />
+      <#assign fnctTypeOpts = editConfiguration.pageData.functionType />
       <select name="functionType" style="margin-top:-2px" >
           <option value="" <#if functionTypeValue == "">selected</#if>>${i18n().select_one}</option>                
-          <#list posnTypeOpts?keys as key>             
-              <option value="${key}"  <#if functionTypeValue == key>selected</#if>>${posnTypeOpts[key]}</option>         
+          <#list fnctTypeOpts?keys as key>             
+              <option value="${key}"  <#if functionTypeValue == key>selected</#if>>${fnctTypeOpts[key]}</option>         
           </#list>
       </select>
       <p><input id="keepLabelChkBox" type="checkbox" name="keepLabel" <#if keepLabelValue == "true" >checked="checked"</#if> />${i18n().func_keepLabel}</p>
