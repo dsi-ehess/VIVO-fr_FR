@@ -89,11 +89,11 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </#if>
         <#--Checking if Function Title field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "functionTitle")>
-            ${i18n().enter_fnct_title_value}<br />
+            ${i18n().enter_function_title_value}<br />
         </#if>
         <#--Checking if Function Type field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "functionType")>
-            ${i18n().enter_fnct_type_value}<br />
+            ${i18n().enter_function_type_value}<br />
         </#if>
         
         </p>

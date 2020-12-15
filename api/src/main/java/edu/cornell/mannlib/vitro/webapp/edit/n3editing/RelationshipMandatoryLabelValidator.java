@@ -20,16 +20,24 @@ public class RelationshipMandatoryLabelValidator implements N3ValidatorVTwo {
 
 	private static String MISSING_LABEL_ERROR = "Please select an existing value or enter a new value in the Name field.";
 
-	private String positionField;
+	private String relationshipField;
 	private String labelField;
-
 	private List<String> preciseRelationClasses;
-
+	private String errorMessage;
+	
 	public RelationshipMandatoryLabelValidator(String positionField, String labelField,
 			String[] preciseRelationClasses) {
-		this.positionField = positionField;
+		this.relationshipField = positionField;
 		this.labelField = labelField;
 		this.preciseRelationClasses = Arrays.asList(preciseRelationClasses);
+	}
+	
+	public RelationshipMandatoryLabelValidator(String relationshipField, String labelField,
+			String[] preciseRelationClasses,  String errorMessage) {
+		this.relationshipField = relationshipField;
+		this.labelField = labelField;
+		this.preciseRelationClasses = Arrays.asList(preciseRelationClasses);
+		this.errorMessage = errorMessage;
 	}
 
 	@Override
@@ -40,11 +48,11 @@ public class RelationshipMandatoryLabelValidator implements N3ValidatorVTwo {
 		Map<String, String> errors = new HashMap<String, String>();
 
 		String selectedRelationship = null;
-		if (urisFromForm.containsKey(positionField)) {
-			selectedRelationship = urisFromForm.get(positionField).get(0);
+		if (urisFromForm.containsKey(relationshipField)) {
+			selectedRelationship = urisFromForm.get(relationshipField).get(0);
 		}
 		if (selectedRelationship == null) {
-			errors.put(positionField, "Missing position field. This may not occur.");
+			errors.put(relationshipField, "Missing position field. This may not occur.");
 			return errors;
 		}
 		String relationShipLabel = null;
@@ -63,7 +71,7 @@ public class RelationshipMandatoryLabelValidator implements N3ValidatorVTwo {
 		if (preciseRelationClasses.contains(selectedRelationship) && (KEEP_LABEL_FIELD_VALUE_ON).equals(keepLabelFlag)) {
 			return null;
 		} else {
-			errors.put(labelField, MISSING_LABEL_ERROR);
+			errors.put(labelField, errorMessage != null? errorMessage: MISSING_LABEL_ERROR);
 		}
 
 		return errors.size() != 0 ? errors : null;

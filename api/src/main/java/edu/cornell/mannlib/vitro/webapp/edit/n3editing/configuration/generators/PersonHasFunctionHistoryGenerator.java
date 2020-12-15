@@ -23,6 +23,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.RdfTypeOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.BooleanValuesPreprocessor;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
+import edu.cornell.mannlib.vitro.webapp.i18n.I18n;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
 import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
 
@@ -173,7 +174,9 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
         conf.addValidator(new DateTimeIntervalValidationVTwo("startField","endField"));
         conf.addValidator(new AntiXssValidation());
         conf.addValidator(new AutocompleteRequiredInputValidator("existingOrg", "orgLabel"));
-        conf.addValidator(new RelationshipMandatoryLabelValidator("functionType", "functionTitle", preciseFunctionClasses));
+        
+		String msgErreur = I18n.text(vreq, "enter_function_title_value");
+        conf.addValidator(new RelationshipMandatoryLabelValidator("functionType", "functionTitle", preciseFunctionClasses, msgErreur));
         
         //Convert values from forms to xsd booleans
         conf.addEditSubmissionPreprocessor(

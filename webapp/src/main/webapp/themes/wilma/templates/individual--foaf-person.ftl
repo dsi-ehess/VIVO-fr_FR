@@ -96,6 +96,8 @@
             </#if>
             <!-- Positions -->
             <#include "individual-functions.ftl">
+            <!-- Memberships -->
+            <#include "individual-memberships.ftl">
         </header>
 
         <!-- Overview -->

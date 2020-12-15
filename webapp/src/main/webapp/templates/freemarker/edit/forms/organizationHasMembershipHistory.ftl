@@ -164,7 +164,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
                             </#if>
                         </#list>
                     </#if>
-                    <#if !memberClassValue??>
+                    <#if ! (memberClassValue?? && memberClassValue?has_content)>
                          <input type="hidden" name="memberClass" value=""></input><br/>
                     </#if>
                  </div>

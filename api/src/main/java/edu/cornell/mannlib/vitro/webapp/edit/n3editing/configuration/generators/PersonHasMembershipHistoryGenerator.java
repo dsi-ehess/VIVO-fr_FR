@@ -15,6 +15,7 @@ import org.apache.jena.vocabulary.XSD;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.AutocompleteRequiredInputValidator;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.RelationshipMandatoryLabelValidator;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeIntervalValidationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeWithPrecisionVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
@@ -23,6 +24,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.RdfTypeOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.BooleanValuesPreprocessor;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
+import edu.cornell.mannlib.vitro.webapp.i18n.I18n;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
 import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
 
@@ -152,9 +154,9 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 		conf.addValidator(new DateTimeIntervalValidationVTwo("startField", "endField"));
 		conf.addValidator(new AntiXssValidation());
 		conf.addValidator(new AutocompleteRequiredInputValidator("existingOrg", "orgLabel"));
-		// conf.addValidator(new
-		// RelationshipMandatoryLabelValidator("membershipType",
-		// "membershipTitle", preciseFunctionClasses));
+		String msgErreur = I18n.text(vreq, "enter_membership_title_value");
+		conf.addValidator(
+				new RelationshipMandatoryLabelValidator("membershipType", "membershipTitle", preciseMembershipClasses, msgErreur));
 
 		// Convert values from forms to xsd booleans
 		conf.addEditSubmissionPreprocessor(new BooleanValuesPreprocessor(conf));
@@ -222,7 +224,8 @@ public class PersonHasMembershipHistoryGenerator extends VivoBaseGenerator imple
 			+ "> ?existingOrg . \n" + "  ?existingOrg a <" + orgClass + ">  }";
 
 	final static String existingMemberClassQuery = "SELECT ?existingMemberClass WHERE { \n" + "  ?membership <"
-			+ membershipInOrgPred + "> ?existingMemberClass . }";
+			+ membershipInOrgPred + "> ?existingMemberClass . \n" + "  ?existingMemberClass a <" + memberClassClass
+			+ "> . }";
 
 	final static String orgTypeQuery = "PREFIX rdfs: <" + rdfs + "> \n" + "SELECT ?existingOrgType WHERE { \n"
 			+ "  ?membership <" + membershipInOrgPred + "> ?existingOrg . \n" + "  ?existingOrg a ?existingOrgType . \n"
