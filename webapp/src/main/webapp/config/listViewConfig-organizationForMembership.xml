@@ -106,14 +106,14 @@
                   ?subject ?property ?membership .
                   ?membership a vivofr:MMB_0000001 .
                   ?membership core:relates ?org .
-                  ?org a core:ResearchOrganization.
+                  ?org a foaf:Organization.
               }
               UNION
               {
                   ?subject ?property ?membership .
                   ?membership a vivofr:MMB_0000001 .
                   ?membership core:relates ?org .
-                  ?org a core:ResearchOrganization.
+                  ?org a foaf:Organization.
                   ?membership core:hideFromDisplay ?hideThis .
               }
               UNION
@@ -121,7 +121,7 @@
                   ?subject ?property ?membership .
                   ?membership a vivofr:MMB_0000001 .
                   ?membership core:relates ?org .
-                  ?org a core:ResearchOrganization.
+                  ?org a foaf:Organization.
                   ?membership vitro:mostSpecificType ?subclass .
               }
               UNION
@@ -129,7 +129,7 @@
                   ?subject ?property ?membership .
                   ?membership a vivofr:MMB_0000001 .
                   ?membership core:relates ?org .
-                  ?org a core:ResearchOrganization.
+                  ?org a foaf:Organization.
                   ?membership vitro:mostSpecificType ?subclass .
                   ?subclass vitro:displayRankAnnot ?displayRank .
               }
@@ -138,7 +138,7 @@
                   ?subject ?property ?membership .
                   ?membership a vivofr:MMB_0000001 .
                   ?membership core:relates ?org .
-                  ?org a core:ResearchOrganization.
+                  ?org a foaf:Organization.
                   ?membership rdfs:label ?membershipLabel .
               }
               UNION {
@@ -153,7 +153,7 @@
                   ?subject ?property ?membership .
                   ?membership a vivofr:MMB_0000001 .
                   ?membership core:relates ?org .
-                  ?org a core:ResearchOrganization.
+                  ?org a foaf:Organization.
                   ?membership core:dateTimeInterval ?dateTimeInterval .
                   ?dateTimeInterval core:start ?dateTimeStartValue .
                   ?dateTimeStartValue core:dateTime ?dateTimeStart .
@@ -163,7 +163,7 @@
                   ?subject ?property ?membership .
                   ?membership a vivofr:MMB_0000001 .
                   ?membership core:relates ?org .
-                  ?org a core:ResearchOrganization.
+                  ?org a foaf:Organization.
                   ?membership core:dateTimeInterval ?dateTimeInterval .
                   ?dateTimeInterval core:end ?dateTimeEndValue .
                   ?dateTimeEndValue core:dateTime ?dateTimeEnd .
@@ -173,7 +173,7 @@
                   ?subject ?property ?membership .
                   ?membership a vivofr:MMB_0000001 .
                   ?membership core:relates ?org .
-                  ?org a core:ResearchOrganization.
+                  ?org a foaf:Organization.
                   ?membership core:relates ?person .
                   ?person a foaf:Person .
                   ?person rdfs:label ?personName .
