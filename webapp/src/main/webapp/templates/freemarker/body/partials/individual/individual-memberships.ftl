@@ -25,7 +25,6 @@
             <#assign memberClassMap = mapMemberClass(memberships.statements)>
             <#list memberClassMap?keys as k>
                 <#assign subclassName = memberClassMap[k]!>
-                <span>${k} ${memberClassMap[k]}</span>
                 <#if subclassName?has_content>
                     <li class="subclass" role="listitem">
                         <h3>${subclassName?lower_case?cap_first}</h3>
