@@ -25,7 +25,7 @@
 <#function filteredMemberClass statements memberClass>
   <#assign filteredList = []>
   <#list statements as statement>
-      <#if memberClass == "EMPTY" && !(statement.memberClass?? && statement.memberClass?has_content)>
+      <#if memberClass == "EMPTY" || !(statement.memberClass?? && statement.memberClass?has_content)>
         <#assign filteredList = filteredList + [ statement ] />
       <#elseif statement.memberClass == memberClass>
         <#assign filteredList = filteredList + [ statement ] />
