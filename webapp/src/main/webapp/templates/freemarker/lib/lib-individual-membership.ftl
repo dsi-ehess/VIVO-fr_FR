@@ -1,3 +1,40 @@
+<#function computeStatementLabelOrg statement>
+  <#if statement.keepLabel?? && statement.keepLabel == "true">
+      <#assign label = "${statement.membershipTitle?cap_first}">
+      <#if statement.membershipLabel?has_content>
+          <#assign label = label + ", ${statement.membershipLabel}">
+      </#if>
+    <#else>
+      <#assign label = "${(statement.membershipLabel!i18n().unknown_membership)?cap_first}">
+    </#if>
+    <#return label>
+</#function>
+
+<#function mapMemberClass statements>
+  <#assign memberClasslMap = {}>
+  <#list statements as statement>
+      <#if ! (statement.memberClass?? && statement.memberClass?has_content)>
+        <#assign  memberClasslMap = {"EMPTY" : "${i18n().no_memberclass}"} + memberClasslMap>
+       <#else>
+          <#assign memberClasslMap = memberClasslMap + {"${statement.memberClass}" : "${statement.memberClassLabel}"}>
+       </#if>    
+  </#list>
+  <#return memberClasslMap>
+</#function>
+
+<#function filteredMemberClass statements memberClass>
+  <#assign filteredList = []>
+  <#list statements as statement>
+      <#if memberClass == "EMPTY" && !(statement.memberClass?? && statement.memberClass?has_content)>
+        <#assign filteredList = filteredList + [ statement ] />
+      <#elseif statement.memberClass == memberClass>
+        <#assign filteredList = filteredList + [ statement ] />
+      </#if>
+  </#list>
+  <#return filteredList>
+</#function>
+
+
 
 <#function mapLabels statements membershipOrgUriList parentOrgList>
   <#assign labelList = []>
@@ -10,17 +47,6 @@
   <#return labelList>
 </#function>
 
-<#function computeStatementLabelOrg statement>
-  <#if statement.keepLabel?? && statement.keepLabel == "true">
-      <#assign label = "${statement.membershipTitle?cap_first}">
-      <#if statement.membershipLabel?has_content>
-          <#assign label = label + ", ${statement.membershipLabel}">
-      </#if>
-    <#else>
-      <#assign label = "${(statement.membershipLabel!i18n().unknown_membership)?cap_first}">
-    </#if>
-    <#return label>
-</#function>
 
 <#function computeStatementLabel statement membershipOrgUriList parentOrgList)>
     <#if statement.keepLabel?? && statement.keepLabel == "true">

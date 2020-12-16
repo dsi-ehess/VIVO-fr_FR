@@ -16,12 +16,26 @@
 
 <#if individual.organization() >
     <#if memberships?has_content> <#-- true when the property is in the list, even if not populated (when editing) -->
+        
         <#assign localName = memberships.localName>
         <#if editable > 
         <h2 id="${localName}" class="mainPropGroup" title="${memberships.publicDescription!}">${memberships.name} <@p.addLink memberships editable /> <@p.verboseDisplay memberships /></h2>
         </#if>
         <ul id="individual-personInMembership" role="list">
-            <@p.objectProperty memberships editable />
+            <#assign memberClassMap = mapMemberClass(memberships.statements)>
+            <#list memberClassMap?keys as k>
+                <#assign subclassName = memberClassMap[k]!>
+                <span>${k} ${memberClassMap[k]}</span>
+                <#if subclassName?has_content>
+                    <li class="subclass" role="listitem">
+                        <h3>${subclassName?lower_case}</h3>
+                        <#assign membershipsByMemberClass = filteredMemberClass(memberships.statements, k)>
+                        <ul class="subclass-property-list">
+                            <@p.objectPropertyList memberships editable membershipsByMemberClass />
+                        </ul>
+                    </li>
+                 </#if>
+             </#list>    
         </ul>
     </#if>
 </#if>

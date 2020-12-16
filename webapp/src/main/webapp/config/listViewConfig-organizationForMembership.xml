@@ -19,6 +19,8 @@
             ?person ?personName
             ?dateTimeStart ?dateTimeEnd
             ?hideThis
+            ?memberClass
+            ?memberClassLabel
         WHERE
         {
             ?subject ?property ?membership
@@ -57,6 +59,12 @@
                 ?membership core:dateTimeInterval ?dateTimeInterval .
                 ?dateTimeInterval core:end ?dateTimeEndValue .
                 ?dateTimeEndValue core:dateTime ?dateTimeEnd
+            }
+            OPTIONAL
+            {
+                ?membership core:relates ?memberClass .
+                ?memberClass a vivofr:CLS_0000001 .
+                ?memberClass rdfs:label ?memberClassLabel
             }
             # Get current memberships only: end date is either null or not in the past
             FILTER ( !bound(?dateTimeEnd) || substr(str(?dateTimeEnd), 1, 4) &gt;= substr(str(now()), 1, 4) )
@@ -99,6 +107,9 @@
               ?person rdfs:label ?personName .
         
               ?membership vivofr:PRP_0000006 ?keepLabel .
+              ?membership core:relates ?memberClass .
+              ?memberClass a vivofr:CLS_0000001 .
+              ?memberClass rdfs:label ?memberClassLabel
           }
           WHERE
           {
@@ -182,6 +193,13 @@
                   ?subject ?property ?membership .
                   ?membership a vivofr:MMB_0000001 .
                   ?membership vivofr:PRP_0000006 ?keepLabel .
+              }
+              UNION {
+                  ?subject ?property ?membership .
+                  ?membership a vivofr:MMB_0000001 .
+                  ?membership core:relates ?memberClass .
+                  ?memberClass a vivofr:CLS_0000001 .
+                  ?memberClass rdfs:label ?memberClassLabel
               }
           }
     </query-construct>
