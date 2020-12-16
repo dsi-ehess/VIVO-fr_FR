@@ -28,7 +28,7 @@
                 <span>${k} ${memberClassMap[k]}</span>
                 <#if subclassName?has_content>
                     <li class="subclass" role="listitem">
-                        <h3>${subclassName?lower_case}</h3>
+                        <h3>${subclassName?lower_case?cap_first}</h3>
                         <#assign membershipsByMemberClass = filteredMemberClass(memberships.statements, k)>
                         <ul class="subclass-property-list">
                             <@p.objectPropertyList memberships editable membershipsByMemberClass />
