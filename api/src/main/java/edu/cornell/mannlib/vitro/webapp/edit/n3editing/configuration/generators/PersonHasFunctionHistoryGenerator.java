@@ -45,6 +45,7 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
 	final static String[] institutionClasses = { 
 			vivoCore + "University" , 
 			vivofr + "ORG_0000016", 
+			vivofr + "ORG_0000003",
 			vivofr + "ORG_0000017", 
 			vivofr + "ORG_0000018", 
 			vivofr + "ORG_0000019", 
