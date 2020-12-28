@@ -42,7 +42,16 @@ public class PersonHasFunctionHistoryGenerator extends VivoBaseGenerator impleme
     final static String dateTimeValueType = vivoCore + "DateTimeValue";
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
-	final static String[] institutionClasses = { vivoCore + "University" };
+	final static String[] institutionClasses = { 
+			vivoCore + "University" , 
+			vivofr + "ORG_0000016", 
+			vivofr + "ORG_0000017", 
+			vivofr + "ORG_0000018", 
+			vivofr + "ORG_0000019", 
+			vivofr + "ORG_0000020", 
+			vivofr + "ORG_0000021",
+			vivofr + "ORG_0000022"
+			};
 	final static String[] genericFunctionClasses = { vivofr + "FNC_0000002", vivofr + "FNC_0000004",
 			vivofr + "FNC_0000005", vivofr + "FNC_0000006", vivofr + "FNC_0000007" };
 	final static String[] preciseFunctionClasses = { vivofr + "FNC_0000008",

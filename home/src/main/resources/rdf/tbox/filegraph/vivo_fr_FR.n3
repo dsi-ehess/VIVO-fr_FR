@@ -1,8 +1,9 @@
-# baseURI: http://data.ehess.fr/ontology/vivo-fr#
+# baseURI: http://data.ehess.fr/ontology/vivo-fr
+# imports: http://data.ehess.fr/ontology/vivo-ehess
 # imports: http://vivoweb.org/ontology/core
-# imports: http://xmlns.com/foaf/spec/20140114.rdf
 # prefix: vivofr
 
+@prefix : <http://data.ehess.fr/ontology/vivo-fr#> .
 @prefix acti: <http://vivoweb.org/ontology/activity-insight#> .
 @prefix afn: <http://jena.hpl.hp.com/ARQ/function#> .
 @prefix ai: <http://vivoweb.org/ontology/activity-insight#> .
@@ -62,12 +63,18 @@
 @prefix vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
 @prefix vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> .
 @prefix vivo: <http://vivoweb.org/ontology/core#> .
+@prefix vivo-ehess: <http://data.ehess.fr/ontology/vivo-ehess#> .
 @prefix vivoc: <http://vivo.library.cornell.edu/ns/0.1#> .
 @prefix vivofr: <http://data.ehess.fr/ontology/vivo-fr#> .
 @prefix wcmc: <http://weill.cornell.edu/vivo/ontology/wcmc#> .
 @prefix wos: <http://vivo.mannlib.cornell.edu/ns/ThomsonWOS/0.1#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+<http://data.ehess.fr/ontology/vivo-fr>
+  a owl:Ontology ;
+  owl:imports <http://data.ehess.fr/ontology/vivo-ehess> ;
+  owl:imports <http://vivoweb.org/ontology/core> ;
+.
 vivofr:
   a owl:Ontology ;
   cc:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
@@ -550,6 +557,56 @@ vivofr:ORG_0000015
   rdfs:label "direction"@fr-FR ;
   rdfs:subClassOf vivofr:ORG_0000014 ;
 .
+vivofr:ORG_0000016
+  a owl:Class ;
+  rdfs:label "Ministry of Culture"@en-US ;
+  rdfs:label "Ministère de la culture"@fr-FR ;
+  rdfs:subClassOf vivo:GovernmentAgency ;
+.
+vivofr:ORG_0000017
+  a owl:Class ;
+  rdfs:label "Institut protestant de théologie"@fr-FR ;
+  rdfs:label "Protestant Institute of Theology"@en-US ;
+  rdfs:subClassOf vivo:Institute ;
+  vcard:url "https://iptheologie.fr/"^^xsd:anyURI ;
+.
+vivofr:ORG_0000018
+  a owl:Class ;
+  rdfs:label "City of Architecture and Heritage"@en-US ;
+  rdfs:label "Cité de l'architecture et du patrimoine"@fr-FR ;
+  rdfs:subClassOf vivofr:ORG_0000019 ;
+  vcard:url "https://fr.wikipedia.org/wiki/Cit%C3%A9_de_l%27architecture_et_du_patrimoine"^^xsd:anyURI ;
+.
+vivofr:ORG_0000019
+  a owl:Class ;
+  rdfs:label "Industrial and commercial public establishment in France"@en-US ;
+  rdfs:label "Établissement public à caractère industriel et commercial en France (EPIC)"@fr-FR ;
+  rdfs:subClassOf foaf:Organization ;
+  vcard:url "https://fr.wikipedia.org/wiki/%C3%89tablissement_public_%C3%A0_caract%C3%A8re_industriel_et_commercial_en_France"^^xsd:anyURI ;
+.
+vivofr:ORG_0000020
+  a owl:Class ;
+  rdfs:label "centre hospitaliser universitaire"@fr-FR ;
+  rdfs:label "university hospital center"@en-US ;
+  rdfs:subClassOf vivo:ClinicalOrganization ;
+  rdfs:subClassOf vivo:Hospital ;
+  rdfs:subClassOf vivo:University ;
+  vcard:url "https://fr.wikipedia.org/wiki/Centre_hospitalier_universitaire"^^xsd:anyURI ;
+.
+vivofr:ORG_0000021
+  a owl:Class ;
+  rdfs:label "fondation de coopération scientifique"@fr-FR ;
+  rdfs:label "scientific cooperation foundation"@en-US ;
+  rdfs:subClassOf vivo:Foundation ;
+  vcard:url "https://fr.wikipedia.org/wiki/%C3%89cole_d%27%C3%A9conomie_de_Paris"^^xsd:anyURI ;
+.
+vivofr:ORG_0000022
+  a owl:Class ;
+  rdfs:label "Doctors of the World"@en-US ;
+  rdfs:label "Médecins du monde"@fr-FR ;
+  rdfs:subClassOf vivo:Association ;
+  vcard:url "https://fr.wikipedia.org/wiki/%C3%89cole_d%27%C3%A9conomie_de_Paris"^^xsd:anyURI ;
+.
 vivofr:PRP_0000001
   a owl:DatatypeProperty ;
   obo:IAO_0000115 "Les maîtrises de conférences et directions d'études de l'EHESS sont l'équivalent de chaires dotées d'un intitulé permanent. Elles constituent l'Affiche des enseignements de recherche de l'Ecole"@fr-FR ;
@@ -622,8 +679,6 @@ vivofr:PRP_0000005
 vivofr:PRP_0000006
   a owl:DatatypeProperty ;
   a owl:FunctionalProperty ;
-  rdfs:label "display original label"@en-US ;
-  rdfs:label "afficher le libellé original"@en-US ;
   rdfs:domain [
       a owl:Class ;
       owl:unionOf (
@@ -631,6 +686,8 @@ vivofr:PRP_0000006
           vivofr:MMB_0000001
         ) ;
     ] ;
+  rdfs:label "afficher le libellé original"@en-US ;
+  rdfs:label "display original label"@en-US ;
   rdfs:range xsd:boolean ;
 .
 vivofr:PRS_0000002
@@ -781,4 +838,7 @@ vivofr:PRS_0000012
   rdfs:label "enseignant.e-chercheur.e émérite"@fr-FR ;
   rdfs:label "teacher researcher emeritus"@en-US ;
   rdfs:subClassOf vivo:FacultyMember ;
+.
+vivo:Company
+  rdfs:label "entreprise"@fr-FR ;
 .
