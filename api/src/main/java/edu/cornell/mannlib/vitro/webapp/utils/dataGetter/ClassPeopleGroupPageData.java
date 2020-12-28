@@ -2,7 +2,9 @@
 
 package edu.cornell.mannlib.vitro.webapp.utils.dataGetter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -103,8 +105,35 @@ public class ClassPeopleGroupPageData extends DataGetterBase implements DataGett
             }
         }
 
-        data.put("vClassGroup", group);  //may put null
+        
+        List<String> allSubClassUris = new ArrayList<>();
+        Map<String, List<VClass>> groupChildrenPeople = new HashMap<>();
+        for (VClass vClass : group) {
+            if (vClass.getURI().equals("http://data.ehess.fr/ontology/vivo-fr#PRS_0000002")) {
+                List<String> subClassStr = vreq.getUnfilteredAssertionsWebappDaoFactory().getVClassDao().getSubClassURIs(vClass.getURI());
+                if (subClassStr != null && !subClassStr.isEmpty()){
+                    allSubClassUris.addAll(subClassStr);
+                    List<VClass> subClass = convertIntoVClass(group, subClassStr);
 
+                    groupChildrenPeople.put(vClass.getURI(), subClass);
+                }
+            }
+        }
+        
+        
+
+        Iterator<VClass> vClassIt = group.iterator();
+        while (vClassIt.hasNext()) {
+            VClass vClassTmp = vClassIt.next();
+            String vClassURI = vClassTmp.getURI();
+            if(allSubClassUris.contains(vClassURI)) {
+                vClassIt.remove();
+            }
+        }
+        
+        
+        data.put("vClassGroup", group);  //may put null
+        data.put("vChildrenClassGroup", groupChildrenPeople);  //may put null
         //This page level data getters tries to set its own template,
         // not all of the data getters need to do this.
         data.put("bodyTemplate", "page-classgroup-people.ftl");
@@ -116,6 +145,18 @@ public class ClassPeopleGroupPageData extends DataGetterBase implements DataGett
     }
 
 
+    private static List<VClass> convertIntoVClass(List<VClass> group, List<String> vClassStrList) {
+        List<VClass> vClassList = new ArrayList<>();
+        for (String vClassStr : vClassStrList) {
+            for (VClass vClassTmp: group) {
+                if(vClassStr.equals(vClassTmp.getURI())) {
+                    vClassList.add(vClassTmp);
+                }
+            }
+        }
+        return vClassList;
+    }
+    
     public static VClassGroupTemplateModel getClassGroup(String classGroupUri, ServletContext context, VitroRequest vreq){
 
         VClassGroupsForRequest vcgc = VClassGroupCache.getVClassGroups(vreq);
