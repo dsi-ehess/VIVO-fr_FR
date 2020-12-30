@@ -74,9 +74,12 @@
 vivofr:
   a owl:Ontology ;
   cc:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
+  obo:IAO_0000115 "Complement to the Vivo ontology describing research staff and structures in French higher education and research institutions in order to allow the management of such data in Vivo software."@fr-FR ;
+  obo:IAO_0000115 "Complément à l'ontologie Vivo décrivant les personnel et les structures de recherche dans établissement ESR français afin de permettre la prise en charge de telles données dans Vivo"@fr-FR ;
   terms:issued "2020-10-15"^^xsd:date ;
   terms:rights "CC BY-SA 4.0" ;
   vann:preferredNamespacePrefix "vivofr" ;
+  vann:preferredNamespaceUri vivofr: ;
   vitro:ontologyPrefixAnnot "vivofr" ;
   rdfs:label "Vivo FR Ontology"@en-US ;
   rdfs:label "ontologie Vivo FR"@fr-FR ;
@@ -92,13 +95,9 @@ vivofr:CLS_0000001
   rdfs:label "members class"@en-US ;
   rdfs:subClassOf owl:Thing ;
 .
-vivofr:EHESS-Affiliation
-  a owl:Class ;
-  rdfs:label "Organisation affiliée à l'EHESS"@fr ;
-  rdfs:subClassOf foaf:Organization ;
-.
 vivofr:FNC_0000001
   a owl:Class ;
+  obo:IAO_0000115 "Une fonction, un emploi dans une organisation"@fr-FR ;
   rdfs:label "fonction"@fr-FR ;
   rdfs:label "function"@en-US ;
   rdfs:subClassOf vivofr:REL_0000001 ;
