@@ -1,6 +1,4 @@
 # baseURI: http://data.ehess.fr/ontology/vivo-fr
-# imports: http://data.ehess.fr/ontology/vivo-ehess
-# imports: http://vivoweb.org/ontology/core
 # prefix: vivofr
 
 @prefix : <http://data.ehess.fr/ontology/vivo-fr#> .
@@ -72,18 +70,13 @@
 
 <http://data.ehess.fr/ontology/vivo-fr>
   a owl:Ontology ;
-  owl:imports <http://data.ehess.fr/ontology/vivo-ehess> ;
-  owl:imports <http://vivoweb.org/ontology/core> ;
 .
 vivofr:
   a owl:Ontology ;
   cc:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
-  obo:IAO_0000115 "Complement to the Vivo ontology describing research staff and structures in French higher education and research institutions in order to allow the management of such data in Vivo software."@fr-FR ;
-  obo:IAO_0000115 "Complément à l'ontologie Vivo décrivant les personnel et les structures de recherche dans établissement ESR français afin de permettre la prise en charge de telles données dans Vivo"@fr-FR ;
   terms:issued "2020-10-15"^^xsd:date ;
   terms:rights "CC BY-SA 4.0" ;
   vann:preferredNamespacePrefix "vivofr" ;
-  vann:preferredNamespaceUri vivofr: ;
   vitro:ontologyPrefixAnnot "vivofr" ;
   rdfs:label "Vivo FR Ontology"@en-US ;
   rdfs:label "ontologie Vivo FR"@fr-FR ;
@@ -99,9 +92,13 @@ vivofr:CLS_0000001
   rdfs:label "members class"@en-US ;
   rdfs:subClassOf owl:Thing ;
 .
+vivofr:EHESS-Affiliation
+  a owl:Class ;
+  rdfs:label "Organisation affiliée à l'EHESS"@fr ;
+  rdfs:subClassOf foaf:Organization ;
+.
 vivofr:FNC_0000001
   a owl:Class ;
-  obo:IAO_0000115 "Une fonction, un emploi dans une organisation"@fr-FR ;
   rdfs:label "fonction"@fr-FR ;
   rdfs:label "function"@en-US ;
   rdfs:subClassOf vivofr:REL_0000001 ;
@@ -136,7 +133,6 @@ vivofr:FNC_0000002
 vivofr:FNC_0000003
   a rdfs:Class ;
   a owl:Class ;
-  obo:IAO_0000115 "Liaison entre une personne et un établissement, si elle est formalisée par l'appartenance à un corps administratif"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -176,7 +172,6 @@ vivofr:FNC_0000007
 .
 vivofr:FNC_0000008
   a owl:Class ;
-  obo:IAO_0000115 "Une assistante ou un assistant ingénieur"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -188,7 +183,6 @@ vivofr:FNC_0000008
 .
 vivofr:FNC_0000009
   a owl:Class ;
-  obo:IAO_0000115 "Personnels qui concourent à l'accomplissement des missions de la recherche dans un organisme de recherche ou un établissement d'enseignement supérieur"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -200,7 +194,6 @@ vivofr:FNC_0000009
 .
 vivofr:FNC_0000010
   a owl:Class ;
-  obo:IAO_0000115 "Une chercheure ou un chercheur sous statut contractuel"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -212,7 +205,6 @@ vivofr:FNC_0000010
 .
 vivofr:FNC_0000011
   a owl:Class ;
-  obo:IAO_0000115 "Fonction de directrice ou directeur de recherches au CNRS"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -224,7 +216,6 @@ vivofr:FNC_0000011
 .
 vivofr:FNC_0000012
   a owl:Class ;
-  obo:IAO_0000115 "Fonction de directrice ou directeur d'études à l'EHESS, à l'ENC ou à l'EPHE"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -236,7 +227,6 @@ vivofr:FNC_0000012
 .
 vivofr:FNC_0000013
   a owl:Class ;
-  obo:IAO_0000115 "Fonction de directrice ou directeur d'études cumulant à l'EHESS, à l'ENC ou à l'EPHE"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -248,7 +238,6 @@ vivofr:FNC_0000013
 .
 vivofr:FNC_0000014
   a owl:Class ;
-  obo:IAO_0000115 "https://fr.wikipedia.org/wiki/Ingénieur_de_recherche"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -260,7 +249,6 @@ vivofr:FNC_0000014
 .
 vivofr:FNC_0000015
   a owl:Class ;
-  obo:IAO_0000115 "http://www.enseignementsup-recherche.gouv.fr/cid23195/ingenieur-d-etudes.html"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -272,7 +260,6 @@ vivofr:FNC_0000015
 .
 vivofr:FNC_0000016
   a owl:Class ;
-  obo:IAO_0000115 "Un des deux corps d'enseignants chercheurs de l'université française"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -283,14 +270,12 @@ vivofr:FNC_0000016
   rdfs:subClassOf vivofr:FNC_0000003 ;
 .
 vivofr:FNC_0000017
-  obo:IAO_0000115 "Un des deux corps d'enseignants chercheurs de l'université française"@fr-FR ;
   rdfs:label "(full) professor"@en-US ;
   rdfs:label "professeur.e des universités"@fr-FR ;
   owl:disjointWith vivofr:FNC_0000018 ;
 .
 vivofr:FNC_0000018
   a owl:Class ;
-  obo:IAO_0000115 "Professeure ou professeur des universités retraité ayant conservé rang et privilèges"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -302,8 +287,6 @@ vivofr:FNC_0000018
 .
 vivofr:FNC_0000019
   a owl:Class ;
-  obo:IAO_0000115 "Fonction de postdoctorant"@fr-FR ;
-  obo:IAO_0000115 "https://fr.wikipedia.org/wiki/Chercheur_postdoctoral"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -316,7 +299,6 @@ vivofr:FNC_0000019
 .
 vivofr:FNC_0000020
   a owl:Class ;
-  obo:IAO_0000115 "Professeure ou professeur des universités"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -334,8 +316,6 @@ vivofr:FNC_0000021
 .
 vivofr:MMB_0000001
   a owl:Class ;
-  obo:IAO_0000115 "Liaison entre une personne et une structure de recherche ou une entité administrative"@fr-FR ;
-  obo:IAO_0000115 "Membership to a structure like research unit."@en-US ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -347,8 +327,6 @@ vivofr:MMB_0000001
 .
 vivofr:MMB_0000002
   a owl:Class ;
-  obo:IAO_0000115 "Appartenance permanente à une structure (typiquement une unité de recherche) à titre principal"@fr-FR ;
-  obo:IAO_0000115 "Permanent main membership (typically, to a research structure)"@en-US ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -360,8 +338,6 @@ vivofr:MMB_0000002
 .
 vivofr:MMB_0000003
   a owl:Class ;
-  obo:IAO_0000115 "Appartenance permanente à une structure (typiquement une unité de recherche) à titre secondaire"@fr-FR ;
-  obo:IAO_0000115 "Permanent accessory membership (typically, to a research structure)"@en-US ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -373,8 +349,6 @@ vivofr:MMB_0000003
 .
 vivofr:MMB_0000004
   a owl:Class ;
-  obo:IAO_0000115 "Appartenance non permanente à une structure (typiquement une unité de recherche) à titre principal"@fr-FR ;
-  obo:IAO_0000115 "Transient main membership (typically, to a research structure)"@en-US ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -386,8 +360,6 @@ vivofr:MMB_0000004
 .
 vivofr:MMB_0000005
   a owl:Class ;
-  obo:IAO_0000115 "Appartenance non permanente à une structure (typiquement une unité de recherche) à titre secondaire"@fr-FR ;
-  obo:IAO_0000115 "Transient accessory membership (typically, to a research structure)"@en-US ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -399,8 +371,6 @@ vivofr:MMB_0000005
 .
 vivofr:MMB_0000006
   a owl:Class ;
-  obo:IAO_0000115 "Appartenance à une structure (typiquement une unité de recherche) en tant que membre d'honneur, émérite ou retraité"@fr-FR ;
-  obo:IAO_0000115 "Membership (typically, to a research structure) as honorary, emeritus or retired member"@en-US ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -469,8 +439,6 @@ vivofr:ORG_0000007
 .
 vivofr:ORG_0000008
   a owl:Class ;
-  obo:IAO_0000115 "Unité de recherche" ;
-  obo:IAO_0000115 "Équivalent d'un laboratoire : https://fr.wikipedia.org/wiki/Laboratoire_de_recherche, Par exemple le CRH (UMR 8558)"@fr-FR ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   vitro:hiddenFromPublishBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouporganizations> ;
@@ -482,8 +450,6 @@ vivofr:ORG_0000008
 .
 vivofr:ORG_0000009
   a owl:Class ;
-  obo:IAO_0000115 "Unité de service"@fr-FR ;
-  obo:IAO_0000115 "https://fr.wikipedia.org/wiki/Unit%C3%A9_mixte_de_service"@fr-FR ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   vitro:hiddenFromPublishBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouporganizations> ;
@@ -495,8 +461,6 @@ vivofr:ORG_0000009
 .
 vivofr:ORG_0000011
   a owl:Class ;
-  obo:IAO_0000115 "In french, Structure fédérative de recherche" ;
-  obo:IAO_0000115 "Une structure férérative de recherche"@fr-FR ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   vitro:hiddenFromPublishBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouporganizations> ;
@@ -508,8 +472,6 @@ vivofr:ORG_0000011
 .
 vivofr:ORG_0000012
   a owl:Class ;
-  obo:IAO_0000115 "In french, thématique, a research team without permanent members" ;
-  obo:IAO_0000115 "Une équipe de recherche sans membres permanents ayant une thématique commune"@fr-FR ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   vitro:hiddenFromPublishBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouporganizations> ;
@@ -521,7 +483,6 @@ vivofr:ORG_0000012
 .
 vivofr:ORG_0000013
   a owl:Class ;
-  obo:IAO_0000115 "Une équipe de recherche rassemblant des personnes, ayant une dépendance envers une unité"@fr-FR ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   vitro:hiddenFromPublishBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouporganizations> ;
@@ -533,7 +494,6 @@ vivofr:ORG_0000013
 .
 vivofr:ORG_0000014
   a owl:Class ;
-  obo:IAO_0000115 "Une structure dédiée à l'administration d'un domaine particulier du fonctionnement de l'établissement."@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -546,7 +506,6 @@ vivofr:ORG_0000014
 .
 vivofr:ORG_0000015
   a owl:Class ;
-  obo:IAO_0000115 "Une direction, structure rattachée à la présidence et qui comprend généralement des services."@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -557,59 +516,14 @@ vivofr:ORG_0000015
   rdfs:label "direction"@fr-FR ;
   rdfs:subClassOf vivofr:ORG_0000014 ;
 .
-vivofr:ORG_0000016
-  a owl:Class ;
-  rdfs:label "Ministry of Culture"@en-US ;
-  rdfs:label "Ministère de la culture"@fr-FR ;
-  rdfs:subClassOf vivo:GovernmentAgency ;
-.
-vivofr:ORG_0000017
-  a owl:Class ;
-  rdfs:label "Institut protestant de théologie"@fr-FR ;
-  rdfs:label "Protestant Institute of Theology"@en-US ;
-  rdfs:subClassOf vivo:Institute ;
-  vcard:url "https://iptheologie.fr/"^^xsd:anyURI ;
-.
-vivofr:ORG_0000018
-  a owl:Class ;
-  rdfs:label "City of Architecture and Heritage"@en-US ;
-  rdfs:label "Cité de l'architecture et du patrimoine"@fr-FR ;
-  rdfs:subClassOf vivofr:ORG_0000019 ;
-  vcard:url "https://fr.wikipedia.org/wiki/Cit%C3%A9_de_l%27architecture_et_du_patrimoine"^^xsd:anyURI ;
-.
-vivofr:ORG_0000019
-  a owl:Class ;
-  rdfs:label "Industrial and commercial public establishment in France"@en-US ;
-  rdfs:label "Établissement public à caractère industriel et commercial en France (EPIC)"@fr-FR ;
-  rdfs:subClassOf foaf:Organization ;
-  vcard:url "https://fr.wikipedia.org/wiki/%C3%89tablissement_public_%C3%A0_caract%C3%A8re_industriel_et_commercial_en_France"^^xsd:anyURI ;
-.
-vivofr:ORG_0000020
-  a owl:Class ;
-  rdfs:label "centre hospitaliser universitaire"@fr-FR ;
-  rdfs:label "university hospital center"@en-US ;
-  rdfs:subClassOf vivo:ClinicalOrganization ;
-  rdfs:subClassOf vivo:Hospital ;
-  rdfs:subClassOf vivo:University ;
-  vcard:url "https://fr.wikipedia.org/wiki/Centre_hospitalier_universitaire"^^xsd:anyURI ;
-.
 vivofr:ORG_0000021
   a owl:Class ;
   rdfs:label "fondation de coopération scientifique"@fr-FR ;
   rdfs:label "scientific cooperation foundation"@en-US ;
   rdfs:subClassOf vivo:Foundation ;
-  vcard:url "https://fr.wikipedia.org/wiki/%C3%89cole_d%27%C3%A9conomie_de_Paris"^^xsd:anyURI ;
-.
-vivofr:ORG_0000022
-  a owl:Class ;
-  rdfs:label "Doctors of the World"@en-US ;
-  rdfs:label "Médecins du monde"@fr-FR ;
-  rdfs:subClassOf vivo:Association ;
-  vcard:url "https://fr.wikipedia.org/wiki/%C3%89cole_d%27%C3%A9conomie_de_Paris"^^xsd:anyURI ;
 .
 vivofr:PRP_0000001
   a owl:DatatypeProperty ;
-  obo:IAO_0000115 "Les maîtrises de conférences et directions d'études de l'EHESS sont l'équivalent de chaires dotées d'un intitulé permanent. Elles constituent l'Affiche des enseignements de recherche de l'Ecole"@fr-FR ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#editor> ;
   vitro:hiddenFromPublishBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#dbAdmin> ;
   vitro:prohibitedFromUpdateBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#dbAdmin> ;
@@ -623,7 +537,6 @@ vivofr:PRP_0000001
 vivofr:PRP_0000002
   a owl:DatatypeProperty ;
   a owl:FunctionalProperty ;
-  obo:IAO_0000115 "Identifiant interne de l'utilisateur, commun aux différentes applications de la recherche"@fr-FR ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#editor> ;
   vitro:hiddenFromPublishBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#dbAdmin> ;
   vitro:prohibitedFromUpdateBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#dbAdmin> ;
@@ -636,7 +549,6 @@ vivofr:PRP_0000002
 vivofr:PRP_0000003
   a owl:DatatypeProperty ;
   a owl:FunctionalProperty ;
-  obo:IAO_0000115 "L'identifiant spécifique d'une ressource (structure, personne...) au sein du système d'information"@fr-FR ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#editor> ;
   vitro:hiddenFromPublishBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#dbAdmin> ;
   vitro:prohibitedFromUpdateBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#dbAdmin> ;
@@ -692,7 +604,6 @@ vivofr:PRP_0000006
 .
 vivofr:PRS_0000002
   a owl:Class ;
-  obo:IAO_0000115 "Personnels ingénieurs, administratifs, techniques, ouvriers et de service (IATOS)"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -705,7 +616,6 @@ vivofr:PRS_0000002
 .
 vivofr:PRS_0000003
   a owl:Class ;
-  obo:IAO_0000115 "Personnels ingénieurs, administratifs, techniques, ouvriers et de service (IATOS) rattachés aux entités administratives"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -718,7 +628,6 @@ vivofr:PRS_0000003
 .
 vivofr:PRS_0000004
   a owl:Class ;
-  obo:IAO_0000115 "Personnels ingénieurs, administratifs, techniques, ouvriers et de service (IATOS) rattachés aux unités de recherche ou de soutien"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -731,7 +640,6 @@ vivofr:PRS_0000004
 .
 vivofr:PRS_0000005
   a owl:Class ;
-  obo:IAO_0000115 "Titulaire du grade académique de docteur"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -744,7 +652,6 @@ vivofr:PRS_0000005
 .
 vivofr:PRS_0000006
   a owl:Class ;
-  obo:IAO_0000115 "https://fr.wikipedia.org/wiki/Doctorant"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -757,7 +664,6 @@ vivofr:PRS_0000006
 .
 vivofr:PRS_0000007
   a owl:Class ;
-  obo:IAO_0000115 "https://fr.wikipedia.org/wiki/Habilitation_universitaire#En_France"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -770,7 +676,6 @@ vivofr:PRS_0000007
 .
 vivofr:PRS_0000009
   a owl:Class ;
-  obo:IAO_0000115 "Personne exerçant des activités de recherche au niveau ESR, sans avoir d'activité d'enseignement"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -783,7 +688,6 @@ vivofr:PRS_0000009
 .
 vivofr:PRS_0000010
   a owl:Class ;
-  obo:IAO_0000115 "Personne exerçant des activités d'enseignement au niveau ESR, sans avoir d'activité de recherche"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -796,7 +700,6 @@ vivofr:PRS_0000010
 .
 vivofr:PRS_0000011
   a owl:Class ;
-  obo:IAO_0000115 "https://fr.wikipedia.org/wiki/Enseignant-chercheur"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
@@ -828,7 +731,6 @@ vivofr:PRS_0000011
 .
 vivofr:PRS_0000012
   a owl:Class ;
-  obo:IAO_0000115 "Une enseignante-chercheure ou un enseignant-chercheur s'étant vu accorder l'éméritat (https://fr.wikipedia.org/wiki/Professeur_%C3%A9m%C3%A9rite)"@fr-FR ;
   vitro:displayLimitAnnot "-1"^^xsd:int ;
   vitro:displayRankAnnot "-1"^^xsd:int ;
   vitro:hiddenFromDisplayBelowRoleLevelAnnot <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
