@@ -1,0 +1,126 @@
+# baseURI: http://data.ehess.fr/ontology/vivo-fr-Affiliation
+
+@prefix : <http://data.ehess.fr/ontology/vivo-fr-Affiliation#> .
+@prefix acti: <http://vivoweb.org/ontology/activity-insight#> .
+@prefix afn: <http://jena.hpl.hp.com/ARQ/function#> .
+@prefix ai: <http://vivoweb.org/ontology/activity-insight#> .
+@prefix aka: <http://vivoweb.org/ontology/aka#> .
+@prefix aktp: <http://www.aktors.org/ontology/portal#> .
+@prefix app: <http://eagle-i.org/ont/app/1.0/> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix c4o: <http://purl.org/spar/c4o/> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix cce: <http://vivoweb.org/ontology/cornell-cooperative-extension#> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix config: <http://vitro.mannlib.cornell.edu/ns/vitro/ApplicationConfiguration#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcelem: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
+@prefix ehess: <http://data.ehess.fr/ontology/ehess#> .
+@prefix ero: <http://purl.obolibrary.org/obo/> .
+@prefix event: <http://purl.org/NET/c4dm/event.owl#> .
+@prefix fabio: <http://purl.org/spar/fabio/> .
+@prefix far: <http://vitro.mannlib.cornell.edu/ns/reporting#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo: <http://aims.fao.org/aos/geopolitical.owl#> .
+@prefix geopolitical: <http://aims.fao.org/aos/geopolitical.owl#> .
+@prefix hr: <http://vivo.cornell.edu/ns/hr/0.9/hr.owl#> .
+@prefix j.0: <http://aims.fao.org/aos/geopolitical.owl#> .
+@prefix local: <http://vivo.cornell.edu/ontology/local#> .
+@prefix mann: <http://vivo.cornell.edu/ns/mannadditions/0.1#> .
+@prefix ns: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix ocrer: <http://purl.org/net/OCRe/research.owl#> .
+@prefix ocresd: <http://purl.org/net/OCRe/study_design.owl#> .
+@prefix ospcu: <http://vivoweb.org/ontology/cu-vivo-osp#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix owl2: <http://www.w3.org/2006/12/owl2-xml#> .
+@prefix pubmed: <http://vitro.mannlib.cornell.edu/ns/pubmed#> .
+@prefix pvs: <http://vivoweb.org/ontology/provenance-support#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdfsyn: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sce: <http://vivoweb.org/ontology/SchoolOfContinuingEducation#> .
+@prefix scires: <http://vivoweb.org/ontology/scientific-research#> .
+@prefix scirr: <http://vivoweb.org/ontology/scientific-research-resource#> .
+@prefix skco: <http://www.w3.org/2004/02/skos/core#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix skos2: <http://www.w3.org/2008/05/skos#> .
+@prefix socsci: <http://vivo.library.cornell.edu/ns/vivo/socsci/0.1#> .
+@prefix stars: <http://vitro.mannlib.cornell.edu/ns/cornell/stars/classes#> .
+@prefix statistics: <http://purl.org/net/OCRe/statistics.owl#> .
+@prefix study_protocol: <http://purl.org/net/OCRe/study_protocol.owl#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix swrlb: <http://www.w3.org/2003/11/swrlb#> .
+@prefix swvs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> .
+@prefix vivo: <http://vivoweb.org/ontology/core#> .
+@prefix vivo-ehess: <http://data.ehess.fr/ontology/vivo-ehess#> .
+@prefix vivoc: <http://vivo.library.cornell.edu/ns/0.1#> .
+@prefix vivofr: <http://data.ehess.fr/ontology/vivo-fr#> .
+@prefix wcmc: <http://weill.cornell.edu/vivo/ontology/wcmc#> .
+@prefix wos: <http://vivo.mannlib.cornell.edu/ns/ThomsonWOS/0.1#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+vivofr:ORG_0000016
+  a owl:Class ;
+  rdfs:label "Ministry of Culture"@en-US ;
+  rdfs:label "Ministère de la culture"@fr-FR ;
+  rdfs:subClassOf vivofr:EHESS-Affiliation ;
+  rdfs:subClassOf vivo:GovernmentAgency ;
+.
+vivofr:ORG_0000017
+  a owl:Class ;
+  rdfs:label "Institut protestant de théologie"@fr-FR ;
+  rdfs:label "Protestant Institute of Theology"@en-US ;
+  rdfs:subClassOf vivofr:EHESS-Affiliation ;
+  rdfs:subClassOf vivo:Institute ;
+.
+vivofr:ORG_0000018
+  a owl:Class ;
+  rdfs:label "City of Architecture and Heritage"@en-US ;
+  rdfs:label "Cité de l'architecture et du patrimoine"@fr-FR ;
+  rdfs:subClassOf vivofr:EHESS-Affiliation ;
+  rdfs:subClassOf :ORG_0000019 ;
+.
+vivofr:ORG_0000019
+  a owl:Class ;
+  rdfs:label "Industrial and commercial public establishment in France"@en-US ;
+  rdfs:label "Établissement public à caractère industriel et commercial en France (EPIC)"@fr-FR ;
+  rdfs:subClassOf vivofr:EHESS-Affiliation ;
+  rdfs:subClassOf foaf:Organization ;
+.
+vivofr:ORG_0000020
+  a owl:Class ;
+  rdfs:label "centre hospitaliser universitaire"@fr-FR ;
+  rdfs:label "university hospital center"@en-US ;
+  rdfs:subClassOf vivofr:EHESS-Affiliation ;
+  rdfs:subClassOf vivo:ClinicalOrganization ;
+  rdfs:subClassOf vivo:Hospital ;
+  rdfs:subClassOf vivo:University ;
+.
+vivofr:ORG_0000021
+  a owl:Class ;
+  rdfs:label "fondation de coopération scientifique"@fr-FR ;
+  rdfs:label "scientific cooperation foundation"@en-US ;
+  rdfs:subClassOf vivo:Foundation ;
+.
+vivofr:ORG_0000022
+  a owl:Class ;
+  rdfs:label "Doctors of the World"@en-US ;
+  rdfs:label "Médecins du monde"@fr-FR ;
+  rdfs:subClassOf vivofr:EHESS-Affiliation ;
+  rdfs:subClassOf vivo:Association ;
+.
+<http://data.ehess.fr/ontology/vivo-fr-Affiliation>
+  a owl:Ontology ;
+.
+:Docteur_X
+  a vivofr:ORG_0000022 ;
+  rdfs:label "Docteur X" ;
+.
