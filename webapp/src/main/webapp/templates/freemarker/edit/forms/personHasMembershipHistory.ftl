@@ -197,6 +197,7 @@ var customFormData  = {
 <#if multipleTypes == true>
     acMultipleTypes: 'true',
 </#if>
+    acSelectOnly: 'true',
     editMode: '${editMode}',
     apiMemberClass : '${apiMemberClass}',
     defaultTypeName: 'organization', // used in repair mode, to generate button text and org name field label
