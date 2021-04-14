@@ -181,6 +181,7 @@ var customFormData  = {
 <#if multipleTypes!false == true>
     acMultipleTypes: 'true',
 </#if>
+    acSelectOnly: 'true',
     editMode: '${editMode}',
     defaultTypeName: 'organization', // used in repair mode, to generate button text and org name field label
     baseHref: '${urls.base}/individual?uri=',
