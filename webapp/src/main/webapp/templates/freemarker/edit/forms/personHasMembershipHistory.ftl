@@ -99,7 +99,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </#if>
         <#--Checking if Member Class field is empty-->
          <#if lvf.submissionErrorExists(editSubmission, "memberClass")>
-            ${i18n().select_membership_class}<br />
+            ${i18n().enter_membership_memberClass_value}<br />
         </#if>
         </p>
     </section>
